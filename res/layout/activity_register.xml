@@ -23,6 +23,7 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/layout_register"
         android:layout_width="match_parent"
         android:layout_height="0dip"
         android:layout_marginLeft="8dp"
@@ -149,6 +150,7 @@
                 android:textSize="18sp" />
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/headRelativeLayout"
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_marginLeft="20dp"
@@ -186,6 +188,7 @@
             android:orientation="horizontal" >
 
             <Button
+                android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
@@ -199,6 +202,7 @@
                 android:textColor="#000"
                 android:textSize="20sp" />
             <Button
+                android:id="@+id/btn_register"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -206,7 +210,6 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/button_login_bg"
-                android:onClick="register"
                 android:paddingBottom="7dp"
                 android:paddingTop="7dp"
                 android:text="@string/register"
@@ -214,6 +217,8 @@
                 android:textSize="20sp" />
 
         </LinearLayout>
+
     </LinearLayout>
+
 
 </LinearLayout>
