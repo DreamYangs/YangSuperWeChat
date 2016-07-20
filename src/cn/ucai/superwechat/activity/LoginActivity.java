@@ -172,20 +172,27 @@ public class LoginActivity extends BaseActivity {
 	}
 
 	private void loginAppServer() {
-		final OkHttpUtils2<Result> utils2 = new OkHttpUtils2<Result>();
+		final OkHttpUtils2<String> utils2 = new OkHttpUtils2<String>();
 		utils2.setRequestUrl(I.REQUEST_LOGIN)
 				.addParam(I.User.USER_NAME,currentUsername)
 				.addParam(I.User.PASSWORD,currentPassword)
-				.targetClass(Result.class)
-				.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
+				.targetClass(String.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
 					@Override
-					public void onSuccess(Result result) {
-						if (result != null && result.isRetMsg()) {
-                            saveDataToDB((UserAvatar)result.getRetData());
-                            loginEMSuccess();
+					public void onSuccess(String s) {
+                        Result result = Utils.getResultFromJson(s, UserAvatar.class);
+                        if (result != null && result.isRetMsg()) {
+                            UserAvatar user = (UserAvatar) result.getRetData();
+                            if (user != null) {
+                                saveDataToDB(user);
+                                loginEMSuccess(user);
+                            }
+
 						} else {
 							pd.dismiss();
-                            Toast.makeText(getApplicationContext(), Utils.getResourceString(LoginActivity.this,result.getRetCode()), Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(),
+                                        R.string.Login_failed + Utils.getResourceString(LoginActivity.this,result.getRetCode()),
+                                        Toast.LENGTH_LONG).show();
 						}
 					}
 
@@ -205,7 +212,7 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    private void loginEMSuccess() {
+    private void loginEMSuccess( UserAvatar user) {
 		// 登陆成功，保存用户名密码
 		SuperWeChatApplication.getInstance().setUserName(currentUsername);
 		SuperWeChatApplication.getInstance().setPassword(currentPassword);
