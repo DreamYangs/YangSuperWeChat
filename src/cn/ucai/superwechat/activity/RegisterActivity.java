@@ -32,6 +32,7 @@ import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.data.OkHttpUtils2;
 import cn.ucai.superwechat.listener.OnSetAvatarListener;
 import cn.ucai.superwechat.utils.I;
+import cn.ucai.superwechat.utils.Utils;
 
 import com.easemob.exceptions.EaseMobException;
 
@@ -227,12 +228,17 @@ public class RegisterActivity extends BaseActivity {
 				.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
 					@Override
 					public void onSuccess(Result result) {
-                        Log.i("main", "result" + result);
+                        if (result.isRetMsg() && result != null) {
+                            Log.i("main", "result" + result);
+                            Toast.makeText(getApplicationContext(), Utils.getResourceString(RegisterActivity.this,result.getRetCode()), Toast.LENGTH_LONG).show();
+                        }
+
                     }
 
 					@Override
 					public void onError(String error) {
                         Log.i("main", "error" + error);
+
                     }
 				});
 	}
