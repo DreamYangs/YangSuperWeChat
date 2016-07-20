@@ -54,6 +54,8 @@ public class DbOpenHelper extends SQLiteOpenHelper{
             + UserDao.PREF_TABLE_NAME + " ("
             + UserDao.COLUMN_NAME_DISABLED_GROUPS + " TEXT, "
             + UserDao.COLUMN_NAME_DISABLED_IDS + " TEXT);";
+
+
 	private static final String ROBOT_TABLE_CREATE = "CREATE TABLE "
 			+ UserDao.ROBOT_TABLE_NAME + " ("
 			+ UserDao.ROBOT_COLUMN_NAME_ID + " TEXT PRIMARY KEY, "
