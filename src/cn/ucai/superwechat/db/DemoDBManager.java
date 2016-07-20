@@ -347,6 +347,11 @@ public class DemoDBManager {
 		return users;
 	}
 
+    /**
+     * 保存当前登录用户
+     * @param user
+     */
+
     synchronized public void saveUserAvatar(UserAvatar user) {
 
             SQLiteDatabase db = dbHelper.getWritableDatabase();

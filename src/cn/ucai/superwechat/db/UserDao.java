@@ -108,6 +108,11 @@ public class UserDao {
     public void saveRobotUser(List<RobotUser> robotList){
     	DemoDBManager.getInstance().saveRobotList(robotList);
     }
+
+    /**
+     * 保存当前用户
+     * @param userAvatar
+     */
 	public void saveUserAvatar(UserAvatar userAvatar){
 		DemoDBManager.getInstance().saveUserAvatar(userAvatar);
 	}
