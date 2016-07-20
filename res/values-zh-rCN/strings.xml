@@ -320,7 +320,7 @@
     <string name="not_public_group_0">非公开群组</string>
     <string name="locationable_1">可以被搜索到地理位置</string>
     <string name="not_location_0">禁止被搜索到地理位置</string>
-    <string name="success_0">默认成功</string>
+    <string name="msg_0">默认成功</string>
     <string name="msg_101">账号已经存在</string>
     <string name="msg_102">注册失败</string>
     <string name="msg_103">解除注册失败</string>
