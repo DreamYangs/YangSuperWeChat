@@ -181,10 +181,12 @@ public class LoginActivity extends BaseActivity {
 				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
 					@Override
 					public void onSuccess(String s) {
-                        Result result = Utils.getResultFromJson(s, UserAvatar.class);
+						Log.i("main", "登录本地服务器返回的数据"+s);
+						Result result = Utils.getResultFromJson(s, UserAvatar.class);
                         if (result != null && result.isRetMsg()) {
                             UserAvatar user = (UserAvatar) result.getRetData();
-                            if (user != null) {
+							Log.i("main", "得到的UserAvatar数据" + user.toString());
+							if (user != null) {
                                 saveDataToDB(user);
                                 loginEMSuccess(user);
                             }
