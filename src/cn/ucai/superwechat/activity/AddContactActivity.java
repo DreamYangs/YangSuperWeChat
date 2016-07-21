@@ -94,37 +94,41 @@ public class AddContactActivity extends BaseActivity{
 			}
             UserAvatar userAvatar = SuperWeChatApplication.getInstance().getUserMap().get(toAddUsername);
             if (userAvatar != null) {
-                startActivity(new Intent(AddContactActivity.this,UserProfileActivity.class).putExtra("username",toAddUsername));
+                startActivity(new Intent(AddContactActivity.this, UserProfileActivity.class).putExtra("username", toAddUsername));
+                mtvNothing.setVisibility(View.GONE);
+                searchedUserLayout.setVisibility(View.GONE);
+            } else {
+
+                final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+                utils.setRequestUrl(I.REQUEST_FIND_USER)
+                        .addParam(I.User.USER_NAME,toAddUsername)
+                        .targetClass(String.class)
+                        .execute(new OkHttpUtils2.OnCompleteListener<String>() {
+                            @Override
+                            public void onSuccess(String s) {
+                                Log.i("main", "根据用户名查找用户结果：" + s);
+                                Result result = Utils.getResultFromJson(s, UserAvatar.class);
+                                Log.i("main","UserAvatar的数据："+result);
+                                if (result != null && result.isRetMsg()) {
+                                    mtvNothing.setVisibility(View.GONE);
+                                    UserAvatar userAvatar = (UserAvatar) result.getRetData();
+                                    searchedUserLayout.setVisibility(View.VISIBLE);
+                                    nameText.setText(toAddUsername);
+                                    UserUtils.setAppUserAvatar(AddContactActivity.this,toAddUsername,avatar);
+                                } else {
+                                    searchedUserLayout.setVisibility(View.GONE);
+                                    mtvNothing.setVisibility(View.VISIBLE);
+
+                                }
+                            }
+
+                            @Override
+                            public void onError(String error) {
+                                Log.i("main", "查询错误信息：" + error);
+                            }
+                        });
             }
 
-            final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
-			utils.setRequestUrl(I.REQUEST_FIND_USER)
-					.addParam(I.User.USER_NAME,toAddUsername)
-					.targetClass(String.class)
-					.execute(new OkHttpUtils2.OnCompleteListener<String>() {
-						@Override
-						public void onSuccess(String s) {
-							Log.i("main", "根据用户名查找用户结果：" + s);
-							Result result = Utils.getResultFromJson(s, UserAvatar.class);
-							Log.i("main","UserAvatar的数据："+result);
-							if (result != null && result.isRetMsg()) {
-								mtvNothing.setVisibility(View.GONE);
-								UserAvatar userAvatar = (UserAvatar) result.getRetData();
-								searchedUserLayout.setVisibility(View.VISIBLE);
-								nameText.setText(toAddUsername);
-								UserUtils.setAppUserAvatar(AddContactActivity.this,toAddUsername,avatar);
-							} else {
-								searchedUserLayout.setVisibility(View.GONE);
-								mtvNothing.setVisibility(View.VISIBLE);
-
-							}
-						}
-
-						@Override
-						public void onError(String error) {
-							Log.i("main", "查询错误信息：" + error);
-						}
-					});
 			// TODO 从服务器获取此contact,如果不存在提示不存在此用户
 			
 //			//服务器存在此用户，显示此用户和添加按钮
