@@ -36,6 +36,7 @@ import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.bean.UserAvatar;
 import cn.ucai.superwechat.data.OkHttpUtils2;
 import cn.ucai.superwechat.utils.I;
+import cn.ucai.superwechat.utils.UserUtils;
 import cn.ucai.superwechat.utils.Utils;
 
 public class AddContactActivity extends BaseActivity{
@@ -91,7 +92,12 @@ public class AddContactActivity extends BaseActivity{
 				startActivity(new Intent(this, AlertDialog.class).putExtra("msg", str));
 				return;
 			}
-			final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+            UserAvatar userAvatar = SuperWeChatApplication.getInstance().getUser();
+            if (userAvatar != null) {
+                startActivity(new Intent(AddContactActivity.this,UserProfileActivity.class).putExtra("username",toAddUsername));
+            }
+
+            final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
 			utils.setRequestUrl(I.REQUEST_FIND_USER)
 					.addParam(I.User.USER_NAME,toAddUsername)
 					.targetClass(String.class)
@@ -105,8 +111,10 @@ public class AddContactActivity extends BaseActivity{
 								mtvNothing.setVisibility(View.GONE);
 								UserAvatar userAvatar = (UserAvatar) result.getRetData();
 								searchedUserLayout.setVisibility(View.VISIBLE);
-								nameText.setText(userAvatar.getMUserName());
+								nameText.setText(toAddUsername);
+								UserUtils.setAppUserAvatar(AddContactActivity.this,toAddUsername,avatar);
 							} else {
+								searchedUserLayout.setVisibility(View.GONE);
 								mtvNothing.setVisibility(View.VISIBLE);
 
 							}
