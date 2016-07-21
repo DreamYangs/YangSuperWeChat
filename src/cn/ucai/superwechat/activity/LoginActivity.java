@@ -185,6 +185,8 @@ public class LoginActivity extends BaseActivity {
 						Result result = Utils.getResultFromJson(s, UserAvatar.class);
                         if (result != null && result.isRetMsg()) {
                             UserAvatar user = (UserAvatar) result.getRetData();
+//							SuperWeChatApplication.getInstance().setUserNick(user.getMUserNick());
+							SuperWeChatApplication.currentUserNick = user.getMUserNick();
 							Log.i("main", "得到的UserAvatar数据" + user.toString());
 							if (user != null) {
                                 saveDataToDB(user);

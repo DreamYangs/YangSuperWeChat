@@ -107,9 +107,12 @@ public class UserUtils {
      */
 
     public static void setAppUserNick(String userName,TextView textView,int requestCode) {
-        String userNick = SuperWeChatApplication.getInstance().getUserNick();
-        Log.i("main", "在SuperWeChatApplication中获得的UserNick：" + userNick);
-        if (userNick == null) {
+//        String userNick = SuperWeChatApplication.getInstance().getUserNick();
+//        Log.i("main", "在SuperWeChatApplication中获得的UserNick：" + userNick);
+
+        String userNick = SuperWeChatApplication.currentUserNick;  // 也可以是这句话，不知道有这个方法。但是这个方法的范围大些
+        Log.i("main", "在SuperWeChatApplication中.currentNick方法中获取的昵称：" + userNick);
+        if (userNick == null||userNick=="") {
             textView.setText(userName);
         } else {
             textView.setText(userNick);

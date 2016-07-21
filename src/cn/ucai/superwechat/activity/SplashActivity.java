@@ -61,13 +61,16 @@ public class SplashActivity extends BaseActivity {
 					String userName = SuperWeChatApplication.getInstance().getUserName();
 					UserDao dao = new UserDao(SplashActivity.this);
 					UserAvatar user = dao.getUserAvatar(userName);
-					SuperWeChatApplication.getInstance().setUserNick(user.getMUserNick());
 					Log.e(TAG, "user=" + user);
 					Log.i("main", "闪屏中的UserAvatar数据：" + user);
 					if (user != null) {
+						//设置全局变量的昵称，在闪屏中获得的用户信息
+//						SuperWeChatApplication.getInstance().setUserNick(user.getMUserNick());//转在登录界面去获取昵称了
+
                         SuperWeChatApplication.getInstance().setUser(user);
                         SuperWeChatApplication.currentUserNick = user.getMUserNick();
                         new DownloadContactListTask(SplashActivity.this,userName).execute();
+
                     }
 
 					long costTime = System.currentTimeMillis() - start;
