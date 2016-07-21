@@ -18,6 +18,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,6 +31,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.easemob.EMCallBack;
+
+import cn.ucai.superwechat.SuperWeChatApplication;
 import cn.ucai.superwechat.applib.controller.HXSDKHelper;
 
 import com.easemob.chat.EMChatManager;
@@ -127,7 +130,8 @@ public class SettingsFragment extends Fragment implements OnClickListener {
 	private LinearLayout pushNick;
 	
 	DemoHXSDKModel model;
-	
+
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.fragment_conversation_settings, container, false);
@@ -337,7 +341,9 @@ public class SettingsFragment extends Fragment implements OnClickListener {
 			startActivity(new Intent(getActivity(), OfflinePushNickActivity.class));
 			break;
 		case R.id.ll_user_profile:
-			startActivity(new Intent(getActivity(), UserProfileActivity.class).putExtra("setting", true));
+            String userName = SplashActivity.getUserName();
+            Log.i("main", "在设置Fragment中获取的userName：" + userName);
+            startActivity(new Intent(getActivity(), UserProfileActivity.class).putExtra("username", userName));
 			break;
 		default:
 			break;

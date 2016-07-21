@@ -102,12 +102,26 @@ public class UserUtils {
     	}
     }
 
-	/**
+    /**
+     * 设置登录账户昵称
+     */
+
+    public static void setAppUserNick(String userName,TextView textView,int requestCode) {
+        String userNick = SuperWeChatApplication.getInstance().getUserNick();
+        Log.i("main", "在SuperWeChatApplication中获得的UserNick：" + userNick);
+        if (userNick == null) {
+            textView.setText(userName);
+        } else {
+            textView.setText(userNick);
+        }
+    }
+    /**
 	 * 设置用户昵称
 	 */
 	public static void setAppUserNick(String username,TextView textView){
 		UserAvatar user = getAppUserInfo(username);
-		if(user != null){
+        Log.i("main", "设置登录账户的昵称：" + user.getMUserNick());
+        if(user != null){
 			if (user.getMUserNick() != null) {
 				textView.setText(user.getMUserNick());
 			} else {

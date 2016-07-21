@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
@@ -23,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.easemob.EMValueCallBack;
+
+import cn.ucai.superwechat.SuperWeChatApplication;
 import cn.ucai.superwechat.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMChatManager;
 import cn.ucai.superwechat.DemoHXSDKHelper;
@@ -76,14 +79,17 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 			iconRightArrow.setVisibility(View.INVISIBLE);
 		}
 		if (username == null) {
+			Log.i("main", "这是显示个人资料1");
 			tvUsername.setText(EMChatManager.getInstance().getCurrentUser());
 			UserUtils.setCurrentUserNick(tvNickName);
 			UserUtils.setCurrentUserAvatar(this, headAvatar);
 		} else if (username.equals(EMChatManager.getInstance().getCurrentUser())) {
+			Log.i("main", "这是显示个人资料2");
 			tvUsername.setText(EMChatManager.getInstance().getCurrentUser());
-			UserUtils.setCurrentUserNick(tvNickName);
-			UserUtils.setCurrentUserAvatar(this, headAvatar);
+			UserUtils.setAppUserNick(username, tvNickName,0);
+			UserUtils.setAppUserAvatar(this,username, headAvatar);
 		} else {
+			Log.i("main", "这是显示个人资料3");
 			tvUsername.setText(username);
 			UserUtils.setAppUserNick(username, tvNickName);
 			UserUtils.setAppUserAvatar(this, username, headAvatar);

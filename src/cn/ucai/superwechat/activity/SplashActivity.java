@@ -29,7 +29,6 @@ public class SplashActivity extends BaseActivity {
 	private TextView versionText;
 	
 	private static final int sleepTime = 2000;
-
 	@Override
 	protected void onCreate(Bundle arg0) {
 		setContentView(R.layout.activity_splash);
@@ -62,6 +61,7 @@ public class SplashActivity extends BaseActivity {
 					String userName = SuperWeChatApplication.getInstance().getUserName();
 					UserDao dao = new UserDao(SplashActivity.this);
 					UserAvatar user = dao.getUserAvatar(userName);
+					SuperWeChatApplication.getInstance().setUserNick(user.getMUserNick());
 					Log.e(TAG, "user=" + user);
 					Log.i("main", "闪屏中的UserAvatar数据：" + user);
 					if (user != null) {
@@ -110,4 +110,9 @@ public class SplashActivity extends BaseActivity {
 			return st;
 		}
 	}
+
+	public static String getUserName() {
+		return SuperWeChatApplication.getInstance().getUserName();
+	}
+
 }

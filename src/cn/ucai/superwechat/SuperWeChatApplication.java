@@ -91,7 +91,7 @@ public class SuperWeChatApplication extends Application {
 	/**
 	 * 设置用户名
 	 *
-	 * @param user
+	 * @param username
 	 */
 	public void setUserName(String username) {
 	    hxSDKHelper.setHXId(username);
@@ -116,14 +116,6 @@ public class SuperWeChatApplication extends Application {
 	}
 	//全局的当前登录用户信息
 	private UserAvatar user;
-	//全局的当前用户好友集合
-	private List<UserAvatar> userList = new ArrayList<UserAvatar>();
-
-
-
-	//全局的当前用户Map集合
-	private Map<String,UserAvatar> userMap = new HashMap<String, UserAvatar>();
-
 	public UserAvatar getUser() {
 		return user;
 	}
@@ -133,7 +125,8 @@ public class SuperWeChatApplication extends Application {
 	}
 
 
-
+    //全局的当前用户好友集合
+    private List<UserAvatar> userList = new ArrayList<UserAvatar>();
 	public List<UserAvatar> getUserList() {
 		return userList;
 	}
@@ -144,6 +137,8 @@ public class SuperWeChatApplication extends Application {
 
 
 
+    //全局的当前用户Map集合
+    private Map<String,UserAvatar> userMap = new HashMap<String, UserAvatar>();
 	public Map<String, UserAvatar> getUserMap() {
 		return userMap;
 	}
@@ -151,4 +146,14 @@ public class SuperWeChatApplication extends Application {
 	public void setUserMap(Map<String, UserAvatar> userMap) {
 		this.userMap = userMap;
 	}
+
+    private String userNick;
+
+    public String getUserNick() {
+        return userNick;
+    }
+
+    public void setUserNick(String userNick) {
+        this.userNick = userNick;
+    }
 }
