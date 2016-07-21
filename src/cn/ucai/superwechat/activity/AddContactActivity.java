@@ -17,6 +17,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -31,6 +32,11 @@ import com.easemob.chat.EMContactManager;
 import cn.ucai.superwechat.SuperWeChatApplication;
 import cn.ucai.superwechat.DemoHXSDKHelper;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.bean.Result;
+import cn.ucai.superwechat.bean.UserAvatar;
+import cn.ucai.superwechat.data.OkHttpUtils2;
+import cn.ucai.superwechat.utils.I;
+import cn.ucai.superwechat.utils.Utils;
 
 public class AddContactActivity extends BaseActivity{
 	private EditText editText;
@@ -41,6 +47,7 @@ public class AddContactActivity extends BaseActivity{
 	private InputMethodManager inputMethodManager;
 	private String toAddUsername;
 	private ProgressDialog progressDialog;
+	private TextView mtvNothing;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +65,8 @@ public class AddContactActivity extends BaseActivity{
 		searchBtn = (Button) findViewById(R.id.search);
 		avatar = (ImageView) findViewById(R.id.avatar);
 		inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+		mtvNothing = (TextView) findViewById(R.id.tvNothing);
 	}
 	
 	
@@ -76,12 +85,43 @@ public class AddContactActivity extends BaseActivity{
 				startActivity(new Intent(this, AlertDialog.class).putExtra("msg", st));
 				return;
 			}
-			
+
+			if(SuperWeChatApplication.getInstance().getUserName().equals(toAddUsername)){
+				String str = getString(R.string.not_add_myself);
+				startActivity(new Intent(this, AlertDialog.class).putExtra("msg", str));
+				return;
+			}
+			final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+			utils.setRequestUrl(I.REQUEST_FIND_USER)
+					.addParam(I.User.USER_NAME,toAddUsername)
+					.targetClass(String.class)
+					.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+						@Override
+						public void onSuccess(String s) {
+							Log.i("main", "根据用户名查找用户结果：" + s);
+							Result result = Utils.getResultFromJson(s, UserAvatar.class);
+							Log.i("main","UserAvatar的数据："+result);
+							if (result != null && result.isRetMsg()) {
+								mtvNothing.setVisibility(View.GONE);
+								UserAvatar userAvatar = (UserAvatar) result.getRetData();
+								searchedUserLayout.setVisibility(View.VISIBLE);
+								nameText.setText(userAvatar.getMUserName());
+							} else {
+								mtvNothing.setVisibility(View.VISIBLE);
+
+							}
+						}
+
+						@Override
+						public void onError(String error) {
+							Log.i("main", "查询错误信息：" + error);
+						}
+					});
 			// TODO 从服务器获取此contact,如果不存在提示不存在此用户
 			
-			//服务器存在此用户，显示此用户和添加按钮
-			searchedUserLayout.setVisibility(View.VISIBLE);
-			nameText.setText(toAddUsername);
+//			//服务器存在此用户，显示此用户和添加按钮
+//			searchedUserLayout.setVisibility(View.VISIBLE);
+//			nameText.setText(toAddUsername);
 			
 		} 
 	}	
@@ -91,11 +131,11 @@ public class AddContactActivity extends BaseActivity{
 	 * @param view
 	 */
 	public void addContact(View view){
-		if(SuperWeChatApplication.getInstance().getUserName().equals(nameText.getText().toString())){
-			String str = getString(R.string.not_add_myself);
-			startActivity(new Intent(this, AlertDialog.class).putExtra("msg", str));
-			return;
-		}
+//		if(SuperWeChatApplication.getInstance().getUserName().equals(nameText.getText().toString())){
+//			String str = getString(R.string.not_add_myself);
+//			startActivity(new Intent(this, AlertDialog.class).putExtra("msg", str));
+//			return;
+//		}
 		
 		if(((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList().containsKey(nameText.getText().toString())){
 		    //提示已在好友列表中，无需添加
@@ -125,7 +165,7 @@ public class AddContactActivity extends BaseActivity{
 						public void run() {
 							progressDialog.dismiss();
 							String s1 = getResources().getString(R.string.send_successful);
-							Toast.makeText(getApplicationContext(), s1, 1).show();
+							Toast.makeText(getApplicationContext(), s1, Toast.LENGTH_LONG).show();
 						}
 					});
 				} catch (final Exception e) {
@@ -133,7 +173,7 @@ public class AddContactActivity extends BaseActivity{
 						public void run() {
 							progressDialog.dismiss();
 							String s2 = getResources().getString(R.string.Request_add_buddy_failure);
-							Toast.makeText(getApplicationContext(), s2 + e.getMessage(), 1).show();
+							Toast.makeText(getApplicationContext(), s2 + e.getMessage(), Toast.LENGTH_LONG).show();
 						}
 					});
 				}

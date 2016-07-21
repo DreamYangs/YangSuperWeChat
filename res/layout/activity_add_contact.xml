@@ -96,5 +96,15 @@
                 android:textSize="14sp" />
         </RelativeLayout>
     </LinearLayout>
+    <TextView
+        android:id="@+id/tvNothing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="无结果"
+        android:textSize="22sp"
+        android:textColor="#079"
+        android:gravity="center_horizontal"
+        android:visibility="gone"
 
+        />
 </LinearLayout>
