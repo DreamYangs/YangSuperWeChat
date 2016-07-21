@@ -2,6 +2,7 @@ package cn.ucai.superwechat.task;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import java.util.List;
 
@@ -32,8 +33,9 @@ public class DownloadContactListTask {
                 .targetClass(String.class)
                 .execute(new OkHttpUtils2.OnCompleteListener<String>() {
                     @Override
-                    public void onSuccess(String result) {
-                        Result result1 = Utils.getListResultFromJson(result, UserAvatar.class);
+                    public void onSuccess(String s) {
+                        Log.e(TAG, "s=" + s);
+                        Result result1 = Utils.getListResultFromJson(s, UserAvatar.class);
                         List<UserAvatar> list = (List<UserAvatar>) result1.getRetData();
                         if (list != null && list.size()>0) {
                             SuperWeChatApplication.getInstance().setUserList(list);
