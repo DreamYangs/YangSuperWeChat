@@ -4,6 +4,7 @@ public interface I {
 	String SERVER_URL                             =       "http://10.0.2.2:8080/SuperWeChatServer/Server";
 
 
+
 	interface User {
 		String TABLE_NAME							=		"t_superwechat_user";
 		String USER_NAME 							= 		"m_user_name";					//用户账号
@@ -83,6 +84,7 @@ public interface I {
 	String AVATAR_SUFFIX_JPG						=		".jpg";							//JPG图片后缀名
 	String QUESTION                                =         "?";                         //问号
 	String EQUAL                                   =         "=";                         //等号
+	String AND                                      =        "&" ;                         //&符号
 	String MSG_PREFIX_MSG                         =         "mes_0";                     //默认成功
 	int LOCATION_IS_SEARCH_ALLOW					=		1;								//可以被搜索到地理位置
 	int LOCATION_IS_SEARCH_INHIBIT				=		0;								//禁止被搜索到地理位置

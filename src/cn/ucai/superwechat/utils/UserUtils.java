@@ -2,6 +2,7 @@ package cn.ucai.superwechat.utils;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,10 +47,40 @@ public class UserUtils {
             Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
         }
     }
-    
-    /**
-     * 设置当前用户头像
-     */
+	/**
+	 * 设置用户头像
+	 * @param username
+	 */
+	public static void setAppUserAvatar(Context context, String username, ImageView imageView) {
+		String path = "";
+		if (path != null && username != null) {
+			path = getUserAvatarPath(username);
+			Log.i("main", "sql语句:" + path);
+			Picasso.with(context).load(path).placeholder(R.drawable.default_avatar).into(imageView);
+		} else {
+			Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
+		}
+	}
+
+	private static String getUserAvatarPath(String userName) {
+		StringBuilder path = new StringBuilder(I.SERVER_URL);
+		path.append(I.QUESTION)
+				.append(I.KEY_REQUEST)
+				.append(I.EQUAL)
+				.append(I.REQUEST_DOWNLOAD_AVATAR)
+				.append(I.AND)
+		.append(I.NAME_OR_HXID)
+				.append(I.EQUAL).append(userName)
+				.append(I.AND)
+		.append(I.AVATAR_TYPE).append(I.EQUAL).append(I.AVATAR_TYPE_USER_PATH);
+
+		return path.toString();
+
+	}
+
+		/**
+         * 设置当前用户头像
+         */
 	public static void setCurrentUserAvatar(Context context, ImageView imageView) {
 		User user = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getUserProfileManager().getCurrentUserInfo();
 		if (user != null && user.getAvatar() != null) {
@@ -112,7 +143,7 @@ public class UserUtils {
     
     /**
      * 保存或更新某个用户
-     * @param user
+     * @param newUser
      */
 	public static void saveUserInfo(User newUser) {
 		if (newUser == null || newUser.getUsername() == null) {
