@@ -386,14 +386,14 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 			if(robotMap!=null&&robotMap.containsKey(toChatUsername)){
 				isRobot = true;
 				String nick = robotMap.get(toChatUsername).getNick();
-				Log.i("main", "单聊里面的nick：" + nick);
+				Log.i("main", "在单聊里面获得nick：" + nick);
 				if(!TextUtils.isEmpty(nick)){
 					((TextView) findViewById(R.id.name)).setText(nick);
 				}else{
 					((TextView) findViewById(R.id.name)).setText(toChatUsername);
 				}
 			}else{
-				UserUtils.setUserNick(toChatUsername, (TextView) findViewById(R.id.name));
+				UserUtils.setAppUserNick(toChatUsername, (TextView) findViewById(R.id.name));
 			}
 		} else {
 			// 群聊
@@ -854,7 +854,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	public void selectPicFromCamera() {
 		if (!CommonUtils.isExitsSdcard()) {
 			String st = getResources().getString(R.string.sd_card_does_not_exist);
-			Toast.makeText(getApplicationContext(), st, 0).show();
+			Toast.makeText(getApplicationContext(), st, Toast.LENGTH_LONG).show();
 			return;
 		}
 
@@ -1719,7 +1719,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 
 				public void run() {
 					if (toChatUsername.equals(groupId)) {
-						Toast.makeText(ChatActivity.this, st13, 1).show();
+						Toast.makeText(ChatActivity.this, st13, Toast.LENGTH_LONG).show();
 						if (GroupDetailsActivity.instance != null)
 							GroupDetailsActivity.instance.finish();
 						finish();
