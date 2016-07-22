@@ -97,7 +97,7 @@ public class UserUtils {
 	 */
 	public static void setAppCurrentUserAvatar(Context context, ImageView imageView) {
 		String userName = SuperWeChatApplication.getInstance().getUserName();
-		Log.i("main", "在setAPPCurrentUserAvatar中得到的userName：" + userName);
+		Log.i("main", "在setAPPCurrentUserAvatar中通过SuperWeChatApplication.getInstance().getUserName();得到的userName：" + userName);
 		setAppUserAvatar(context,userName,imageView);
 	}
     /**
@@ -122,7 +122,8 @@ public class UserUtils {
 
         String userNick = SuperWeChatApplication.currentUserNick;  // 也可以是这句话，不知道有这个方法。但是这个方法的范围大些
         Log.i("main", "在SuperWeChatApplication中.currentNick方法中获取的昵称：" + userNick);
-        if (userNick == null||userNick=="") {
+		Log.i("main", "设置登录账户的昵称：" + userNick);
+		if (userNick == null||userNick=="") {
             textView.setText(userName);
         } else {
             textView.setText(userNick);
@@ -133,7 +134,7 @@ public class UserUtils {
 	 */
 	public static void setAppUserNick(String username,TextView textView){
 		UserAvatar user = getAppUserInfo(username);
-        Log.i("main", "设置登录账户的昵称：" + user.getMUserNick());
+        Log.i("main", "设置界面显示的账户昵称：" + user.getMUserNick());
         if(user != null){
 			if (user.getMUserNick() != null) {
 				textView.setText(user.getMUserNick());

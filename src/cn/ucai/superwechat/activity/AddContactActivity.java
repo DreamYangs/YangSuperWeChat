@@ -108,7 +108,7 @@ public class AddContactActivity extends BaseActivity{
                             public void onSuccess(String s) {
                                 Log.i("main", "根据用户名查找用户结果：" + s);
                                 Result result = Utils.getResultFromJson(s, UserAvatar.class);
-                                Log.i("main","UserAvatar的数据："+result);
+                                Log.i("main","在AddContactActivity中得到的UserAvatar数据："+result);
                                 if (result != null && result.isRetMsg()) {
                                     mtvNothing.setVisibility(View.GONE);
                                     UserAvatar userAvatar = (UserAvatar) result.getRetData();
