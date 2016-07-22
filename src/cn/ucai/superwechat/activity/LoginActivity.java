@@ -172,7 +172,7 @@ public class LoginActivity extends BaseActivity {
 		});
 	}
 
-	private void loginAppServer() {
+	public void loginAppServer() {
 		final OkHttpUtils2<String> utils2 = new OkHttpUtils2<String>();
 		utils2.setRequestUrl(I.REQUEST_LOGIN)
 				.addParam(I.User.USER_NAME,currentUsername)

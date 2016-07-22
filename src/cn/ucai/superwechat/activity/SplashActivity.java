@@ -63,15 +63,16 @@ public class SplashActivity extends BaseActivity {
 					UserAvatar user = dao.getUserAvatar(userName);
 					Log.e(TAG, "user=" + user);
 					Log.i("main", "闪屏中的UserAvatar数据：" + user);
-					if (user != null) {
+					if (user == null) {
+						reLoginAppServerAndInitData();
+
+					} else {
 						//设置全局变量的昵称，在闪屏中获得的用户信息
 //						SuperWeChatApplication.getInstance().setUserNick(user.getMUserNick());//转在登录界面去获取昵称了
-
-                        SuperWeChatApplication.getInstance().setUser(user);
-                        SuperWeChatApplication.currentUserNick = user.getMUserNick();
-                        new DownloadContactListTask(SplashActivity.this,userName).execute();
-
-                    }
+						SuperWeChatApplication.getInstance().setUser(user);
+						SuperWeChatApplication.currentUserNick = user.getMUserNick();
+						new DownloadContactListTask(SplashActivity.this, userName).execute();
+					}
 
 					long costTime = System.currentTimeMillis() - start;
 					//等待sleeptime时长
@@ -97,7 +98,18 @@ public class SplashActivity extends BaseActivity {
 		}).start();
 
 	}
-	
+
+	private void reLoginAppServerAndInitData() {
+		LoginActivity loginActivity = new LoginActivity();
+		loginActivity.loginAppServer();
+		String userName1 = SuperWeChatApplication.getInstance().getUserName();
+		UserDao dao1 = new UserDao(SplashActivity.this);
+		UserAvatar userAvatar = dao1.getUserAvatar(userName1);
+		SuperWeChatApplication.getInstance().setUser(userAvatar);
+		SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
+		new DownloadContactListTask(SplashActivity.this, userName1).execute();
+	}
+
 	/**
 	 * 获取当前应用程序的版本号
 	 */
