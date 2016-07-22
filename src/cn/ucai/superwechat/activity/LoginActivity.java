@@ -185,11 +185,16 @@ public class LoginActivity extends BaseActivity {
 						Result result = Utils.getResultFromJson(s, UserAvatar.class);
                         if (result != null && result.isRetMsg()) {
                             UserAvatar user = (UserAvatar) result.getRetData();
-//							SuperWeChatApplication.getInstance().setUserNick(user.getMUserNick());
-							SuperWeChatApplication.currentUserNick = user.getMUserNick();
-							Log.i("main", "得到的UserAvatar数据" + user.toString());
+							Log.i("main", "在登录界面登录MySQL得到的UserAvatar数据" + user.toString());
 							if (user != null) {
+								SuperWeChatApplication.getInstance().setUserNick(user.getMUserNick());
+								//设置昵称到全局变量
+								SuperWeChatApplication.currentUserNick = user.getMUserNick();
+								//设置用户信息到全局变量
+								SuperWeChatApplication.getInstance().setUser(user);
+								//保存到数据库
                                 saveDataToDB(user);
+
                                 loginEMSuccess(user);
                             }
 

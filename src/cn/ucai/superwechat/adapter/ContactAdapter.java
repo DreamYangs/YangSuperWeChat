@@ -89,7 +89,7 @@ public class ContactAdapter extends ArrayAdapter<User>  implements SectionIndexe
 		}
 		//设置nick，demo里不涉及到完整user，用username代替nick显示
 		String username = user.getUsername();
-		Log.i("main", "设置头像的user" + username);
+		Log.i("main", "设置通讯录界面用户头像的userName:" + username);
 		String header = user.getHeader();
 		if (position == 0 || header != null && !header.equals(getItem(position - 1).getHeader())) {
 			if (TextUtils.isEmpty(header)) {

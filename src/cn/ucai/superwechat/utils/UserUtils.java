@@ -130,22 +130,35 @@ public class UserUtils {
         }
     }
     /**
-	 * 设置用户昵称
+	 * 设置用户好友昵称
 	 */
 	public static void setAppUserNick(String username,TextView textView){
 		UserAvatar user = getAppUserInfo(username);
+        setAppUserNick(user,textView);
+	}
+    /**
+     * 设置用户昵称
+     */
+    public static void setAppUserNick(UserAvatar user,TextView textView){
         Log.i("main", "设置界面显示的账户昵称：" + user.getMUserNick());
         if(user != null){
-			if (user.getMUserNick() != null) {
-				textView.setText(user.getMUserNick());
-			} else {
-				textView.setText(username);
+            if (user.getMUserNick() != null) {
+                textView.setText(user.getMUserNick());
+            } else {
+                textView.setText(user.getMUserName());
 
-			}
-		}else{
-			textView.setText(username);
-		}
-	}
+            }
+        }else{
+            textView.setText(user.getMUserName());
+        }
+//        if (userAvatar != null) {
+//            if (userAvatar.getMUserNick() != null) {
+//                textView.setText(userAvatar.getMUserNick());
+//            } else {
+//                textView.setText(userAvatar.getMUserName());
+//            }
+//        }
+    }
 	/**
 	 * 根据username获取相应userAvatar
 	 * @param username

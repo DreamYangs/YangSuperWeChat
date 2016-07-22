@@ -35,14 +35,16 @@ public class DownloadContactListTask {
                 .execute(new OkHttpUtils2.OnCompleteListener<String>() {
                     @Override
                     public void onSuccess(String s) {
-                        Log.e(TAG, "s=" + s);
+                        Log.i("main", "下载好友信息得到的返回结果：" + s);
                         Result result1 = Utils.getListResultFromJson(s, UserAvatar.class);
                         List<UserAvatar> list = (List<UserAvatar>) result1.getRetData();
                         if (list != null && list.size()>0) {
                             SuperWeChatApplication.getInstance().setUserList(list);
                             context.sendStickyBroadcast(new Intent("update_contact_list"));
                             Map<String, UserAvatar> userMap = SuperWeChatApplication.getInstance().getUserMap();
+
                             for (UserAvatar u:list) {
+                                Log.i("main","下载的好友信息："+ u);
                                 userMap.put(u.getMUserName(), u);
                             }
                         }
