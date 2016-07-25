@@ -35,7 +35,7 @@ public class DownloadContactListTask {
                 .execute(new OkHttpUtils2.OnCompleteListener<String>() {
                     @Override
                     public void onSuccess(String s) {
-                        Log.i("main", "下载好友信息得到的返回结果：" + s);
+                        Log.i("main", "在DownloadContactListTask下载好友信息得到的返回结果：" + s);
                         Result result1 = Utils.getListResultFromJson(s, UserAvatar.class);
                         List<UserAvatar> list = (List<UserAvatar>) result1.getRetData();
                         if (list != null && list.size()>0) {

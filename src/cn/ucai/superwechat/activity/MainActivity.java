@@ -583,12 +583,8 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		public void onContactDeleted(final List<String> usernameList) {
 			// 被删除
 			Log.i("main", ".onContactDeleted.usernameList:" + usernameList);
-			Map<String, User> localUsers = ((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList();
-			List<String> toDelUserName = new ArrayList<String>();
 			for ( final String username : usernameList) {
 				Log.i("main", "在删除.onContactDeleted中的username:" + username);
-				localUsers.remove(username);
-				toDelUserName.add(username);
 				String currentUserName = SuperWeChatApplication.getInstance().getUserName();
 				final OkHttpUtils2<Result> utils = new OkHttpUtils2<Result>();
 				utils.setRequestUrl(I.REQUEST_DELETE_CONTACT)
@@ -598,22 +594,25 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 						.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
 							@Override
 							public void onSuccess(Result result) {
-								Map<String,UserAvatar> userMap = SuperWeChatApplication.getInstance().getUserMap();
-								List<UserAvatar> userList = SuperWeChatApplication.getInstance().getUserList();
-								UserAvatar user = userMap.get(username);
-								userList.remove(user);
-								userMap.remove(username);
-								sendStickyBroadcast(new Intent("update_contact_list"));
+								if (result.isRetMsg()) {
+									((DemoHXSDKHelper)HXSDKHelper.getInstance()).getContactList().remove(username);
+									UserAvatar user =  SuperWeChatApplication.getInstance().getUserMap().get(username);
+									SuperWeChatApplication.getInstance().getUserList().remove(user);
+									SuperWeChatApplication.getInstance().getUserMap().remove(username);
+
+									userDao.deleteContact(username);
+									inviteMessgeDao.deleteMessage(username);
+									sendStickyBroadcast(new Intent("update_contact_list"));
+								}
+
 							}
 
 							@Override
 							public void onError(String error) {
-
+								Log.i("mian", "这是删除联系人的错误：" + error);
 							}
 						});
 
-				userDao.deleteContact(username);
-				inviteMessgeDao.deleteMessage(username);
 			}
 			runOnUiThread(new Runnable() {
 				public void run() {
