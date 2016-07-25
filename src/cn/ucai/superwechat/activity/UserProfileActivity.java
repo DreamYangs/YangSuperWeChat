@@ -33,6 +33,7 @@ import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.bean.UserAvatar;
 import cn.ucai.superwechat.data.OkHttpUtils2;
+import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.domain.User;
 import cn.ucai.superwechat.utils.I;
 import cn.ucai.superwechat.utils.UserUtils;
@@ -111,6 +112,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 			break;
 		case R.id.rl_nickname:
 			final EditText editText = new EditText(this);
+			editText.setText(SuperWeChatApplication.getInstance().getUser().getMUserName());
 			new AlertDialog.Builder(this).setTitle(R.string.setting_nickname).setIcon(android.R.drawable.ic_dialog_info).setView(editText)
 					.setPositiveButton(R.string.dl_ok, new DialogInterface.OnClickListener() {
 
@@ -144,6 +146,11 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 						if (result != null && result.isRetMsg()) {
 							UserAvatar userAvatar = (UserAvatar) result.getRetData();
 							if (userAvatar != null) {
+								SuperWeChatApplication.getInstance().setUser(userAvatar);
+								SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
+								UserDao dao = new UserDao(UserProfileActivity.this);
+								dao.updateUserNick(userAvatar);
+
 								updateRemoteNick(nickString);
 							} else {
 								Toast.makeText(UserProfileActivity.this,getString(R.string.toast_updatenick_fail),Toast.LENGTH_LONG).show();
