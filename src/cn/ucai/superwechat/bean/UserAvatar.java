@@ -109,6 +109,22 @@ public class UserAvatar implements Serializable {
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		UserAvatar that = (UserAvatar) o;
+
+		return muserName != null ? muserName.equals(that.muserName) : that.muserName == null;
+
+	}
+
+	@Override
+	public int hashCode() {
+		return muserName != null ? muserName.hashCode() : 0;
+	}
+
+	@Override
 	public String toString() {
 		return "UserAvatar [muserName=" + muserName + ", muserNick=" + muserNick + ", mavatarId=" + mavatarId
 				+ ", mavatarPath=" + mavatarPath + ", mavatarType=" + mavatarType + ", mavatarLastUpdateTime="
