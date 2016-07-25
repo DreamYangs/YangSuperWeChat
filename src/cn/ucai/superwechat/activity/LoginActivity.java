@@ -210,7 +210,7 @@ public class LoginActivity extends BaseActivity {
 					public void onError(String error) {
 						pd.dismiss();
 						DemoHXSDKHelper.getInstance().logout(true,null);
-						Toast.makeText(getApplicationContext(), R.string.login_failure_failed, Toast.LENGTH_LONG).show();
+						Toast.makeText(getApplicationContext(), R.string.Login_failed, Toast.LENGTH_LONG).show();
 					}
 				});
 	}

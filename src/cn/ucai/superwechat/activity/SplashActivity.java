@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,9 +16,14 @@ import com.easemob.chat.EMGroupManager;
 import cn.ucai.superwechat.DemoHXSDKHelper;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatApplication;
+import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.bean.UserAvatar;
+import cn.ucai.superwechat.data.OkHttpUtils2;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.task.DownloadContactListTask;
+import cn.ucai.superwechat.utils.I;
+import cn.ucai.superwechat.utils.UserUtils;
+import cn.ucai.superwechat.utils.Utils;
 
 /**
  * 开屏页
@@ -29,6 +35,7 @@ public class SplashActivity extends BaseActivity {
 	private TextView versionText;
 	
 	private static final int sleepTime = 2000;
+	String splashUserName;
 	@Override
 	protected void onCreate(Bundle arg0) {
 		setContentView(R.layout.activity_splash);
@@ -56,7 +63,8 @@ public class SplashActivity extends BaseActivity {
 					long start = System.currentTimeMillis();
 					EMGroupManager.getInstance().loadAllGroups();
 					EMChatManager.getInstance().loadAllConversations();
-					Log.i("main", "currentuser:" + SuperWeChatApplication.getInstance().getUserName());
+					splashUserName = SuperWeChatApplication.getInstance().getUserName();
+					Log.i("main", "currentuser:" + splashUserName);
 					Log.i("main", "currentuser:" + SuperWeChatApplication.getInstance().getUser());
 					String userName = SuperWeChatApplication.getInstance().getUserName();
 					UserDao dao = new UserDao(SplashActivity.this);
@@ -64,7 +72,7 @@ public class SplashActivity extends BaseActivity {
 					Log.e(TAG, "user=" + user);
 					Log.i("main", "闪屏中的UserAvatar数据：" + user);
 					if (user == null) {
-						reLoginAppServerAndInitData();
+						reInitData(splashUserName);
 
 					} else {
 						//设置全局变量的昵称，在闪屏中获得的用户信息
@@ -99,15 +107,39 @@ public class SplashActivity extends BaseActivity {
 
 	}
 
-	private void reLoginAppServerAndInitData() {
-		LoginActivity loginActivity = new LoginActivity();
+	private void reInitData(final String splashUserName ) {
+		//不能再线程中在创建线程。
+		/*LoginActivity loginActivity = new LoginActivity();
 		loginActivity.loginAppServer();
 		String userName1 = SuperWeChatApplication.getInstance().getUserName();
 		UserDao dao1 = new UserDao(SplashActivity.this);
 		UserAvatar userAvatar = dao1.getUserAvatar(userName1);
 		SuperWeChatApplication.getInstance().setUser(userAvatar);
 		SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
-		new DownloadContactListTask(SplashActivity.this, userName1).execute();
+		new DownloadContactListTask(SplashActivity.this, userName1).execute();*/
+		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+		utils.setRequestUrl(I.REQUEST_FIND_USER)
+				.addParam(I.User.USER_NAME,splashUserName)
+				.targetClass(String.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+					@Override
+					public void onSuccess(String s) {
+						Log.i("main", "在闪屏中根据用户名查找用户结果：" + s);
+						Result result = Utils.getResultFromJson(s, UserAvatar.class);
+						Log.i("main","在闪屏再次下载中得到的UserAvatar数据："+result);
+						if (result != null && result.isRetMsg()) {
+							UserAvatar userAvatar = (UserAvatar) result.getRetData();
+							SuperWeChatApplication.getInstance().setUser(userAvatar);
+							SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
+							new DownloadContactListTask(SplashActivity.this,splashUserName).execute();
+						}
+					}
+
+					@Override
+					public void onError(String error) {
+						Log.i("main", "查询错误信息：" + error);
+					}
+				});
 	}
 
 	/**
