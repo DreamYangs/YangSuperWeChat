@@ -1,6 +1,7 @@
 package cn.ucai.superwechat.activity;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -35,6 +36,7 @@ import cn.ucai.superwechat.bean.UserAvatar;
 import cn.ucai.superwechat.data.OkHttpUtils2;
 import cn.ucai.superwechat.db.UserDao;
 import cn.ucai.superwechat.domain.User;
+import cn.ucai.superwechat.listener.OnSetAvatarListener;
 import cn.ucai.superwechat.utils.I;
 import cn.ucai.superwechat.utils.UserUtils;
 import cn.ucai.superwechat.utils.Utils;
@@ -52,6 +54,8 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 	private TextView tvUsername;
 	private ProgressDialog dialog;
 	private RelativeLayout rlNickName;
+
+	private OnSetAvatarListener mOnSetAvatarListener;
 	
 	
 	
@@ -76,6 +80,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		Intent intent = getIntent();
 		String username = intent.getStringExtra("username");
 		boolean enableUpdate = intent.getBooleanExtra("setting", false);
+		Log.i("main", "在UserProfileActivity中的enableUpdate值：" + enableUpdate);
 		if (enableUpdate) {
 			headPhotoUpdate.setVisibility(View.VISIBLE);
 			iconRightArrow.setVisibility(View.VISIBLE);
@@ -108,7 +113,9 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.user_head_avatar:
-			uploadHeadPhoto();
+//			uploadHeadPhoto();
+			mOnSetAvatarListener = new OnSetAvatarListener(UserProfileActivity.this,
+					R.id.layout_upload_avatar,SuperWeChatApplication.getInstance().getUserName(), I.AVATAR_TYPE_USER_PATH);
 			break;
 		case R.id.rl_nickname:
 			final EditText editText = new EditText(this);
@@ -133,6 +140,11 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 
 	}
 
+	private String getAvatarName() {
+		return String.valueOf(System.currentTimeMillis());
+	}
+
+
 	private void updateAppNick( final String nickString ) {
 		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
 		utils.setRequestUrl(I.REQUEST_UPDATE_USER_NICK)
@@ -153,7 +165,8 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 
 								updateRemoteNick(nickString);
 							} else {
-								Toast.makeText(UserProfileActivity.this,getString(R.string.toast_updatenick_fail),Toast.LENGTH_LONG).show();
+								Toast.makeText(UserProfileActivity.this,getString(R.string.toast_updatenick_fail),
+										Toast.LENGTH_LONG).show();
 								dialog.dismiss();
 							}
 						}
@@ -211,7 +224,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 							break;
 						default:
 							break;
-						}
+					}
 					}
 				});
 		builder.create().show();
@@ -254,6 +267,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Log.i("main", "选择头像的请求码：" + requestCode);
 		switch (requestCode) {
 		case REQUESTCODE_PICK:
 			if (data == null || data.getData() == null) {
@@ -270,6 +284,37 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 			break;
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode != RESULT_OK) {
+			return;
+		}
+		mOnSetAvatarListener.setAvatar(requestCode,data,headAvatar);
+		if (requestCode == OnSetAvatarListener.REQUEST_CROP_PHOTO) {
+//			Log.i("main", "请求码：是");
+			uploadUserAvatar();
+		}
+	}
+
+	private void uploadUserAvatar() {
+		File file =new File(OnSetAvatarListener.getAvatarPath(UserProfileActivity.this,
+				I.AVATAR_TYPE_USER_PATH),SuperWeChatApplication.getInstance().getUserName()+I.AVATAR_SUFFIX_JPG);
+		String userName = SuperWeChatApplication.getInstance().getUserName();
+		final OkHttpUtils2<Result> utils = new OkHttpUtils2<Result>();
+		utils.setRequestUrl(I.REQUEST_UPLOAD_AVATAR)
+				.addParam(I.NAME_OR_HXID,userName)
+				.addParam(I.AVATAR_TYPE,I.AVATAR_TYPE_USER_PATH)
+				.targetClass(Result.class)
+				.addFile(file)
+				.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
+					@Override
+					public void onSuccess(Result result) {
+						Toast.makeText(UserProfileActivity.this,"上传头像成功",Toast.LENGTH_LONG).show();
+					}
+
+					@Override
+					public void onError(String error) {
+						Toast.makeText(UserProfileActivity.this,"上传头像失败",Toast.LENGTH_LONG).show();
+					}
+				});
 	}
 
 	public void startPhotoZoom(Uri uri) {

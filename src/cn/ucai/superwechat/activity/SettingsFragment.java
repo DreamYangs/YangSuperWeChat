@@ -343,7 +343,8 @@ public class SettingsFragment extends Fragment implements OnClickListener {
 		case R.id.ll_user_profile:
             String userName = SplashActivity.getUserName();
             Log.i("main", "在设置Fragment中获取的userName：" + userName);
-            startActivity(new Intent(getActivity(), UserProfileActivity.class).putExtra("username", userName));
+            startActivity(new Intent(getActivity(), UserProfileActivity.class)
+					.putExtra("setting", true).putExtra("username",userName));
 			break;
 		default:
 			break;
