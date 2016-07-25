@@ -30,8 +30,14 @@ import cn.ucai.superwechat.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMChatManager;
 import cn.ucai.superwechat.DemoHXSDKHelper;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.bean.Result;
+import cn.ucai.superwechat.bean.UserAvatar;
+import cn.ucai.superwechat.data.OkHttpUtils2;
 import cn.ucai.superwechat.domain.User;
+import cn.ucai.superwechat.utils.I;
 import cn.ucai.superwechat.utils.UserUtils;
+import cn.ucai.superwechat.utils.Utils;
+
 import com.squareup.picasso.Picasso;
 
 public class UserProfileActivity extends BaseActivity implements OnClickListener{
@@ -115,7 +121,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 								Toast.makeText(UserProfileActivity.this, getString(R.string.toast_nick_not_isnull), Toast.LENGTH_SHORT).show();
 								return;
 							}
-							updateRemoteNick(nickString);
+							updateAppNick(nickString);
 						}
 					}).setNegativeButton(R.string.dl_cancel, null).show();
 			break;
@@ -124,7 +130,36 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		}
 
 	}
-	
+
+	private void updateAppNick( final String nickString ) {
+		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+		utils.setRequestUrl(I.REQUEST_UPDATE_USER_NICK)
+				.addParam(I.User.USER_NAME,SuperWeChatApplication.getInstance().getUserName())
+				.addParam(I.User.NICK,nickString)
+				.targetClass(String.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+					@Override
+					public void onSuccess(String s) {
+						Result result = Utils.getResultFromJson(s, UserAvatar.class);
+						if (result != null && result.isRetMsg()) {
+							UserAvatar userAvatar = (UserAvatar) result.getRetData();
+							if (userAvatar != null) {
+								updateRemoteNick(nickString);
+							} else {
+								Toast.makeText(UserProfileActivity.this,getString(R.string.toast_updatenick_fail),Toast.LENGTH_LONG).show();
+								dialog.dismiss();
+							}
+						}
+					}
+
+					@Override
+					public void onError(String error) {
+						Toast.makeText(UserProfileActivity.this,getString(R.string.toast_updatenick_fail),Toast.LENGTH_LONG).show();
+						dialog.dismiss();
+					}
+				});
+	}
+
 	public void asyncFetchUserInfo(String username){
 		((DemoHXSDKHelper) HXSDKHelper.getInstance()).getUserProfileManager().asyncGetUserInfo(username, new EMValueCallBack<User>() {
 			
