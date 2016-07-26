@@ -13,6 +13,7 @@
  */
 package cn.ucai.superwechat.activity;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -35,6 +37,10 @@ import com.easemob.EMCallBack;
 import cn.ucai.superwechat.applib.controller.HXSDKHelper;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
 import cn.ucai.superwechat.Constant;
 import cn.ucai.superwechat.SuperWeChatApplication;
 import cn.ucai.superwechat.DemoHXSDKHelper;
@@ -47,6 +53,7 @@ import cn.ucai.superwechat.domain.User;
 import cn.ucai.superwechat.task.DownloadContactListTask;
 import cn.ucai.superwechat.utils.CommonUtils;
 import cn.ucai.superwechat.utils.I;
+import cn.ucai.superwechat.utils.UserUtils;
 import cn.ucai.superwechat.utils.Utils;
 
 /**
@@ -187,6 +194,7 @@ public class LoginActivity extends BaseActivity {
                             UserAvatar user = (UserAvatar) result.getRetData();
 							Log.i("main", "在登录界面登录MySQL得到的UserAvatar数据" + user.toString());
 							if (user != null) {
+
 								SuperWeChatApplication.getInstance().setUserNick(user.getMUserNick());
 								//设置昵称到全局变量
 								SuperWeChatApplication.currentUserNick = user.getMUserNick();
@@ -194,6 +202,8 @@ public class LoginActivity extends BaseActivity {
 								SuperWeChatApplication.getInstance().setUser(user);
 								//保存到数据库
                                 saveDataToDB(user);
+								//下载头像。
+								downloadUserAvatar();
 
                                 loginEMSuccess(user);
                             }
@@ -215,7 +225,36 @@ public class LoginActivity extends BaseActivity {
 				});
 	}
 
-    private void saveDataToDB(UserAvatar user) {
+	private void downloadUserAvatar() {
+		final OkHttpUtils2<Message> utils = new OkHttpUtils2<Message>();
+		utils.url(UserUtils.getUserAvatarPath(currentUsername))
+				.targetClass(Message.class)
+				.doInBackground(new Callback() {
+					@Override
+					public void onFailure(Request request, IOException e) {
+
+					}
+
+					@Override
+					public void onResponse(Response response) throws IOException {
+						byte[] bytes = response.body().bytes();
+						final String avatarUrl = ((DemoHXSDKHelper) HXSDKHelper.getInstance()).getUserProfileManager().uploadUserAvatar(bytes);
+
+					}
+				}).execute(new OkHttpUtils2.OnCompleteListener<Message>() {
+			@Override
+			public void onSuccess(Message result) {
+
+			}
+
+			@Override
+			public void onError(String error) {
+
+			}
+		});
+	}
+
+	private void saveDataToDB(UserAvatar user) {
         if (user != null) {
             UserDao dao = new UserDao(LoginActivity.this);
             dao.saveUserAvatar(user);

@@ -55,14 +55,14 @@ public class UserUtils {
 		String path = "";
 		if (path != null && username != null) {
 			path = getUserAvatarPath(username);
-			Log.i("main", "sql语句:" + path);
+//			Log.i("main", "sql语句:" + path);
 			Picasso.with(context).load(path).placeholder(R.drawable.default_avatar).into(imageView);
 		} else {
 			Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
 		}
 	}
 
-	private static String getUserAvatarPath(String userName) {
+	public static String getUserAvatarPath(String userName) {
 		StringBuilder path = new StringBuilder(I.SERVER_URL);
 		path.append(I.QUESTION)
 				.append(I.KEY_REQUEST)

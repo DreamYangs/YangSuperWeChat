@@ -290,6 +290,8 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 		mOnSetAvatarListener.setAvatar(requestCode,data,headAvatar);
 		if (requestCode == OnSetAvatarListener.REQUEST_CROP_PHOTO) {
 //			Log.i("main", "请求码：是");
+			dialog = ProgressDialog.show(this,getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
+			dialog.show();
 			uploadUserAvatar();
 		}
 	}
@@ -307,11 +309,13 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 				.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
 					@Override
 					public void onSuccess(Result result) {
+						dialog.dismiss();
 						Toast.makeText(UserProfileActivity.this,"上传头像成功",Toast.LENGTH_LONG).show();
 					}
 
 					@Override
 					public void onError(String error) {
+						dialog.dismiss();
 						Toast.makeText(UserProfileActivity.this,"上传头像失败",Toast.LENGTH_LONG).show();
 					}
 				});
