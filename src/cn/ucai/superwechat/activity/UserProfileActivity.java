@@ -99,7 +99,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 			Log.i("main", "这是显示个人资料2");
 			tvUsername.setText(EMChatManager.getInstance().getCurrentUser());
 			UserUtils.setAppUserNick(username, tvNickName,0);
-			UserUtils.setAppUserAvatar(this,username, headAvatar);
+			UserUtils.setCurrentUserAvatar(this, headAvatar);
 		} else {
 			Log.i("main", "这是显示个人资料3");
 			tvUsername.setText(username);
@@ -292,11 +292,11 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 //			Log.i("main", "请求码：是");
 			dialog = ProgressDialog.show(this,getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
 			dialog.show();
-			uploadUserAvatar();
+			uploadUserAvatar(data);
 		}
 	}
 
-	private void uploadUserAvatar() {
+	private void uploadUserAvatar(final Intent data) {
 		File file =new File(OnSetAvatarListener.getAvatarPath(UserProfileActivity.this,
 				I.AVATAR_TYPE_USER_PATH),SuperWeChatApplication.getInstance().getUserName()+I.AVATAR_SUFFIX_JPG);
 		String userName = SuperWeChatApplication.getInstance().getUserName();
@@ -311,6 +311,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 					public void onSuccess(Result result) {
 						dialog.dismiss();
 						Toast.makeText(UserProfileActivity.this,"上传头像成功",Toast.LENGTH_LONG).show();
+						setPicToView(data);
 					}
 
 					@Override
@@ -351,7 +352,7 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 	}
 	
 	private void uploadUserAvatar(final byte[] data) {
-		dialog = ProgressDialog.show(this, getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
+//		dialog = ProgressDialog.show(this, getString(R.string.dl_update_photo), getString(R.string.dl_waiting));
 		new Thread(new Runnable() {
 
 			@Override
