@@ -173,10 +173,21 @@ public class NewGroupActivity extends BaseActivity {
 
 	private void creteAppGroup(final String groupId, String groupName, String desc, final String[] members) {
 		Log.i("main", "在里面");
-		boolean isPublic = checkBox.isChecked();
-		boolean invites = !isPublic;
+		int isPublic;
+		int invites;
+		if (checkBox.isChecked()) {
+			isPublic = 1;
+		} else {
+			isPublic =0;
+		}
+		if (isPublic == 1) {
+			invites = 0;
+		} else {
+			invites = 1;
+		}
+
 		File file = new File(OnSetAvatarListener.getAvatarPath(NewGroupActivity.this,
-				I.AVATAR_TYPE_GROUP_PATH), groupId+I.AVATAR_SUFFIX_JPG);
+				I.AVATAR_TYPE_GROUP_PATH), groupNameEditText.getText().toString()+I.AVATAR_SUFFIX_JPG);
 		String own = SuperWeChatApplication.getInstance().getUserName();
 		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
 		utils.setRequestUrl(I.REQUEST_CREATE_GROUP)
@@ -219,16 +230,29 @@ public class NewGroupActivity extends BaseActivity {
 
 	}
 
-//	private void addGroupMembers(String hxId, String[] members) {
-//		String memberArr = "";
-//		for (String m : members) {
-//			memberArr+=m + ",";
-//		}
-//		memberArr = memberArr.substring(0, memberArr.length() - 1);
-//		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
-//		utils.setRequestUrl(I.REQUEST_ADD_GROUP_MEMBER)
-//				.addParam()
-//	}
+	private void addGroupMembers(String hxId, String[] members) {
+		String memberArr = "";
+		for (String m : members) {
+			memberArr+=m + ",";
+		}
+		memberArr = memberArr.substring(0, memberArr.length() - 1);
+		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+		utils.setRequestUrl(I.REQUEST_ADD_GROUP_MEMBERS)
+				.addParam(I.Member.USER_NAME, memberArr)
+				.addParam(I.Member.GROUP_HX_ID, hxId)
+				.targetClass(String.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+					@Override
+					public void onSuccess(String result) {
+
+					}
+
+					@Override
+					public void onError(String error) {
+
+					}
+				});
+	}
 
 	public void back(View view) {
 		finish();
