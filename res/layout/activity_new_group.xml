@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eee"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:id="@+id/layout_group">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -71,6 +72,32 @@
         android:paddingLeft="5dp"
         android:paddingTop="5dp"
         android:textSize="18sp" />
+    <LinearLayout
+        android:id="@+id/layout_new_group_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_new_group_update"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hint="上传群头像！！"
+            android:textColor="#000"
+
+            />
+        <ImageView
+            android:id="@+id/iv_new_group_avatar"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/group_icon"
+            android:layout_height="wrap_content"
+
+            />
+
+    </LinearLayout>
     
     
     <LinearLayout 
