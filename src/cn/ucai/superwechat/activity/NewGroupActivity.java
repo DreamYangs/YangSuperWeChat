@@ -150,7 +150,7 @@ public class NewGroupActivity extends BaseActivity {
                         group = EMGroupManager.getInstance().createPrivateGroup(groupName, desc, members, memberCheckbox.isChecked(),200);
                     }
 					creteAppGroup(group.getGroupId(),groupName,desc,members);
-					Log.i("main", "在外面");
+//					Log.i("main", "在外面");
 					runOnUiThread(new Runnable() {
                         public void run() {
                             progressDialog.dismiss();
@@ -172,7 +172,7 @@ public class NewGroupActivity extends BaseActivity {
 	}
 
 	private void creteAppGroup(final String groupId, String groupName, String desc, final String[] members) {
-		Log.i("main", "在里面");
+//		Log.i("main", "在里面");
 		int isPublic;
 		int invites;
 		if (checkBox.isChecked()) {
@@ -205,9 +205,9 @@ public class NewGroupActivity extends BaseActivity {
 						Result result = Utils.getResultFromJson(s, GroupAvatar.class);
 						GroupAvatar groupAvatar = (GroupAvatar) result.getRetData();
 						if (result != null && result.isRetMsg()) {
-							Log.i("main", "成功了：");
+//							Log.i("main", "成功了：");
 							if (members != null && members.length > 0) {
-//								addGroupMembers(groupId,members);
+								addGroupMembers(groupId,members);
 							} else {
 								runOnUiThread(new Runnable() {
 									public void run() {
@@ -244,7 +244,13 @@ public class NewGroupActivity extends BaseActivity {
 				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
 					@Override
 					public void onSuccess(String result) {
-
+						runOnUiThread(new Runnable() {
+							public void run() {
+								progressDialog.dismiss();
+								setResult(RESULT_OK);
+								finish();
+							}
+						});
 					}
 
 					@Override

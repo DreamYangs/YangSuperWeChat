@@ -52,13 +52,25 @@ public class UserUtils {
 	 * @param username
 	 */
 	public static void setAppUserAvatar(Context context, String username, ImageView imageView) {
-		String path = "";
+		String path = getUserAvatarPath(username);
 		if (path != null && username != null) {
-			path = getUserAvatarPath(username);
 //			Log.i("main", "sql语句:" + path);
 			Picasso.with(context).load(path).placeholder(R.drawable.default_avatar).into(imageView);
 		} else {
 			Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
+		}
+	}
+	/**
+	 * 设置群组头像
+	 * @param hxId
+	 */
+	public static void setAppGroupAvatar(Context context, String hxId, ImageView imageView) {
+		String path = getGroupAvatarPath(hxId);;
+		if (path != null && hxId != null) {
+//			Log.i("main", "sql语句:" + path);
+			Picasso.with(context).load(path).placeholder(R.drawable.group_icon).into(imageView);
+		} else {
+			Picasso.with(context).load(R.drawable.group_icon).into(imageView);
 		}
 	}
 
@@ -73,6 +85,22 @@ public class UserUtils {
 				.append(I.EQUAL).append(userName)
 				.append(I.AND)
 		.append(I.AVATAR_TYPE).append(I.EQUAL).append(I.AVATAR_TYPE_USER_PATH);
+
+		return path.toString();
+
+	}
+
+	public static String getGroupAvatarPath(String hxId) {
+		StringBuilder path = new StringBuilder(I.SERVER_URL);
+		path.append(I.QUESTION)
+				.append(I.KEY_REQUEST)
+				.append(I.EQUAL)
+				.append(I.REQUEST_DOWNLOAD_AVATAR)
+				.append(I.AND)
+				.append(I.NAME_OR_HXID)
+				.append(I.EQUAL).append(hxId)
+				.append(I.AND)
+				.append(I.AVATAR_TYPE).append(I.EQUAL).append(I.AVATAR_TYPE_GROUP_PATH);
 
 		return path.toString();
 
