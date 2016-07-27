@@ -135,6 +135,7 @@ public class SplashActivity extends BaseActivity {
 							SuperWeChatApplication.getInstance().setUser(userAvatar);
 							SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
 							new DownloadContactListTask(SplashActivity.this,splashUserName).execute();
+							new DownloadGroupListTask(SplashActivity.this, splashUserName).execute();
 						}
 					}
 

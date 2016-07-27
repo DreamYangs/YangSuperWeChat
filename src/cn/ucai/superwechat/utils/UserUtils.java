@@ -65,9 +65,10 @@ public class UserUtils {
 	 * @param hxId
 	 */
 	public static void setAppGroupAvatar(Context context, String hxId, ImageView imageView) {
-		String path = getGroupAvatarPath(hxId);;
+		String path = "";;
 		if (path != null && hxId != null) {
 //			Log.i("main", "sql语句:" + path);
+			path = getGroupAvatarPath(hxId);
 			Picasso.with(context).load(path).placeholder(R.drawable.group_icon).into(imageView);
 		} else {
 			Picasso.with(context).load(R.drawable.group_icon).into(imageView);
