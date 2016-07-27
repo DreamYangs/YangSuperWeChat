@@ -42,7 +42,7 @@ public class UserUtils {
 		MemberUserAvatar memberUser = null;
 		HashMap<String, MemberUserAvatar> memberMap
 				= SuperWeChatApplication.getInstance().getMembersMap().get(hxId);
-		if (memberMap != null && memberMap.size() < 0) {
+		if (memberMap == null || memberMap.size() < 0) {
 			return null;
 		} else {
 			memberUser = memberMap.get(userName);
@@ -85,6 +85,7 @@ public class UserUtils {
 		if (path != null && hxId != null) {
 //			Log.i("main", "sql语句:" + path);
 			path = getGroupAvatarPath(hxId);
+			Log.i("main", "在UserUtils里面的path：" + path);
 			Picasso.with(context).load(path).placeholder(R.drawable.group_icon).into(imageView);
 		} else {
 			Picasso.with(context).load(R.drawable.group_icon).into(imageView);

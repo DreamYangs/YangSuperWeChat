@@ -173,18 +173,9 @@ public class NewGroupActivity extends BaseActivity {
 
 	private void creteAppGroup(final String groupId, String groupName, String desc, final String[] members) {
 //		Log.i("main", "在里面");
-		int isPublic;
-		int invites;
-		if (checkBox.isChecked()) {
-			isPublic = 1;
-		} else {
-			isPublic =0;
-		}
-		if (isPublic == 1) {
-			invites = 0;
-		} else {
-			invites = 1;
-		}
+
+		boolean isPublic = checkBox.isChecked();
+		boolean invites = !isPublic;
 
 		File file = new File(OnSetAvatarListener.getAvatarPath(NewGroupActivity.this,
 				I.AVATAR_TYPE_GROUP_PATH), groupNameEditText.getText().toString()+I.AVATAR_SUFFIX_JPG);
@@ -239,7 +230,7 @@ public class NewGroupActivity extends BaseActivity {
 		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
 		utils.setRequestUrl(I.REQUEST_ADD_GROUP_MEMBERS)
 				.addParam(I.Member.USER_NAME, memberArr)
-				.addParam(I.Member.GROUP_HX_ID, hxId)
+				.addParam(I.Member.GROUP_HX_ID, hxId+",")
 				.targetClass(String.class)
 				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
 					@Override

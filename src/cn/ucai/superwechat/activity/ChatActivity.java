@@ -177,6 +177,9 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 	private int chatType;
 	private EMConversation conversation;
 	public static ChatActivity activityInstance = null;
+
+
+
 	// 给谁发送消息
 	private String toChatUsername;
 	private VoiceRecorder voiceRecorder;
@@ -523,7 +526,7 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
         }else{
             ((TextView) findViewById(R.id.name)).setText(toChatUsername);
         }
-		new DownloadGroupMemberListTask(getApplicationContext(), toChatUsername);
+		new DownloadGroupMemberListTask(getApplicationContext(), toChatUsername).execute();
 
 
 		// 监听当前会话的群聊解散被T事件

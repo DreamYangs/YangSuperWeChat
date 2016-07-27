@@ -584,6 +584,7 @@ public class MessageAdapter extends BaseAdapter{
 				intent.setClass(context, UserProfileActivity.class);
 				intent.putExtra("username", message.getFrom());
 				intent.putExtra("setting", true);
+				intent.putExtra("groupId", username);
 				context.startActivity(intent);
 			}
 		});
