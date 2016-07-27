@@ -230,7 +230,7 @@ public class NewGroupActivity extends BaseActivity {
 		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
 		utils.setRequestUrl(I.REQUEST_ADD_GROUP_MEMBERS)
 				.addParam(I.Member.USER_NAME, memberArr)
-				.addParam(I.Member.GROUP_HX_ID, hxId+",")
+				.addParam(I.Member.GROUP_HX_ID, hxId)
 				.targetClass(String.class)
 				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
 					@Override
