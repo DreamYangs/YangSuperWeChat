@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import cn.ucai.superwechat.bean.GroupAvatar;
+import cn.ucai.superwechat.bean.MemberUserAvatar;
 import cn.ucai.superwechat.bean.UserAvatar;
 
 public class SuperWeChatApplication extends Application {
@@ -120,7 +121,6 @@ public class SuperWeChatApplication extends Application {
 	public UserAvatar getUser() {
 		return user;
 	}
-
 	public void setUser(UserAvatar user) {
 		this.user = user;
 	}
@@ -131,7 +131,6 @@ public class SuperWeChatApplication extends Application {
 	public List<UserAvatar> getUserList() {
 		return userList;
 	}
-
 	public void setUserList(List<UserAvatar> userList) {
 		this.userList = userList;
 	}
@@ -143,29 +142,37 @@ public class SuperWeChatApplication extends Application {
 	public Map<String, UserAvatar> getUserMap() {
 		return userMap;
 	}
-
 	public void setUserMap(Map<String, UserAvatar> userMap) {
 		this.userMap = userMap;
 	}
 
-    private String userNick;
 
+    private String userNick;
     public String getUserNick() {
         return userNick;
     }
-
     public void setUserNick(String userNick) {
         this.userNick = userNick;
     }
 
-
+	 //设置群组信息的全局变量
 	private List<GroupAvatar> groupList = new ArrayList<GroupAvatar>();
-
 	public List<GroupAvatar> getGroupList() {
 		return groupList;
 	}
-
 	public void setGroupList(List<GroupAvatar> groupList) {
 		this.groupList = groupList;
+	}
+
+
+	//设置群组成员的全局变量
+	private Map<String, HashMap<String, MemberUserAvatar>> membersMap
+			= new HashMap<String, HashMap<String, MemberUserAvatar>>();
+
+	public Map<String, HashMap<String, MemberUserAvatar>> getMembersMap() {
+		return membersMap;
+	}
+	public void setMembersMap(Map<String, HashMap<String, MemberUserAvatar>> membersMap) {
+		this.membersMap = membersMap;
 	}
 }
