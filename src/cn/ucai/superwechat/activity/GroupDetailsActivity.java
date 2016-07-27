@@ -24,6 +24,7 @@ import android.content.IntentFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -44,6 +45,8 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.SuperWeChatApplication;
+import cn.ucai.superwechat.bean.GroupAvatar;
 import cn.ucai.superwechat.data.OkHttpUtils2;
 import cn.ucai.superwechat.task.DownloadGroupMemberListTask;
 import cn.ucai.superwechat.utils.I;
@@ -368,6 +371,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				}
 			}
 		}).start();
+		deleteAppMembersFromGroup(SuperWeChatApplication.getInstance().getUserName(),true);
 	}
 
 	/**
@@ -694,6 +698,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 							}
 							EMLog.d("group", "remove user from group:" + username);
 							deleteMembersFromGroup(username);
+							deleteAppMembersFromGroup(username,false);
 						} else {
 							// 正常情况下点击user，可以进入用户详情或者聊天页面等等
 							// startActivity(new
@@ -703,6 +708,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 
 						}
 					}
+
 
 					/**
 					 * 删除群成员
@@ -766,10 +772,42 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			return convertView;
 		}
 
+
+
+
 		@Override
 		public int getCount() {
 			return super.getCount() + 2;
 		}
+	}
+
+	private void deleteAppMembersFromGroup(final String username, final boolean isExit) {
+		GroupAvatar groupAvatar = SuperWeChatApplication.getInstance().getGroupMap().get(groupId);
+		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+			utils.setRequestUrl(I.REQUEST_DELETE_GROUP_MEMBER)
+					.addParam(I.Member.GROUP_ID,String.valueOf(groupAvatar.getMGroupId()))
+					.addParam(I.Member.USER_NAME,username)
+					.targetClass(String.class)
+					.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+						@Override
+						public void onSuccess(String result) {
+							if (isExit) {
+								GroupAvatar group = SuperWeChatApplication.getInstance().getGroupMap().get(groupId);
+								SuperWeChatApplication.getInstance().getGroupList().remove(group);
+								SuperWeChatApplication.getInstance().getGroupMap().remove(groupId);
+							} else {
+								SuperWeChatApplication.getInstance().getMembersMap().get(groupId).remove(username);
+							}
+							Log.i("main", "在GroupDetailsActivity中删除数据库群成员成功");
+						}
+
+						@Override
+						public void onError(String error) {
+							Log.i("main", "在GroupDetailsActivity中删除数据库群成员的错误信息：" + error);
+						}
+					});
+
+
 	}
 
 	protected void updateGroup() {

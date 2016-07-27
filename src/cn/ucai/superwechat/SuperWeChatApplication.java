@@ -175,4 +175,15 @@ public class SuperWeChatApplication extends Application {
 	public void setMembersMap(Map<String, HashMap<String, MemberUserAvatar>> membersMap) {
 		this.membersMap = membersMap;
 	}
+
+
+
+	//设置全局的当前群组Map集合
+	private Map<String,GroupAvatar> groupMap = new HashMap<String, GroupAvatar>();
+	public Map<String, GroupAvatar> getGroupMap() {
+		return groupMap;
+	}
+	public void setGroupMap(Map<String, GroupAvatar> groupMap) {
+		this.groupMap = groupMap;
+	}
 }
