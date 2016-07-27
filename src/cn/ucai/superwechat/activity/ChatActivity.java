@@ -1480,6 +1480,9 @@ public class ChatActivity extends BaseActivity implements OnClickListener, EMEve
 		if(groupListener != null){
 		    EMGroupManager.getInstance().removeGroupChangeListener(groupListener);
 		}
+		if (mReceiverListener!=null) {
+			unregisterReceiver(mReceiverListener);
+		}
 	}
 
 	@Override
