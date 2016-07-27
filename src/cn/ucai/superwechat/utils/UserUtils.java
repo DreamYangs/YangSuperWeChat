@@ -11,9 +11,12 @@ import cn.ucai.superwechat.applib.controller.HXSDKHelper;
 import cn.ucai.superwechat.DemoHXSDKHelper;
 
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.bean.MemberUserAvatar;
 import cn.ucai.superwechat.bean.UserAvatar;
 import cn.ucai.superwechat.domain.User;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
 
 public class UserUtils {
     /**
@@ -34,8 +37,21 @@ public class UserUtils {
         }
         return user;
     }
-    
-    /**
+
+	public static MemberUserAvatar getAppMemberInfo(String hxId,String userName) {
+		MemberUserAvatar memberUser = null;
+		HashMap<String, MemberUserAvatar> memberMap
+				= SuperWeChatApplication.getInstance().getMembersMap().get(hxId);
+		if (memberMap != null && memberMap.size() < 0) {
+			return null;
+		} else {
+			memberUser = memberMap.get(userName);
+		}
+
+		return memberUser;
+	}
+
+	/**
      * 设置用户头像
      * @param username
      */
@@ -221,5 +237,13 @@ public class UserUtils {
 		}
 		((DemoHXSDKHelper) HXSDKHelper.getInstance()).saveContact(newUser);
 	}
-    
+
+	public static void setAppMemberNIck(String hxId, String userName, TextView textView) {
+		MemberUserAvatar memberUserInfo = getAppMemberInfo(hxId, userName);
+		if (memberUserInfo != null && memberUserInfo.getMUserNick() != null) {
+			textView.setText(memberUserInfo.getMUserNick());
+		} else {
+			textView.setText(userName);
+		}
+	}
 }

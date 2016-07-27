@@ -36,7 +36,7 @@ public class DownloadGroupListTask {
                 .execute(new OkHttpUtils2.OnCompleteListener<String>() {
                     @Override
                     public void onSuccess(String s) {
-                        Log.i("main", "在DownloadGroupListTask下载好友信息得到的返回结果：" + s);
+                        Log.i("main", "在DownloadGroupListTask下载群组信息得到的返回结果：" + s);
                         Result result1 = Utils.getListResultFromJson(s, GroupAvatar.class);
                         List<GroupAvatar> list = (List<GroupAvatar>) result1.getRetData();
                         if (list != null && list.size()>0) {
@@ -48,7 +48,7 @@ public class DownloadGroupListTask {
 
                     @Override
                     public void onError(String error) {
-
+                        Log.i("main", "在DownloadGroupListTask下载群组信息的错误信息：" + error);
                     }
                 });
     }
