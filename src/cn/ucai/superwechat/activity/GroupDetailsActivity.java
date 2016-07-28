@@ -47,10 +47,12 @@ import com.easemob.chat.EMGroupManager;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.SuperWeChatApplication;
 import cn.ucai.superwechat.bean.GroupAvatar;
+import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.data.OkHttpUtils2;
 import cn.ucai.superwechat.task.DownloadGroupMemberListTask;
 import cn.ucai.superwechat.utils.I;
 import cn.ucai.superwechat.utils.UserUtils;
+import cn.ucai.superwechat.utils.Utils;
 import cn.ucai.superwechat.widget.ExpandGridView;
 import com.easemob.exceptions.EaseMobException;
 import com.easemob.util.EMLog;
@@ -225,7 +227,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 			case REQUEST_CODE_EXIT_DELETE: // 解散群
 				progressDialog.setMessage(st3);
 				progressDialog.show();
-				deleteGrop();
+				deleteGroup();
 				break;
 			case REQUEST_CODE_CLEAR_ALL_HISTORY:
 				// 清空此群聊的聊天记录
@@ -379,7 +381,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	 * 
 	 * @param
 	 */
-	private void deleteGrop() {
+	private void deleteGroup() {
 		final String st5 = getResources().getString(R.string.Dissolve_group_chat_tofail);
 		new Thread(new Runnable() {
 			public void run() {
@@ -404,6 +406,26 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				}
 			}
 		}).start();
+		deleteAppGroup();
+	}
+
+	private void deleteAppGroup() {
+		GroupAvatar groupAvatar = SuperWeChatApplication.getInstance().getGroupMap().get(groupId);
+		final OkHttpUtils2<Result> utils = new OkHttpUtils2<Result>();
+		utils.setRequestUrl(I.REQUEST_DELETE_GROUP)
+				.addParam(I.Group.GROUP_ID,String.valueOf(groupAvatar.getMGroupId()))
+				.targetClass(Result.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<Result>() {
+					@Override
+					public void onSuccess(Result result) {
+						Log.i("main", "在解散群组时删除数据库得到的结果：" + result);
+					}
+
+					@Override
+					public void onError(String error) {
+						Log.i("main", "在解散群组时删除数据库的错误信息：" + error);
+					}
+				});
 	}
 
 	/**
@@ -790,15 +812,18 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 					.targetClass(String.class)
 					.execute(new OkHttpUtils2.OnCompleteListener<String>() {
 						@Override
-						public void onSuccess(String result) {
-							if (isExit) {
-								GroupAvatar group = SuperWeChatApplication.getInstance().getGroupMap().get(groupId);
-								SuperWeChatApplication.getInstance().getGroupList().remove(group);
-								SuperWeChatApplication.getInstance().getGroupMap().remove(groupId);
-							} else {
-								SuperWeChatApplication.getInstance().getMembersMap().get(groupId).remove(username);
+						public void onSuccess(String s) {
+							Result result = Utils.getResultFromJson(s, GroupAvatar.class);
+							if (result != null && result.isRetMsg()) {
+								if (isExit) {
+									GroupAvatar group = SuperWeChatApplication.getInstance().getGroupMap().get(groupId);
+									SuperWeChatApplication.getInstance().getGroupList().remove(group);
+									SuperWeChatApplication.getInstance().getGroupMap().remove(groupId);
+								} else {
+									SuperWeChatApplication.getInstance().getMembersMap().get(groupId).remove(username);
+								}
+								Log.i("main", "在GroupDetailsActivity中删除数据库群成员成功");
 							}
-							Log.i("main", "在GroupDetailsActivity中删除数据库群成员成功");
 						}
 
 						@Override
