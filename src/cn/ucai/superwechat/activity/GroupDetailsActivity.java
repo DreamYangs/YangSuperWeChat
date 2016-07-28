@@ -266,6 +266,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 							}
 						}
 					}).start();
+					Log.i("main", "在修改群名称外面：");
 					updateAppGroupName(returnData);
 				}
 				break;
@@ -303,6 +304,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	}
 
 	private void updateAppGroupName(String newGroupName) {
+		Log.i("main", "在修改群名称里面：");
 		GroupAvatar groupAvatar = SuperWeChatApplication.getInstance().getGroupMap().get(groupId);
 		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
 		utils.setRequestUrl(I.REQUEST_UPDATE_GROUP_NAME)
@@ -317,6 +319,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 							GroupAvatar newGroupAvatar = (GroupAvatar) result.getRetData();
 							SuperWeChatApplication.getInstance().getGroupMap().put(groupId, newGroupAvatar);
 							SuperWeChatApplication.getInstance().getGroupList().add(newGroupAvatar);
+							Log.i("main", "修改群名称成功：");
 						}
 					}
 

@@ -18,6 +18,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,8 @@ import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupInfo;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.superwechat.R;
+import cn.ucai.superwechat.utils.UserUtils;
+
 import com.easemob.exceptions.EaseMobException;
 
 public class GroupSimpleDetailActivity extends BaseActivity {
@@ -38,6 +41,8 @@ public class GroupSimpleDetailActivity extends BaseActivity {
 	private String groupid;
 	private ProgressBar progressBar;
 
+	private ImageView ivAvatar;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,6 +52,7 @@ public class GroupSimpleDetailActivity extends BaseActivity {
 		btn_add_group = (Button) findViewById(R.id.btn_add_to_group);
 		tv_introduction = (TextView) findViewById(R.id.tv_introduction);
 		progressBar = (ProgressBar) findViewById(R.id.loading);
+		ivAvatar = (ImageView) findViewById(R.id.avatar);
 
 		EMGroupInfo groupInfo = (EMGroupInfo) getIntent().getSerializableExtra("groupinfo");
 		String groupname = null;
@@ -85,7 +91,7 @@ public class GroupSimpleDetailActivity extends BaseActivity {
 					runOnUiThread(new Runnable() {
 						public void run() {
 							progressBar.setVisibility(View.INVISIBLE);
-							Toast.makeText(GroupSimpleDetailActivity.this, st1+e.getMessage(), 1).show();
+							Toast.makeText(GroupSimpleDetailActivity.this, st1+e.getMessage(), Toast.LENGTH_LONG).show();
 						}
 					});
 				}
@@ -120,9 +126,9 @@ public class GroupSimpleDetailActivity extends BaseActivity {
 						public void run() {
 							pd.dismiss();
 							if(group.isMembersOnly())
-								Toast.makeText(GroupSimpleDetailActivity.this, st3, 0).show();
+								Toast.makeText(GroupSimpleDetailActivity.this, st3, Toast.LENGTH_LONG).show();
 							else
-								Toast.makeText(GroupSimpleDetailActivity.this, st4, 0).show();
+								Toast.makeText(GroupSimpleDetailActivity.this, st4, Toast.LENGTH_LONG).show();
 							btn_add_group.setEnabled(false);
 						}
 					});
@@ -131,7 +137,7 @@ public class GroupSimpleDetailActivity extends BaseActivity {
 					runOnUiThread(new Runnable() {
 						public void run() {
 							pd.dismiss();
-							Toast.makeText(GroupSimpleDetailActivity.this, st5+e.getMessage(), 0).show();
+							Toast.makeText(GroupSimpleDetailActivity.this, st5+e.getMessage(), Toast.LENGTH_LONG).show();
 						}
 					});
 				}
@@ -147,6 +153,8 @@ public class GroupSimpleDetailActivity extends BaseActivity {
          tv_name.setText(group.getGroupName());
          tv_admin.setText(group.getOwner());
          tv_introduction.setText(group.getDescription());
+		 UserUtils.setAppGroupAvatar(GroupSimpleDetailActivity.this,group.getGroupId(),ivAvatar);
+
      }
 	
 	public void back(View view){
