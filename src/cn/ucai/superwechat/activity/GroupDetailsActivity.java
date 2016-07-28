@@ -266,6 +266,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 							}
 						}
 					}).start();
+					updateAppGroupName(returnData);
 				}
 				break;
 			case REQUEST_CODE_ADD_TO_BALCKLIST:
@@ -298,6 +299,32 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				break;
 			}
 		}
+
+	}
+
+	private void updateAppGroupName(String newGroupName) {
+		GroupAvatar groupAvatar = SuperWeChatApplication.getInstance().getGroupMap().get(groupId);
+		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+		utils.setRequestUrl(I.REQUEST_UPDATE_GROUP_NAME)
+				.addParam(I.Group.GROUP_ID,String.valueOf(groupAvatar.getMGroupId()))
+				.addParam(I.Group.NAME,newGroupName)
+				.targetClass(String.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+					@Override
+					public void onSuccess(String s) {
+						Result result = Utils.getResultFromJson(s, GroupAvatar.class);
+						if (result != null && result.isRetMsg()) {
+							GroupAvatar newGroupAvatar = (GroupAvatar) result.getRetData();
+							SuperWeChatApplication.getInstance().getGroupMap().put(groupId, newGroupAvatar);
+							SuperWeChatApplication.getInstance().getGroupList().add(newGroupAvatar);
+						}
+					}
+
+					@Override
+					public void onError(String error) {
+						Log.i("main", "在修改群名称的时候的错误信息：" + error);
+					}
+				});
 
 	}
 
