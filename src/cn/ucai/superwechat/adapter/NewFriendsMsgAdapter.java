@@ -35,12 +35,14 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.superwechat.R;
 import cn.ucai.superwechat.activity.NewFriendsMsgActivity;
+import cn.ucai.superwechat.bean.GroupAvatar;
 import cn.ucai.superwechat.bean.Result;
 import cn.ucai.superwechat.bean.UserAvatar;
 import cn.ucai.superwechat.data.OkHttpUtils2;
 import cn.ucai.superwechat.db.InviteMessgeDao;
 import cn.ucai.superwechat.domain.InviteMessage;
 import cn.ucai.superwechat.domain.InviteMessage.InviteMesageStatus;
+import cn.ucai.superwechat.task.DownloadGroupMemberListTask;
 import cn.ucai.superwechat.utils.I;
 import cn.ucai.superwechat.utils.UserUtils;
 import cn.ucai.superwechat.utils.Utils;
@@ -186,10 +188,12 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 			public void run() {
 				// 调用sdk的同意方法
 				try {
-					if(msg.getGroupId() == null) //同意好友请求
+					if(msg.getGroupId() == null) { //同意好友请求
 						EMChatManager.getInstance().acceptInvitation(msg.getFrom());
-					else //同意加群申请
-					    EMGroupManager.getInstance().acceptApplication(msg.getFrom(), msg.getGroupId());
+					}else {//同意加群申请
+						EMGroupManager.getInstance().acceptApplication(msg.getFrom(), msg.getGroupId());
+						addMemberToAppGroup(msg.getFrom(),msg.getGroupId());
+					}
 					((Activity) context).runOnUiThread(new Runnable() {
 
 						@Override
@@ -219,6 +223,29 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 				}
 			}
 		}).start();
+	}
+
+	private void addMemberToAppGroup(String userName, final String hxId) {
+		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
+		utils.setRequestUrl(I.REQUEST_ADD_GROUP_MEMBER)
+				.addParam(I.Member.USER_NAME,userName)
+				.addParam(I.Member.GROUP_HX_ID,hxId)
+				.targetClass(String.class)
+				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
+					@Override
+					public void onSuccess(String s) {
+						Result result = Utils.getResultFromJson(s, GroupAvatar.class);
+						if (result != null && result.isRetMsg()) {
+							Log.i("main", "这是在NewFriendsMsgAdapter里面同意添加群成员成功：" );
+							new DownloadGroupMemberListTask(context,hxId).execute();
+						}
+					}
+
+					@Override
+					public void onError(String error) {
+						Log.i("main", "这是在NewFriendsMsgAdapter里面同意添加群成员的错误信息：" + error);
+					}
+				});
 	}
 
 	private static class ViewHolder {
