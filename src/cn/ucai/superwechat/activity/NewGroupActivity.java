@@ -198,6 +198,8 @@ public class NewGroupActivity extends BaseActivity {
 						if (result != null && result.isRetMsg()) {
 //							Log.i("main", "成功了：");
 							if (members != null && members.length > 0) {
+								SuperWeChatApplication.getInstance().getGroupMap().put(groupAvatar.getMGroupHxid(), groupAvatar);
+								SuperWeChatApplication.getInstance().getGroupList().add(groupAvatar);
 								addGroupMembers(groupId,members);
 							} else {
 								runOnUiThread(new Runnable() {

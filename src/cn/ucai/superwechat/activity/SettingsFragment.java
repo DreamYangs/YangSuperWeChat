@@ -368,6 +368,7 @@ public class SettingsFragment extends Fragment implements OnClickListener {
 						SuperWeChatApplication.getInstance().getUserList().clear();
 						SuperWeChatApplication.getInstance().getGroupList().clear();
 						SuperWeChatApplication.getInstance().getUserMap().clear();
+						SuperWeChatApplication.getInstance().getGroupMap().clear();
 						pd.dismiss();
 						// 重新显示登陆页面
 						((MainActivity) getActivity()).finish();
