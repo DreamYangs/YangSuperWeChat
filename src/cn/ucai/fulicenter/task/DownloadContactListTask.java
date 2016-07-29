@@ -7,7 +7,7 @@ import android.util.Log;
 import java.util.List;
 import java.util.Map;
 
-import cn.ucai.fulicenter.SuperWeChatApplication;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.UserAvatar;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
@@ -39,9 +39,9 @@ public class DownloadContactListTask {
                         Result result1 = Utils.getListResultFromJson(s, UserAvatar.class);
                         List<UserAvatar> list = (List<UserAvatar>) result1.getRetData();
                         if (list != null && list.size()>0) {
-                            SuperWeChatApplication.getInstance().setUserList(list);
+                            FuLiCenterApplication.getInstance().setUserList(list);
                             context.sendStickyBroadcast(new Intent("update_contact_list"));
-                            Map<String, UserAvatar> userMap = SuperWeChatApplication.getInstance().getUserMap();
+                            Map<String, UserAvatar> userMap = FuLiCenterApplication.getInstance().getUserMap();
 
                             for (UserAvatar u:list) {
                                 Log.i("main","下载的好友信息："+ u);

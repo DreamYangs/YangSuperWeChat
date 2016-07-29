@@ -6,7 +6,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import cn.ucai.fulicenter.SuperWeChatApplication;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.applib.controller.HXSDKHelper;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
 
@@ -41,7 +41,7 @@ public class UserUtils {
 	public static MemberUserAvatar getAppMemberInfo(String hxId,String userName) {
 		MemberUserAvatar memberUser = null;
 		HashMap<String, MemberUserAvatar> memberMap
-				= SuperWeChatApplication.getInstance().getMembersMap().get(hxId);
+				= FuLiCenterApplication.getInstance().getMembersMap().get(hxId);
 		if (memberMap == null || memberMap.size() < 0) {
 			return null;
 		} else {
@@ -142,7 +142,7 @@ public class UserUtils {
 	 * 设置当前用户头像
 	 */
 	public static void setAppCurrentUserAvatar(Context context, ImageView imageView) {
-		String userName = SuperWeChatApplication.getInstance().getUserName();
+		String userName = FuLiCenterApplication.getInstance().getUserName();
 		Log.i("main", "在setAPPCurrentUserAvatar中通过SuperWeChatApplication.getInstance().getUserName();得到的userName：" + userName);
 		setAppUserAvatar(context,userName,imageView);
 	}
@@ -163,10 +163,10 @@ public class UserUtils {
      */
 
     public static void setAppUserNick(String userName,TextView textView,int requestCode) {
-//        String userNick = SuperWeChatApplication.getInstance().getUserNick();
+//        String userNick = FuLiCenterApplication.getInstance().getUserNick();
 //        Log.i("main", "在SuperWeChatApplication中获得的UserNick：" + userNick);
 
-        String userNick = SuperWeChatApplication.currentUserNick;  // 也可以是这句话，不知道有这个方法。但是这个方法的范围大些
+        String userNick = FuLiCenterApplication.currentUserNick;  // 也可以是这句话，不知道有这个方法。但是这个方法的范围大些
         Log.i("main", "在SuperWeChatApplication中.currentNick方法中获取的昵称：" + userNick);
 		Log.i("main", "设置登录账户的昵称：" + userNick);
 		if (userNick == null||userNick=="") {
@@ -211,7 +211,7 @@ public class UserUtils {
 	 * @return
 	 */
 	public static UserAvatar getAppUserInfo(String username){
-		UserAvatar user = SuperWeChatApplication.getInstance().getUserMap().get(username);
+		UserAvatar user = FuLiCenterApplication.getInstance().getUserMap().get(username);
 		if(user == null){
 			user = new UserAvatar(username);
 		}

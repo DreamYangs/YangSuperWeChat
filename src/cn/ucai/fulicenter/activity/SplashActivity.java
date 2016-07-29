@@ -14,8 +14,8 @@ import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 
 import cn.ucai.fulicenter.DemoHXSDKHelper;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.SuperWeChatApplication;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.UserAvatar;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
@@ -63,10 +63,10 @@ public class SplashActivity extends BaseActivity {
 					long start = System.currentTimeMillis();
 					EMGroupManager.getInstance().loadAllGroups();
 					EMChatManager.getInstance().loadAllConversations();
-					splashUserName = SuperWeChatApplication.getInstance().getUserName();
+					splashUserName = FuLiCenterApplication.getInstance().getUserName();
 					Log.i("main", "currentuser:" + splashUserName);
-					Log.i("main", "currentuser:" + SuperWeChatApplication.getInstance().getUser());
-					String userName = SuperWeChatApplication.getInstance().getUserName();
+					Log.i("main", "currentuser:" + FuLiCenterApplication.getInstance().getUser());
+					String userName = FuLiCenterApplication.getInstance().getUserName();
 					UserDao dao = new UserDao(SplashActivity.this);
 					UserAvatar user = dao.getUserAvatar(userName);
 					Log.e(TAG, "user=" + user);
@@ -76,9 +76,9 @@ public class SplashActivity extends BaseActivity {
 
 					} else {
 						//设置全局变量的昵称，在闪屏中获得的用户信息
-//						SuperWeChatApplication.getInstance().setUserNick(user.getMUserNick());//转在登录界面去获取昵称了
-						SuperWeChatApplication.getInstance().setUser(user);
-						SuperWeChatApplication.currentUserNick = user.getMUserNick();
+//						FuLiCenterApplication.getInstance().setUserNick(user.getMUserNick());//转在登录界面去获取昵称了
+						FuLiCenterApplication.getInstance().setUser(user);
+						FuLiCenterApplication.currentUserNick = user.getMUserNick();
 						new DownloadContactListTask(SplashActivity.this, userName).execute();
 
 						new DownloadGroupListTask(SplashActivity.this, userName).execute();
@@ -113,11 +113,11 @@ public class SplashActivity extends BaseActivity {
 		//不能再线程中在创建线程。
 		/*LoginActivity loginActivity = new LoginActivity();
 		loginActivity.loginAppServer();
-		String userName1 = SuperWeChatApplication.getInstance().getUserName();
+		String userName1 = FuLiCenterApplication.getInstance().getUserName();
 		UserDao dao1 = new UserDao(SplashActivity.this);
 		UserAvatar userAvatar = dao1.getUserAvatar(userName1);
-		SuperWeChatApplication.getInstance().setUser(userAvatar);
-		SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
+		FuLiCenterApplication.getInstance().setUser(userAvatar);
+		FuLiCenterApplication.currentUserNick = userAvatar.getMUserNick();
 		new DownloadContactListTask(SplashActivity.this, userName1).execute();*/
 		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
 		utils.setRequestUrl(I.REQUEST_FIND_USER)
@@ -131,8 +131,8 @@ public class SplashActivity extends BaseActivity {
 						Log.i("main","在闪屏再次下载中得到的UserAvatar数据："+result);
 						if (result != null && result.isRetMsg()) {
 							UserAvatar userAvatar = (UserAvatar) result.getRetData();
-							SuperWeChatApplication.getInstance().setUser(userAvatar);
-							SuperWeChatApplication.currentUserNick = userAvatar.getMUserNick();
+							FuLiCenterApplication.getInstance().setUser(userAvatar);
+							FuLiCenterApplication.currentUserNick = userAvatar.getMUserNick();
 							new DownloadContactListTask(SplashActivity.this,splashUserName).execute();
 							new DownloadGroupListTask(SplashActivity.this, splashUserName).execute();
 						}
@@ -162,7 +162,7 @@ public class SplashActivity extends BaseActivity {
 	}
 
 	public static String getUserName() {
-		return SuperWeChatApplication.getInstance().getUserName();
+		return FuLiCenterApplication.getInstance().getUserName();
 	}
 
 }

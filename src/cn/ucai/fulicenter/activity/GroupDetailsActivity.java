@@ -44,8 +44,9 @@ import android.widget.Toast;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroup;
 import com.easemob.chat.EMGroupManager;
+
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.SuperWeChatApplication;
 import cn.ucai.fulicenter.bean.GroupAvatar;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
@@ -305,7 +306,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 
 	private void updateAppGroupName(String newGroupName) {
 		Log.i("main", "在修改群名称里面：");
-		GroupAvatar groupAvatar = SuperWeChatApplication.getInstance().getGroupMap().get(groupId);
+		GroupAvatar groupAvatar = FuLiCenterApplication.getInstance().getGroupMap().get(groupId);
 		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
 		utils.setRequestUrl(I.REQUEST_UPDATE_GROUP_NAME)
 				.addParam(I.Group.GROUP_ID,String.valueOf(groupAvatar.getMGroupId()))
@@ -317,8 +318,8 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 						Result result = Utils.getResultFromJson(s, GroupAvatar.class);
 						if (result != null && result.isRetMsg()) {
 							GroupAvatar newGroupAvatar = (GroupAvatar) result.getRetData();
-							SuperWeChatApplication.getInstance().getGroupMap().put(groupId, newGroupAvatar);
-							SuperWeChatApplication.getInstance().getGroupList().add(newGroupAvatar);
+							FuLiCenterApplication.getInstance().getGroupMap().put(groupId, newGroupAvatar);
+							FuLiCenterApplication.getInstance().getGroupList().add(newGroupAvatar);
 							Log.i("main", "修改群名称成功：");
 						}
 					}
@@ -403,7 +404,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 				}
 			}
 		}).start();
-		deleteAppMembersFromGroup(SuperWeChatApplication.getInstance().getUserName(),true);
+		deleteAppMembersFromGroup(FuLiCenterApplication.getInstance().getUserName(),true);
 	}
 
 	/**
@@ -440,7 +441,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	}
 
 	private void deleteAppGroup() {
-		GroupAvatar groupAvatar = SuperWeChatApplication.getInstance().getGroupMap().get(groupId);
+		GroupAvatar groupAvatar = FuLiCenterApplication.getInstance().getGroupMap().get(groupId);
 		final OkHttpUtils2<Result> utils = new OkHttpUtils2<Result>();
 		utils.setRequestUrl(I.REQUEST_DELETE_GROUP)
 				.addParam(I.Group.GROUP_ID,String.valueOf(groupAvatar.getMGroupId()))
@@ -834,7 +835,7 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 	}
 
 	private void deleteAppMembersFromGroup(final String username, final boolean isExit) {
-		GroupAvatar groupAvatar = SuperWeChatApplication.getInstance().getGroupMap().get(groupId);
+		GroupAvatar groupAvatar = FuLiCenterApplication.getInstance().getGroupMap().get(groupId);
 		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
 			utils.setRequestUrl(I.REQUEST_DELETE_GROUP_MEMBER)
 					.addParam(I.Member.GROUP_ID,String.valueOf(groupAvatar.getMGroupId()))
@@ -846,11 +847,11 @@ public class GroupDetailsActivity extends BaseActivity implements OnClickListene
 							Result result = Utils.getResultFromJson(s, GroupAvatar.class);
 							if (result != null && result.isRetMsg()) {
 								if (isExit) {
-									GroupAvatar group = SuperWeChatApplication.getInstance().getGroupMap().get(groupId);
-									SuperWeChatApplication.getInstance().getGroupList().remove(group);
-									SuperWeChatApplication.getInstance().getGroupMap().remove(groupId);
+									GroupAvatar group = FuLiCenterApplication.getInstance().getGroupMap().get(groupId);
+									FuLiCenterApplication.getInstance().getGroupList().remove(group);
+									FuLiCenterApplication.getInstance().getGroupMap().remove(groupId);
 								} else {
-									SuperWeChatApplication.getInstance().getMembersMap().get(groupId).remove(username);
+									FuLiCenterApplication.getInstance().getMembersMap().get(groupId).remove(username);
 								}
 								Log.i("main", "在GroupDetailsActivity中删除数据库群成员成功");
 							}
