@@ -76,21 +76,7 @@ public class UserUtils {
 			Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
 		}
 	}
-	/**
-	 * 设置群组头像
-	 * @param hxId
-	 */
-	public static void setAppGroupAvatar(Context context, String hxId, ImageView imageView) {
-		String path = "";;
-		if (path != null && hxId != null) {
-//			Log.i("main", "sql语句:" + path);
-			path = getGroupAvatarPath(hxId);
-			Log.i("main", "在UserUtils里面的path：" + path);
-			Picasso.with(context).load(path).placeholder(R.drawable.group_icon).into(imageView);
-		} else {
-			Picasso.with(context).load(R.drawable.group_icon).into(imageView);
-		}
-	}
+
 
 	public static String getUserAvatarPath(String userName) {
 		StringBuilder path = new StringBuilder(I.SERVER_URL);
@@ -108,21 +94,7 @@ public class UserUtils {
 
 	}
 
-	public static String getGroupAvatarPath(String hxId) {
-		StringBuilder path = new StringBuilder(I.SERVER_URL);
-		path.append(I.QUESTION)
-				.append(I.KEY_REQUEST)
-				.append(I.EQUAL)
-				.append(I.REQUEST_DOWNLOAD_AVATAR)
-				.append(I.AND)
-				.append(I.NAME_OR_HXID)
-				.append(I.EQUAL).append(hxId)
-				.append(I.AND)
-				.append(I.AVATAR_TYPE).append(I.EQUAL).append(I.AVATAR_TYPE_GROUP_PATH);
 
-		return path.toString();
-
-	}
 
 		/**
          * 设置当前用户头像
@@ -135,9 +107,6 @@ public class UserUtils {
 			Picasso.with(context).load(R.drawable.default_avatar).into(imageView);
 		}
 	}
-
-
-
 	/**
 	 * 设置当前用户头像
 	 */

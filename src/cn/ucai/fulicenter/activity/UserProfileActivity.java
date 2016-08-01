@@ -79,7 +79,6 @@ public class UserProfileActivity extends BaseActivity implements OnClickListener
 	private void initListener() {
 		Intent intent = getIntent();
 		String username = intent.getStringExtra("username");
-		String hxId = intent.getStringExtra("groupId");
 		boolean enableUpdate = intent.getBooleanExtra("setting", false);
 		Log.i("main", "在UserProfileActivity中的enableUpdate值：" + enableUpdate);
 		if (enableUpdate) {

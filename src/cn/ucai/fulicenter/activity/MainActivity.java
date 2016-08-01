@@ -167,8 +167,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		connectionListener = new MyConnectionListener();
 		EMChatManager.getInstance().addConnectionListener(connectionListener);
 
-
-
 		//内部测试方法，请忽略
 		registerInternalDebugReceiver();
 	}
@@ -197,20 +195,20 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 
                 userlist.put(Constant.NEW_FRIENDS_USERNAME, newFriends);
                 // 添加"群聊"
-                User groupUser = new User();
-                String strGroup = context.getString(R.string.group_chat);
-                groupUser.setUsername(Constant.GROUP_USERNAME);
-                groupUser.setNick(strGroup);
-                groupUser.setHeader("");
-                userlist.put(Constant.GROUP_USERNAME, groupUser);
-
-                 // 添加"聊天室"
-                User chatRoomItem = new User();
-                String strChatRoom = context.getString(R.string.chat_room);
-                chatRoomItem.setUsername(Constant.CHAT_ROOM);
-                chatRoomItem.setNick(strChatRoom);
-                chatRoomItem.setHeader("");
-                userlist.put(Constant.CHAT_ROOM, chatRoomItem);
+//                User groupUser = new User();
+//                String strGroup = context.getString(R.string.group_chat);
+//                groupUser.setUsername(Constant.GROUP_USERNAME);
+//                groupUser.setNick(strGroup);
+//                groupUser.setHeader("");
+//                userlist.put(Constant.GROUP_USERNAME, groupUser);
+//
+//                 // 添加"聊天室"
+//                User chatRoomItem = new User();
+//                String strChatRoom = context.getString(R.string.chat_room);
+//                chatRoomItem.setUsername(Constant.CHAT_ROOM);
+//                chatRoomItem.setNick(strChatRoom);
+//                chatRoomItem.setHeader("");
+//                userlist.put(Constant.CHAT_ROOM, chatRoomItem);
 
 //                // 添加"Robot"
 //        		User robotUser = new User();
@@ -410,8 +408,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
 		if(connectionListener != null){
 		    EMChatManager.getInstance().removeConnectionListener(connectionListener);
 		}
-
-
 		try {
             unregisterReceiver(internalDebugReceiver);
         } catch (Exception e) {
@@ -660,7 +656,7 @@ public class MainActivity extends BaseActivity implements EMEventListener {
             boolean contactSynced = HXSDKHelper.getInstance().isContactsSyncedWithServer();
 
             // in case group and contact were already synced, we supposed to notify sdk we are ready to receive the events
-            if(groupSynced && contactSynced){
+            if(contactSynced){
                 new Thread(){
                     @Override
                     public void run(){
@@ -668,8 +664,6 @@ public class MainActivity extends BaseActivity implements EMEventListener {
                     }
                 }.start();
             }else{
-
-
                 if(!contactSynced){
                     asyncFetchContactsFromServer();
                 }

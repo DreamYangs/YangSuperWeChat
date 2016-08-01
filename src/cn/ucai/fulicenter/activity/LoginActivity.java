@@ -211,9 +211,7 @@ public class LoginActivity extends BaseActivity {
 
 						} else {
 							pd.dismiss();
-                                Toast.makeText(getApplicationContext(),
-                                        R.string.Login_failed + Utils.getResourceString(LoginActivity.this,result.getRetCode()),
-                                        Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), "登录失败！！", Toast.LENGTH_LONG).show();
 						}
 					}
 
@@ -319,12 +317,12 @@ public class LoginActivity extends BaseActivity {
 
 		userlist.put(Constant.NEW_FRIENDS_USERNAME, newFriends);
 		// 添加"群聊"
-		User groupUser = new User();
-		String strGroup = getResources().getString(R.string.group_chat);
-		groupUser.setUsername(Constant.GROUP_USERNAME);
-		groupUser.setNick(strGroup);
-		groupUser.setHeader("");
-		userlist.put(Constant.GROUP_USERNAME, groupUser);
+//		User groupUser = new User();
+//		String strGroup = getResources().getString(R.string.group_chat);
+//		groupUser.setUsername(Constant.GROUP_USERNAME);
+//		groupUser.setNick(strGroup);
+//		groupUser.setHeader("");
+//		userlist.put(Constant.GROUP_USERNAME, groupUser);
 		
 //		// 添加"Robot"
 //		User robotUser = new User();
