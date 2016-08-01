@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class CartBean implements Serializable {
 	private int id;
 	private String userName;
-	int goodsId;
+	private int goodsId;
 	/** 购物车中的商品信息 */
 	private GoodDetailsBean goods;
 	/** 该商品被选中的件数 */

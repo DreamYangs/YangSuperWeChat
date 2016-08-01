@@ -207,7 +207,6 @@ public class ChatHistoryFragment extends Fragment {
 	/**
 	 * 获取有聊天记录的users和groups
 	 * 
-	 * @param context
 	 * @return
 	 */
 	private List<EMContact> loadUsersWithRecentChat() {
@@ -235,7 +234,6 @@ public class ChatHistoryFragment extends Fragment {
 	/**
 	 * 根据最后一条消息的时间排序
 	 * 
-	 * @param usernames
 	 */
 	private void sortUserByLastChatTime(List<EMContact> contactList) {
 		Collections.sort(contactList, new Comparator<EMContact>() {

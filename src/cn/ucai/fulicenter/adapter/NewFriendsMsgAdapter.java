@@ -34,14 +34,12 @@ import android.widget.Toast;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMGroupManager;
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.bean.GroupAvatar;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.UserAvatar;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.db.InviteMessgeDao;
 import cn.ucai.fulicenter.domain.InviteMessage;
 import cn.ucai.fulicenter.domain.InviteMessage.InviteMesageStatus;
-import cn.ucai.fulicenter.task.DownloadGroupMemberListTask;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.UserUtils;
 import cn.ucai.fulicenter.utils.Utils;
@@ -190,8 +188,7 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 					if(msg.getGroupId() == null) { //同意好友请求
 						EMChatManager.getInstance().acceptInvitation(msg.getFrom());
 					}else {//同意加群申请
-						EMGroupManager.getInstance().acceptApplication(msg.getFrom(), msg.getGroupId());
-						addMemberToAppGroup(msg.getFrom(),msg.getGroupId());
+//						EMGroupManager.getInstance().acceptApplication(msg.getFrom(), msg.getGroupId());
 					}
 					((Activity) context).runOnUiThread(new Runnable() {
 
@@ -224,28 +221,6 @@ public class NewFriendsMsgAdapter extends ArrayAdapter<InviteMessage> {
 		}).start();
 	}
 
-	private void addMemberToAppGroup(String userName, final String hxId) {
-		final OkHttpUtils2<String> utils = new OkHttpUtils2<String>();
-		utils.setRequestUrl(I.REQUEST_ADD_GROUP_MEMBER)
-				.addParam(I.Member.USER_NAME,userName)
-				.addParam(I.Member.GROUP_HX_ID,hxId)
-				.targetClass(String.class)
-				.execute(new OkHttpUtils2.OnCompleteListener<String>() {
-					@Override
-					public void onSuccess(String s) {
-						Result result = Utils.getResultFromJson(s, GroupAvatar.class);
-						if (result != null && result.isRetMsg()) {
-							Log.i("main", "这是在NewFriendsMsgAdapter里面同意添加群成员成功：" );
-							new DownloadGroupMemberListTask(context,hxId).execute();
-						}
-					}
-
-					@Override
-					public void onError(String error) {
-						Log.i("main", "这是在NewFriendsMsgAdapter里面同意添加群成员的错误信息：" + error);
-					}
-				});
-	}
 
 	private static class ViewHolder {
 		ImageView avator;

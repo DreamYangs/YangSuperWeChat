@@ -83,15 +83,15 @@ public class PublicGroupsActivity extends BaseActivity {
         //获取及显示数据
         loadAndShowData();
         
-        //设置item点击事件
-        listView.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(PublicGroupsActivity.this, GroupSimpleDetailActivity.class).
-                        putExtra("groupinfo", adapter.getItem(position)));
-            }
-        });
+//        //设置item点击事件
+//        listView.setOnItemClickListener(new OnItemClickListener() {
+//
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                startActivity(new Intent(PublicGroupsActivity.this, GroupSimpleDetailActivity.class).
+//                        putExtra("groupinfo", adapter.getItem(position)));
+//            }
+//        });
         listView.setOnScrollListener(new OnScrollListener() {
             
             @Override
@@ -114,13 +114,7 @@ public class PublicGroupsActivity extends BaseActivity {
         
 	}
 	
-	/**
-	 * 搜索
-	 * @param view
-	 */
-	public void search(View view){
-	    startActivity(new Intent(this, PublicGroupsSeachActivity.class));
-	}
+
 	
 	private void loadAndShowData(){
 	    new Thread(new Runnable() {
@@ -136,11 +130,6 @@ public class PublicGroupsActivity extends BaseActivity {
                         public void run() {
                             searchBtn.setVisibility(View.VISIBLE);
                             //过滤公开群的显示，只显示自己没有的
-                            for (EMGroupInfo g : returnGroups) {
-                                if (!(FuLiCenterApplication.getInstance().getGroupMap().containsKey(g.getGroupId()))) {
-                                    groupsList.add(g);
-                                }
-                            }
 
                             if(returnGroups.size() != 0){
                                 //获取cursor

@@ -21,7 +21,6 @@ import cn.ucai.fulicenter.bean.UserAvatar;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.db.UserDao;
 import cn.ucai.fulicenter.task.DownloadContactListTask;
-import cn.ucai.fulicenter.task.DownloadGroupListTask;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.Utils;
 
@@ -81,7 +80,6 @@ public class SplashActivity extends BaseActivity {
 						FuLiCenterApplication.currentUserNick = user.getMUserNick();
 						new DownloadContactListTask(SplashActivity.this, userName).execute();
 
-						new DownloadGroupListTask(SplashActivity.this, userName).execute();
 					}
 
 					long costTime = System.currentTimeMillis() - start;
@@ -134,7 +132,6 @@ public class SplashActivity extends BaseActivity {
 							FuLiCenterApplication.getInstance().setUser(userAvatar);
 							FuLiCenterApplication.currentUserNick = userAvatar.getMUserNick();
 							new DownloadContactListTask(SplashActivity.this,splashUserName).execute();
-							new DownloadGroupListTask(SplashActivity.this, splashUserName).execute();
 						}
 					}
 

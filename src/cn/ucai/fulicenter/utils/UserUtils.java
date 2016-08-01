@@ -239,12 +239,4 @@ public class UserUtils {
 		((DemoHXSDKHelper) HXSDKHelper.getInstance()).saveContact(newUser);
 	}
 
-	public static void setAppMemberNIck(String hxId, String userName, TextView textView) {
-		MemberUserAvatar memberUserInfo = getAppMemberInfo(hxId, userName);
-		if (memberUserInfo != null && memberUserInfo.getMUserNick() != null) {
-			textView.setText(memberUserInfo.getMUserNick());
-		} else {
-			textView.setText(userName);
-		}
-	}
 }
