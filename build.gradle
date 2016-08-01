@@ -15,6 +15,8 @@ dependencies {
     compile files('libs/okio-1.6.0.jar')
     compile files('libs/okhttp-urlconnection-2.7.5.jar')
     compile files('libs/jackson-core-asl-1.9.11.jar')
+    compile 'com.android.support:support-v4:19.1.0'
+    compile 'com.android.support:recyclerview-v7:24.0.0'
 }
 
 android {
@@ -46,8 +48,8 @@ android {
         debug.setRoot('build-types/debug')
         release.setRoot('build-types/release')
     }
-    lintOptions{
-       checkReleaseBuilds false
+    lintOptions {
+        checkReleaseBuilds false
         abortOnError false
     }
 
