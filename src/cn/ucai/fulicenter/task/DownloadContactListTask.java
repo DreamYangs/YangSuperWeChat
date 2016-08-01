@@ -37,15 +37,17 @@ public class DownloadContactListTask {
                     public void onSuccess(String s) {
                         Log.i("main", "在DownloadContactListTask下载好友信息得到的返回结果：" + s);
                         Result result1 = Utils.getListResultFromJson(s, UserAvatar.class);
-                        List<UserAvatar> list = (List<UserAvatar>) result1.getRetData();
-                        if (list != null && list.size()>0) {
-                            FuLiCenterApplication.getInstance().setUserList(list);
-                            context.sendStickyBroadcast(new Intent("update_contact_list"));
-                            Map<String, UserAvatar> userMap = FuLiCenterApplication.getInstance().getUserMap();
+                        if (result1 != null) {
+                            List<UserAvatar> list = (List<UserAvatar>) result1.getRetData();
+                            if (list != null && list.size()>0) {
+                                FuLiCenterApplication.getInstance().setUserList(list);
+                                context.sendStickyBroadcast(new Intent("update_contact_list"));
+                                Map<String, UserAvatar> userMap = FuLiCenterApplication.getInstance().getUserMap();
 
-                            for (UserAvatar u:list) {
-                                Log.i("main","下载的好友信息："+ u);
-                                userMap.put(u.getMUserName(), u);
+                                for (UserAvatar u:list) {
+                                    Log.i("main","下载的好友信息："+ u);
+                                    userMap.put(u.getMUserName(), u);
+                                }
                             }
                         }
                     }

@@ -152,11 +152,23 @@ public class Utils {
             } else if (!jsonObject.isNull("result")) {
                 result.setRetMsg(jsonObject.getBoolean("result"));
             }
-            if(!jsonObject.isNull("retData")) {
+            if (!jsonObject.isNull("retData")) {
                 JSONArray array = jsonObject.getJSONArray("retData");
                 if (array != null) {
                     List<T> list = new ArrayList<T>();
                     for (int i = 0; i < array.length(); i++) {
+                        JSONObject jsonGroupAvatar = array.getJSONObject(i);
+                        T ga = new Gson().fromJson(jsonGroupAvatar.toString(), clazz);
+                        list.add(ga);
+                    }
+                    result.setRetData(list);
+                    return result;
+                }
+            } else {
+                JSONArray array = new JSONArray(jsonStr);
+                if (array != null) {
+                    List<T> list = new ArrayList<T>();
+                    for (int i = 0;i <array.length(); i++) {
                         JSONObject jsonGroupAvatar = array.getJSONObject(i);
                         T ga = new Gson().fromJson(jsonGroupAvatar.toString(), clazz);
                         list.add(ga);
@@ -175,10 +187,19 @@ public class Utils {
     public static <T> Result getPageResultFromJson(String jsonStr,Class<T> clazz){
         Result result = new Result();
         try {
+            if (jsonStr==null || jsonStr.isEmpty() || jsonStr.length()<3)return null;
             JSONObject jsonObject = new JSONObject(jsonStr);
-            result.setRetCode(jsonObject.getInt("retCode"));
-            result.setRetMsg(jsonObject.getBoolean("retMsg"));
-            if(!jsonObject.isNull("retData")) {
+            if (!jsonObject.isNull("retCode")) {
+                result.setRetCode(jsonObject.getInt("retCode"));
+            }else if (!jsonObject.isNull("msg")) {
+                result.setRetCode(jsonObject.getInt("msg"));
+            }
+            if (!jsonObject.isNull("retMsg")) {
+                result.setRetMsg(jsonObject.getBoolean("retMsg"));
+            }else if (!jsonObject.isNull("result")) {
+                result.setRetMsg(jsonObject.getBoolean("result"));
+            }
+            if (!jsonObject.isNull("retData")) {
                 JSONObject jsonPager = jsonObject.getJSONObject("retData");
                 if (jsonPager != null) {
                     Pager pager = new Pager();
@@ -195,6 +216,8 @@ public class Utils {
                     result.setRetData(pager);
                     return result;
                 }
+            } else {
+                Log.i("main", "这是getPageResultFromJson");
             }
             return result;
         }catch (Exception e){
