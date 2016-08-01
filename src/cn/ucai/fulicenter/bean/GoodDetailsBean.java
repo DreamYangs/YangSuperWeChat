@@ -1,5 +1,8 @@
 package cn.ucai.fulicenter.bean;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Properties;
@@ -31,7 +34,8 @@ public class GoodDetailsBean implements Serializable {
     /** 人民币折扣价格*/
     private String rankPrice;
     /**是否折扣*/
-    private boolean promote;
+    @JsonProperty("isPromote")
+    private boolean isPromote;
     /** 商品缩略图地址*/
     private String goodsThumb;
     /** 商品图片地址*/
@@ -109,8 +113,9 @@ public class GoodDetailsBean implements Serializable {
     public void setRankPrice(String rankPrice) {
         this.rankPrice = rankPrice;
     }
+    @JsonIgnore
     public boolean isPromote() {
-        return promote;
+        return isPromote;
     }
     public String getGoodsThumb() {
         return goodsThumb;
@@ -139,7 +144,7 @@ public class GoodDetailsBean implements Serializable {
         this.shareUrl = shareUrl;
     }
     public void setPromote(boolean promote) {
-        this.promote = promote;
+        this.isPromote = promote;
     }
     @Override
     public String toString() {
@@ -148,7 +153,7 @@ public class GoodDetailsBean implements Serializable {
                 + goodsEnglishName + ", goodsBrief=" + goodsBrief
                 + ", shopPrice=" + shopPrice + ", currencyPrice="
                 + currencyPrice + ", promotePrice=" + promotePrice
-                + ", rankPrice=" + rankPrice + ", isPromote=" + promote
+                + ", rankPrice=" + rankPrice + ", isPromote=" + isPromote
                 + ", goodsThumb=" + goodsThumb + ", goodsImg=" + goodsImg
                 + ", addTime=" + addTime + ", shareUrl=" + shareUrl + "]";
     }
