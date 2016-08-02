@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,8 @@ public class NewGoodsFragment extends Fragment {
     GoodsAdapter mGoodsAdapter;
 
     int pageId = 1;
+
+    TextView mtvRefresh;
     public NewGoodsFragment() {
     }
     @Nullable
@@ -47,13 +50,34 @@ public class NewGoodsFragment extends Fragment {
         mGoodList = new ArrayList<NewGoodBean>();
         initView(layout);
         initData();
+        setListener();
         return layout;
+    }
+
+    private void setListener() {
+        setPullDownRefreshListener();
+    }
+
+    private void setPullDownRefreshListener() {
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mtvRefresh.setVisibility(View.VISIBLE);
+                mSwipeRefreshLayout.setEnabled(true);
+                mSwipeRefreshLayout.setRefreshing(true);
+                pageId = 1;
+                initData();
+
+            }
+        });
     }
 
     private void initData() {
         findNewGoodsList(new OkHttpUtils2.OnCompleteListener<NewGoodBean[]>() {
             @Override
             public void onSuccess(NewGoodBean[] result) {
+                mtvRefresh.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setRefreshing(false);
                 Log.i("main", "在下载新品时返回的结果：" + result);
                 if (result != null) {
                     Log.i("main", "result的长度：" + result.length);
@@ -64,7 +88,9 @@ public class NewGoodsFragment extends Fragment {
 
             @Override
             public void onError(String error) {
-
+                Log.i("main", "在在下载新品消息时返回的错误信息：" + error);
+                mtvRefresh.setVisibility(View.GONE);
+                mSwipeRefreshLayout.setRefreshing(false);
             }
         });
 
@@ -93,6 +119,9 @@ public class NewGoodsFragment extends Fragment {
         mRecyclerView.setLayoutManager(mGridLayoutManager);
         mGoodsAdapter = new GoodsAdapter(mContext, mGoodList);
         mRecyclerView.setAdapter(mGoodsAdapter);
+
+        mtvRefresh = (TextView) layout.findViewById(R.id.tv_refresh_hint);
+
     }
 
 }

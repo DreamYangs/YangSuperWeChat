@@ -15,6 +15,7 @@ import java.util.List;
 
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.NewGoodBean;
+import cn.ucai.fulicenter.utils.ImageUtils;
 
 /**
  * Created by Administrator on 2016/8/1.
@@ -47,6 +48,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         if (holder instanceof GoodViewHolder) {
             mGoodViewHolder = (GoodViewHolder) holder;
             NewGoodBean goodBean = mGoodList.get(position);
+            ImageUtils.getNewGoodsThumb(mContext, mGoodViewHolder.ivGoodThumb, goodBean.getGoodsThumb());
             mGoodViewHolder.tvGoodName.setText(goodBean.getGoodsName());
             mGoodViewHolder.tvGoodPrice.setText(goodBean.getCurrencyPrice());
 
