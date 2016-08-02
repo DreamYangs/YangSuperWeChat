@@ -37,7 +37,7 @@ public class NewGoodsFragment extends Fragment {
     GoodsAdapter mGoodsAdapter;
 
     int pageId = 1;
-
+    int action = I.ACTION_DOWNLOAD;
     TextView mtvRefresh;
     public NewGoodsFragment() {
     }
@@ -71,6 +71,7 @@ public class NewGoodsFragment extends Fragment {
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
                         && lastItemPosition == mGoodsAdapter.getItemCount() - 1) {
                     if (mGoodsAdapter.isMore()) {
+                        action = I.ACTION_PULL_UP;
                         pageId ++;
                         initData();
                     }
@@ -89,6 +90,7 @@ public class NewGoodsFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                action = I.ACTION_PULL_DOWN;
                 pageId = 1;
                 mtvRefresh.setVisibility(View.VISIBLE);
                 mSwipeRefreshLayout.setEnabled(true);
@@ -111,7 +113,11 @@ public class NewGoodsFragment extends Fragment {
                 if (result != null) {
                     Log.i("main", "result的长度：" + result.length);
                     ArrayList<NewGoodBean> newGoodBeanArrayList = Utils.array2List(result);
-                    mGoodsAdapter.addData(newGoodBeanArrayList);
+                    if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
+                        mGoodsAdapter.initItem(newGoodBeanArrayList);
+                    } else {
+                        mGoodsAdapter.addMoreTtem(newGoodBeanArrayList);
+                    }
                     if (newGoodBeanArrayList.size() < I.PAGE_SIZE_DEFAULT) {
                         mGoodsAdapter.setMore(false);
                         mGoodsAdapter.setFooterString(getResources().getString(R.string.no_more_load));
