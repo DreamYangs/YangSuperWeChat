@@ -147,7 +147,7 @@ public class OkHttpUtils2<T> {
         }
 
         Request.Builder builder = new Request.Builder().url(mUrl.toString());
-//        Log.e("okhttp","murl="+mUrl);
+        Log.e("okhttp","murl="+mUrl);
         Request request;
         if (mFileBody != null) {//上传文件
             request = builder.post(mFileBody).build();

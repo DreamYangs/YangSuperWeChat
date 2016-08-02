@@ -81,7 +81,13 @@ public class NewGoodsFragment extends Fragment {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                int f = mGridLayoutManager.findFirstVisibleItemPosition();
+                int l = mGridLayoutManager.findLastVisibleItemPosition();
                 lastItemPosition = mGridLayoutManager.findLastVisibleItemPosition();
+                mSwipeRefreshLayout.setEnabled(mGridLayoutManager.findFirstVisibleItemPosition()==0);
+                if (f == -1 || l == -1) {
+                    lastItemPosition = mGoodsAdapter.getItemCount()-1;
+                }
             }
         });
     }
@@ -122,6 +128,9 @@ public class NewGoodsFragment extends Fragment {
                         mGoodsAdapter.setMore(false);
                         mGoodsAdapter.setFooterString(getResources().getString(R.string.no_more_load));
                     }
+                } else {
+                    mGoodsAdapter.setMore(false);
+                    mGoodsAdapter.setFooterString(getResources().getString(R.string.no_more_load));
                 }
             }
 
