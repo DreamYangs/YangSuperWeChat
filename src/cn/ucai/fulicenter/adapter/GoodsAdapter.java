@@ -35,6 +35,8 @@ public class GoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewHolder holder = null;
+//        LayoutInflater inflater = LayoutInflater.from(mContext);
+//        holder = new GoodViewHolder(inflater.inflate(R.layout.item_new_goods, null, false));
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_new_goods, null, false);
         holder = new GoodViewHolder(view);
         return  holder;
@@ -55,6 +57,14 @@ public class GoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @Override
     public int getItemCount() {
         return mGoodList.size();
+    }
+
+    public void addData(ArrayList<NewGoodBean> list) {
+        if (mGoodList != null) {
+            mGoodList.clear();
+        }
+        mGoodList.addAll(list);
+        notifyDataSetChanged();
     }
 
     class GoodViewHolder extends RecyclerView.ViewHolder {
