@@ -36,7 +36,7 @@ public class NewGoodsFragment extends Fragment {
     GridLayoutManager mGridLayoutManager;
     GoodsAdapter mGoodsAdapter;
 
-    int pageId = 1;
+    int pageId = 0;
 
     TextView mtvRefresh;
     public NewGoodsFragment() {
@@ -56,16 +56,41 @@ public class NewGoodsFragment extends Fragment {
 
     private void setListener() {
         setPullDownRefreshListener();
+        setPullUpRefreshListener();
+    }
+
+    private void setPullUpRefreshListener() {
+        mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            int lastItemPosition;
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                int a = RecyclerView.SCROLL_STATE_DRAGGING;//1
+                int b = RecyclerView.SCROLL_STATE_IDLE;//0
+                int c = RecyclerView.SCROLL_STATE_SETTLING;//2
+                if (newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastItemPosition == mGoodsAdapter.getItemCount() - 1) {
+                    pageId += I.PAGE_SIZE_DEFAULT;
+                    initData();
+                }
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                lastItemPosition = mGridLayoutManager.findLastVisibleItemPosition();
+            }
+        });
     }
 
     private void setPullDownRefreshListener() {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                pageId = 0;
                 mtvRefresh.setVisibility(View.VISIBLE);
                 mSwipeRefreshLayout.setEnabled(true);
                 mSwipeRefreshLayout.setRefreshing(true);
-                pageId = 1;
                 initData();
 
             }
