@@ -15,7 +15,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:padding">2dp</item>
-        <item name="android:textColor">@color/main_botton_text_color</item>
+        <item name="android:textColor">@color/main_bottom_text_color</item>
         <item name="android:textSize">10sp</item>
         <item name="android:gravity">center</item>
     </style>
@@ -60,6 +60,7 @@
         <item name="android:gravity">center</item>
         <item name="android:paddingTop">7dp</item>
         <item name="android:textColor">#fff</item>
+        <item name="android:button">@null</item>
         <item name="android:onClick">onCheckedChange</item>
     </style>
     <!--

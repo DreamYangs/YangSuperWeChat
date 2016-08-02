@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:text="@string/session"
         android:paddingBottom="2dp"
-        android:textColor="@color/main_botton_text_color"
+        android:textColor="@color/main_bottom_text_color"
         android:textSize="12sp" >
     </TextView>
 

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cn.ucai.fulicenter.R;
@@ -26,13 +27,15 @@ public class GoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     public GoodsAdapter(Context mContext, List<NewGoodBean> mGoodList) {
         this.mContext = mContext;
-        this.mGoodList = mGoodList;
+        this.mGoodList = new ArrayList<NewGoodBean>();
+        this.mGoodList.addAll(mGoodList);
+
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewHolder holder = null;
-        View view = LayoutInflater.from(mContext).inflate(R.layout.fragment_new_goods, null, false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.item_new_goods, null, false);
         holder = new GoodViewHolder(view);
         return  holder;
     }
