@@ -279,6 +279,8 @@
     <string name="update_groups_failed">更新群聊失败</string>
 
     <string name= "no_more_messages">没有更多的消息了</string>
+    <string name= "no_more_load">没有更多加载了！！！</string>
+    <string name= "load_more">加载更多。。。</string>
     <string name="gorup_not_found">找不到这个群组</string>
     <string name= "chatroom_allow_owner_leave"> 允许聊天室群主离开</string>
     <string name="group_id">群ID</string>

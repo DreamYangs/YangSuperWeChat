@@ -36,7 +36,7 @@ public class NewGoodsFragment extends Fragment {
     GridLayoutManager mGridLayoutManager;
     GoodsAdapter mGoodsAdapter;
 
-    int pageId = 0;
+    int pageId = 1;
 
     TextView mtvRefresh;
     public NewGoodsFragment() {
@@ -70,8 +70,10 @@ public class NewGoodsFragment extends Fragment {
                 int c = RecyclerView.SCROLL_STATE_SETTLING;//2
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
                         && lastItemPosition == mGoodsAdapter.getItemCount() - 1) {
-                    pageId += I.PAGE_SIZE_DEFAULT;
-                    initData();
+                    if (mGoodsAdapter.isMore()) {
+                        pageId ++;
+                        initData();
+                    }
                 }
             }
 
@@ -87,7 +89,7 @@ public class NewGoodsFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                pageId = 0;
+                pageId = 1;
                 mtvRefresh.setVisibility(View.VISIBLE);
                 mSwipeRefreshLayout.setEnabled(true);
                 mSwipeRefreshLayout.setRefreshing(true);
@@ -103,11 +105,17 @@ public class NewGoodsFragment extends Fragment {
             public void onSuccess(NewGoodBean[] result) {
                 mtvRefresh.setVisibility(View.GONE);
                 mSwipeRefreshLayout.setRefreshing(false);
+                mGoodsAdapter.setMore(true);
+                mGoodsAdapter.setFooterString(getResources().getString(R.string.load_more));
                 Log.i("main", "在下载新品时返回的结果：" + result);
                 if (result != null) {
                     Log.i("main", "result的长度：" + result.length);
                     ArrayList<NewGoodBean> newGoodBeanArrayList = Utils.array2List(result);
                     mGoodsAdapter.addData(newGoodBeanArrayList);
+                    if (newGoodBeanArrayList.size() < I.PAGE_SIZE_DEFAULT) {
+                        mGoodsAdapter.setMore(false);
+                        mGoodsAdapter.setFooterString(getResources().getString(R.string.no_more_load));
+                    }
                 }
             }
 
