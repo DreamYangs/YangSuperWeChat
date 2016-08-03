@@ -122,7 +122,7 @@ public class NewGoodsFragment extends Fragment {
                     if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
                         mGoodsAdapter.initItem(newGoodBeanArrayList);
                     } else {
-                        mGoodsAdapter.addMoreTtem(newGoodBeanArrayList);
+                        mGoodsAdapter.addMoreItem(newGoodBeanArrayList);
                     }
                     if (newGoodBeanArrayList.size() < I.PAGE_SIZE_DEFAULT) {
                         mGoodsAdapter.setMore(false);

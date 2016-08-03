@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -15,7 +16,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.activity.GoodDetailsActivity;
 import cn.ucai.fulicenter.bean.NewGoodBean;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.ImageUtils;
@@ -76,10 +79,17 @@ public class GoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof GoodViewHolder) {
             mGoodViewHolder = (GoodViewHolder) holder;
-            NewGoodBean goodBean = mGoodList.get(position);
+            final NewGoodBean goodBean = mGoodList.get(position);
             ImageUtils.getNewGoodsThumb(mContext, mGoodViewHolder.ivGoodThumb, goodBean.getGoodsThumb());
             mGoodViewHolder.tvGoodName.setText(goodBean.getGoodsName());
             mGoodViewHolder.tvGoodPrice.setText(goodBean.getCurrencyPrice());
+            mGoodViewHolder.layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mContext.startActivity(new Intent(mContext, GoodDetailsActivity.class)
+                    .putExtra(D.GoodDetails.KEY_GOODS_NAME,goodBean.getGoodsId()));
+                }
+            });
         }
         if (holder instanceof FooterViewHolder) {
             mFooterViewHolder = (FooterViewHolder) holder;
@@ -111,7 +121,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public void addMoreTtem(ArrayList<NewGoodBean> newGoodBeanArrayList) {
+    public void addMoreItem(ArrayList<NewGoodBean> newGoodBeanArrayList) {
         mGoodList.addAll(newGoodBeanArrayList);
         sortByAddTime();
         notifyDataSetChanged();
@@ -124,7 +134,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         TextView tvGoodPrice;
         public GoodViewHolder(View itemView) {
             super(itemView);
-            layout = (LinearLayout) itemView.findViewById(R.id.layout_group);
+            layout = (LinearLayout) itemView.findViewById(R.id.layout_good);
             ivGoodThumb = (ImageView) itemView.findViewById(R.id.niv_good_thumb);
             tvGoodName = (TextView) itemView.findViewById(R.id.tv_good_name);
             tvGoodPrice = (TextView) itemView.findViewById(R.id.tv_good_price);
