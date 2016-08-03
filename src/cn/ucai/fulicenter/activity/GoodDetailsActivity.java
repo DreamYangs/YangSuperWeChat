@@ -6,9 +6,13 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.bean.GoodDetailsBean;
+import cn.ucai.fulicenter.data.OkHttpUtils2;
+import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.view.FlowIndicator;
 import cn.ucai.fulicenter.view.SlideAutoLoopView;
 
@@ -35,6 +39,42 @@ public class GoodDetailsActivity extends BaseActivity {
     private void initData() {
         mGoodId = getIntent().getIntExtra(D.GoodDetails.KEY_GOODS_NAME, 0);
         Log.i("main", "在GoodDetailsActivity里面得到传来的goodId：" + mGoodId);
+        if (mGoodId > 0) {
+            getGoodDetailsByGoodId(new OkHttpUtils2.OnCompleteListener<GoodDetailsBean>() {
+                @Override
+                public void onSuccess(GoodDetailsBean result) {
+//                    Log.i("main", "在GoodDetailsActivity里面获取商品详情的信息："+result.toString());
+                    if (result != null) {
+                        showGoodDetails(result);
+                    }
+                }
+
+                @Override
+                public void onError(String error) {
+                    Log.i("main", "在GoodDetailsActivity里面获取商品详情失败信息：" + error);
+                    finish();
+                    Toast.makeText(GoodDetailsActivity.this, "获取商品详情失败", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            finish();
+            Toast.makeText(GoodDetailsActivity.this, "获取商品详情失败", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showGoodDetails(GoodDetailsBean detail) {
+        mtvGoodEnglishName.setText(detail.getGoodsEnglishName());
+        mtvGoodName.setText(detail.getGoodsName());
+        mtvGoodPriceCurrent.setText(detail.getCurrencyPrice());
+        mtvGoodPriceShop.setText(detail.getShopPrice());
+    }
+
+    private void getGoodDetailsByGoodId(OkHttpUtils2.OnCompleteListener<GoodDetailsBean> listener) {
+        OkHttpUtils2<GoodDetailsBean> utils = new OkHttpUtils2<GoodDetailsBean>();
+        utils.setRequestUrl(I.REQUEST_FIND_GOOD_DETAILS)
+                .addParam(D.GoodDetails.KEY_GOODS_ID,String.valueOf(mGoodId))
+                .targetClass(GoodDetailsBean.class)
+                .execute(listener);
     }
 
     private void initView() {
