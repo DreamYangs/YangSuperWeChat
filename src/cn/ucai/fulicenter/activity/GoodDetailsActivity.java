@@ -5,14 +5,17 @@ import android.util.Log;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.bean.AlbumBean;
 import cn.ucai.fulicenter.bean.GoodDetailsBean;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.utils.I;
+import cn.ucai.fulicenter.view.DisplayUtils;
 import cn.ucai.fulicenter.view.FlowIndicator;
 import cn.ucai.fulicenter.view.SlideAutoLoopView;
 
@@ -26,8 +29,9 @@ public class GoodDetailsActivity extends BaseActivity {
     SlideAutoLoopView mSlideAutoLoopView;
     FlowIndicator mFlowIndicator;
     WebView mWebView;
-
+    LinearLayout mBackLinearLayout;
     int mGoodId;
+    GoodDetailsBean mGoodDetails;
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
@@ -35,6 +39,8 @@ public class GoodDetailsActivity extends BaseActivity {
         initView();
         initData();
     }
+
+
 
     private void initData() {
         mGoodId = getIntent().getIntExtra(D.GoodDetails.KEY_GOODS_NAME, 0);
@@ -45,7 +51,8 @@ public class GoodDetailsActivity extends BaseActivity {
                 public void onSuccess(GoodDetailsBean result) {
 //                    Log.i("main", "在GoodDetailsActivity里面获取商品详情的信息："+result.toString());
                     if (result != null) {
-                        showGoodDetails(result);
+                        mGoodDetails = result;
+                        showGoodDetails();
                     }
                 }
 
@@ -62,11 +69,35 @@ public class GoodDetailsActivity extends BaseActivity {
         }
     }
 
-    private void showGoodDetails(GoodDetailsBean detail) {
-        mtvGoodEnglishName.setText(detail.getGoodsEnglishName());
-        mtvGoodName.setText(detail.getGoodsName());
-        mtvGoodPriceCurrent.setText(detail.getCurrencyPrice());
-        mtvGoodPriceShop.setText(detail.getShopPrice());
+    private void showGoodDetails() {
+        mtvGoodEnglishName.setText(mGoodDetails.getGoodsEnglishName());
+        mtvGoodName.setText(mGoodDetails.getGoodsName());
+        mtvGoodPriceCurrent.setText(mGoodDetails.getCurrencyPrice());
+        mtvGoodPriceShop.setText(mGoodDetails.getShopPrice());
+        mSlideAutoLoopView.startPlayLoop(mFlowIndicator,
+                getAlbumImageUrl(), getAlbumImageSize());
+        mWebView.loadDataWithBaseURL(null,mGoodDetails.getGoodsBrief(),D.TEXT_HTML,D.UTF_8,null);
+    }
+
+    private String[] getAlbumImageUrl() {
+        String[] albumImageUrl = new String[]{};
+        if (mGoodDetails.getProperties() != null && mGoodDetails.getProperties().length > 0) {
+           AlbumBean[] albums  = mGoodDetails.getProperties()[0].getAlbums();
+            albumImageUrl =  new String[albums.length];
+            for (int i =0; i< albumImageUrl.length; i++) {
+                albumImageUrl[i] = albums[i].getImgUrl();
+            }
+        }
+        return albumImageUrl;
+
+    }
+
+    private int getAlbumImageSize() {
+        if (mGoodDetails.getProperties() != null && mGoodDetails.getProperties().length > 0) {
+            return mGoodDetails.getProperties()[0].getAlbums().length;
+        }
+        return 0;
+
     }
 
     private void getGoodDetailsByGoodId(OkHttpUtils2.OnCompleteListener<GoodDetailsBean> listener) {
@@ -78,6 +109,7 @@ public class GoodDetailsActivity extends BaseActivity {
     }
 
     private void initView() {
+        DisplayUtils.initBack(this);
         mivShare = (ImageView) findViewById(R.id.iv_good_share);
         mivCollect = (ImageView) findViewById(R.id.iv_good_collect);
         mivCart = (ImageView) findViewById(R.id.iv_good_cart);
@@ -92,6 +124,7 @@ public class GoodDetailsActivity extends BaseActivity {
         WebSettings settings = mWebView.getSettings();
         settings.setBuiltInZoomControls(true);
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
+        mBackLinearLayout = (LinearLayout) findViewById(R.id.backClickArea);
 
     }
 }
