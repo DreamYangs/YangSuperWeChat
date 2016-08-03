@@ -53,6 +53,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         this.mContext = mContext;
         this.mGoodList = new ArrayList<NewGoodBean>();
         this.mGoodList.addAll(mGoodList);
+        sortByAddTime();
 
     }
 
@@ -70,7 +71,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 break;
         }
 //        LayoutInflater inflater = LayoutInflater.from(mContext);
-//        holder = new GoodViewHolder(inflater.inflate(R.layout.item_new_goods, null, false));
+//        holder = new BoutiqueViewHolder(inflater.inflate(R.layout.item_new_goods, null, false));
 
         return  holder;
     }

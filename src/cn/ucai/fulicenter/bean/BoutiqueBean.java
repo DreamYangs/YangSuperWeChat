@@ -15,7 +15,7 @@ public class BoutiqueBean implements Serializable {
     private String name;
 
     /** 图片地址*/
-    private String imageUrl;
+    private String imageurl;
 
     public int getId() {
         return id;
@@ -49,18 +49,18 @@ public class BoutiqueBean implements Serializable {
         this.name = name;
     }
 
-    public String getImageUr() {
-        return imageUrl;
+    public String getImageUrl() {
+        return imageurl;
     }
 
-    public void setImageUr(String imageurl) {
-        this.imageUrl = imageurl;
+    public void setImageurl(String imageurl) {
+        this.imageurl = imageurl;
     }
 
     @Override
     public String toString() {
         return "BoutiqueBean [id=" + id + ", title=" + title + ", description="
-                + description + ", name=" + name + ", imageurl=" + imageUrl
+                + description + ", name=" + name + ", imageurl=" + imageurl
                 + "]";
     }
 

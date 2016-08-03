@@ -1,6 +1,8 @@
 package cn.ucai.fulicenter.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -11,10 +13,11 @@ public class FuLiCenterMainActivity extends BaseActivity {
     RadioButton rbNewGood,rbBoutique,rbCategory,rbCart,rbPersonalCenter;
     TextView tvCartHint;
     RadioButton[] mrbTabs;
-
-    int index;
-    int currentIndex;
+    Fragment[] mFragment;
+    int index = 0;
+    int currentIndex = 0;
     NewGoodsFragment mNewGoodsFragment;
+    BoutiqueFragment mBoutiqueFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,7 @@ public class FuLiCenterMainActivity extends BaseActivity {
         rbCart = (RadioButton) findViewById(R.id.layout_cart);
         rbPersonalCenter = (RadioButton) findViewById(R.id.layout_personal_center);
         tvCartHint = (TextView) findViewById(R.id.tvCartHint);
+
         mrbTabs = new RadioButton[5];
         mrbTabs[0] = rbNewGood;
         mrbTabs[1] = rbBoutique;
@@ -37,11 +41,16 @@ public class FuLiCenterMainActivity extends BaseActivity {
         mrbTabs[3] = rbCart;
         mrbTabs[4] = rbPersonalCenter;
         mNewGoodsFragment = new NewGoodsFragment();
+        mBoutiqueFragment = new BoutiqueFragment();
+        mFragment = new Fragment[5];
+        mFragment[0] = mNewGoodsFragment;
+        mFragment[1] = mBoutiqueFragment;
+
         // 添加显示第一个fragment
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, mNewGoodsFragment)
-//                .add(R.id.fragment_container, contactListFragment)
-//                .hide(contactListFragment)
+                .add(R.id.fragment_container, mBoutiqueFragment)
+                .hide(mBoutiqueFragment)
                 .show(mNewGoodsFragment)
                 .commit();
     }
@@ -65,7 +74,11 @@ public class FuLiCenterMainActivity extends BaseActivity {
                 break;
         }
         if (index != currentIndex) {
-            setRadioButtonStatus(index);
+            mrbTabs[index].setChecked(true);
+            mrbTabs[currentIndex].setChecked(false);
+            FragmentTransaction trx =getSupportFragmentManager().beginTransaction();
+            trx.hide(mFragment[currentIndex]).show(mFragment[index]).commit();
+//            setRadioButtonStatus(index);
             currentIndex = index;
         }
     }
@@ -74,6 +87,8 @@ public class FuLiCenterMainActivity extends BaseActivity {
         for (int i =0 ; i<mrbTabs.length ; i++) {
             if (index == i) {
                 mrbTabs[i].setChecked(true);
+                FragmentTransaction trx =getSupportFragmentManager().beginTransaction();
+                trx.hide(mFragment[currentIndex]).show(mFragment[index]).commit();
             } else {
                 mrbTabs[i].setChecked(false);
             }

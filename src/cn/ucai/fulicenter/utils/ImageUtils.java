@@ -52,4 +52,8 @@ public class ImageUtils {
 		String url = I.DOWNLOAD_BOUTIQUE_IMG_URL+thumb;
 		Picasso.with(context).load(url).placeholder(R.drawable.nopic).into(imageView);
 	}
+	public static void getBoutiqueImage(Context context, ImageView imageView, String thumb) {
+		String url = I.DOWNLOAD_BOUTIQUE_IMG_URL+thumb;
+		Picasso.with(context).load(url).placeholder(R.drawable.nopic).into(imageView);
+	}
 }

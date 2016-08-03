@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,7 +78,8 @@ public class BoutiqueAdapter extends RecyclerView.Adapter<ViewHolder> {
         if (holder instanceof BoutiqueViewHolder) {
             mBoutiqueViewHolder = (BoutiqueViewHolder) holder;
             final BoutiqueBean boutiqueBean = mBoutiqueList.get(position);
-            ImageUtils.getBoutiqueImage(mContext, mBoutiqueViewHolder.ivBoutiqueImage, boutiqueBean.getImageUr());
+            Log.i("main", "精品的图片地址：" + boutiqueBean.getImageUrl());
+            ImageUtils.getBoutiqueImage(mContext, mBoutiqueViewHolder.ivBoutiqueImage, boutiqueBean.getImageUrl());
             mBoutiqueViewHolder.tvBoutiqueTitle.setText(boutiqueBean.getTitle());
             mBoutiqueViewHolder.tvBoutiqueName.setText(boutiqueBean.getName());
             mBoutiqueViewHolder.tvBoutiqueDesc.setText(boutiqueBean.getDescription());
