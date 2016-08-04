@@ -33,7 +33,7 @@ public class BoutiqueFragment extends Fragment {
     Context mContext;
     SwipeRefreshLayout mSwipeRefreshLayout;
     RecyclerView mRecyclerView;
-    List<BoutiqueBean> mGoodList;
+    List<BoutiqueBean> mBoutiqueList;
     LinearLayoutManager mLinearLayoutManager;
     BoutiqueAdapter mBoutiqueAdapter;
 
@@ -47,7 +47,7 @@ public class BoutiqueFragment extends Fragment {
                              Bundle savedInstanceState) {
         mContext = (FuLiCenterMainActivity)getContext();
         View view = inflater.inflate(R.layout.fragment_boutique, container, false);
-        mGoodList = new ArrayList<BoutiqueBean>();
+        mBoutiqueList = new ArrayList<BoutiqueBean>();
         initView(view);
         initData();
         setListener();
@@ -56,7 +56,7 @@ public class BoutiqueFragment extends Fragment {
 
     private void setListener() {
         setPullDownRefreshListener();
-//        setPullUpRefreshListener();
+        setPullUpRefreshListener();
     }
     private void setPullUpRefreshListener() {
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -113,7 +113,7 @@ public class BoutiqueFragment extends Fragment {
                 mtvRefresh.setVisibility(View.GONE);
                 mSwipeRefreshLayout.setRefreshing(false);
                 mBoutiqueAdapter.setMore(true);
-//                mBoutiqueAdapter.setFooterString(getResources().getString(R.string.load_more));
+                mBoutiqueAdapter.setFooterString(getResources().getString(R.string.load_more));
                 Log.i("main", "在BoutiqueFragment下载精品信息时返回的结果：" + result[0]);
                 if (result != null) {
                     Log.i("main", "result的长度：" + result.length);
@@ -123,7 +123,7 @@ public class BoutiqueFragment extends Fragment {
                     } else {
                         mBoutiqueAdapter.addMoreItem(boutiqueBeenArrayList);
                     }
-                    if (boutiqueBeenArrayList.size() == mBoutiqueAdapter.getItemCount()-1) {
+                    if (boutiqueBeenArrayList.size() < I.PAGE_SIZE_DEFAULT) {
                         mBoutiqueAdapter.setMore(false);
                         mBoutiqueAdapter.setFooterString(getResources().getString(R.string.no_more_load));
                     }
@@ -161,7 +161,7 @@ public class BoutiqueFragment extends Fragment {
         mLinearLayoutManager = new LinearLayoutManager(mContext);
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mBoutiqueAdapter = new BoutiqueAdapter(mContext, mGoodList);
+        mBoutiqueAdapter = new BoutiqueAdapter(mContext, mBoutiqueList);
         mRecyclerView.setAdapter(mBoutiqueAdapter);
 
         mtvRefresh = (TextView) view.findViewById(R.id.tv_refresh_hint);

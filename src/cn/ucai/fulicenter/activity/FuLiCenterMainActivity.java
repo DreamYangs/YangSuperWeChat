@@ -24,6 +24,23 @@ public class FuLiCenterMainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fu_li_center_main);
         initView();
+        initFragment();
+
+        // 添加显示第一个fragment
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, mNewGoodsFragment)
+                .add(R.id.fragment_container, mBoutiqueFragment)
+                .hide(mBoutiqueFragment)
+                .show(mNewGoodsFragment)
+                .commit();
+    }
+
+    private void initFragment() {
+        mNewGoodsFragment = new NewGoodsFragment();
+        mBoutiqueFragment = new BoutiqueFragment();
+        mFragment = new Fragment[5];
+        mFragment[0] = mNewGoodsFragment;
+        mFragment[1] = mBoutiqueFragment;
     }
 
     private void initView() {
@@ -40,19 +57,8 @@ public class FuLiCenterMainActivity extends BaseActivity {
         mrbTabs[2] = rbCategory;
         mrbTabs[3] = rbCart;
         mrbTabs[4] = rbPersonalCenter;
-        mNewGoodsFragment = new NewGoodsFragment();
-        mBoutiqueFragment = new BoutiqueFragment();
-        mFragment = new Fragment[5];
-        mFragment[0] = mNewGoodsFragment;
-        mFragment[1] = mBoutiqueFragment;
 
-        // 添加显示第一个fragment
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, mNewGoodsFragment)
-                .add(R.id.fragment_container, mBoutiqueFragment)
-                .hide(mBoutiqueFragment)
-                .show(mNewGoodsFragment)
-                .commit();
+
     }
 
     public void onCheckedChange(View view) {
@@ -74,11 +80,13 @@ public class FuLiCenterMainActivity extends BaseActivity {
                 break;
         }
         if (index != currentIndex) {
-            mrbTabs[index].setChecked(true);
-            mrbTabs[currentIndex].setChecked(false);
             FragmentTransaction trx =getSupportFragmentManager().beginTransaction();
-            trx.hide(mFragment[currentIndex]).show(mFragment[index]).commit();
-//            setRadioButtonStatus(index);
+            trx.hide(mFragment[currentIndex]);
+            if (!mFragment[index].isAdded()) {
+                trx.add(R.id.fragment_container, mFragment[index]);
+            }
+            trx.show(mFragment[index]).commit();
+            setRadioButtonStatus(index);
             currentIndex = index;
         }
     }
@@ -87,8 +95,6 @@ public class FuLiCenterMainActivity extends BaseActivity {
         for (int i =0 ; i<mrbTabs.length ; i++) {
             if (index == i) {
                 mrbTabs[i].setChecked(true);
-                FragmentTransaction trx =getSupportFragmentManager().beginTransaction();
-                trx.hide(mFragment[currentIndex]).show(mFragment[index]).commit();
             } else {
                 mrbTabs[i].setChecked(false);
             }

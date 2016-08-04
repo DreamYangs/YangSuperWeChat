@@ -15,7 +15,9 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.activity.BoutiqueChildActivity;
 import cn.ucai.fulicenter.activity.GoodDetailsActivity;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.utils.I;
@@ -86,8 +88,9 @@ public class BoutiqueAdapter extends RecyclerView.Adapter<ViewHolder> {
             mBoutiqueViewHolder.layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mContext.startActivity(new Intent(mContext, GoodDetailsActivity.class));
-//                    .putExtra(D.GoodDetails.KEY_GOODS_NAME,boutiqueBean.getId())
+                    mContext.startActivity(new Intent(mContext, BoutiqueChildActivity.class)
+                    .putExtra(D.Boutique.KEY_GOODS_ID,boutiqueBean.getId())
+                    .putExtra(D.Boutique.KEY_NAME,boutiqueBean.getName()));
                 }
             });
         }

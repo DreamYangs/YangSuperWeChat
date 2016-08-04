@@ -71,6 +71,13 @@
             android:theme="@style/horizontal_slide"
             >
         </activity>
+        <!-- boutique child-->
+        <activity
+            android:name=".activity.BoutiqueChildActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide"
+            >
+        </activity>
 
         <!-- 登陆 -->
         <activity
