@@ -33,6 +33,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         this.mGroupList.addAll(mGroupList);
         this.mChildList = new ArrayList<ArrayList<CategoryChildBean>>();
         this.mChildList.addAll(mChildList);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -56,7 +57,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     @Override
     public CategoryChildBean getChild(int groupPosition, int childPosition) {
         if (mChildList.get(groupPosition) != null
-                && mChildList.get(childPosition )!= null) {
+               /* && mChildList.get(childPosition )!= null*/) {
             return mChildList.get(groupPosition).get(childPosition);
 
         }
@@ -126,6 +127,15 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int i, int i1) {
         return false;
+    }
+
+    public void addAll(List<CategoryGroupBean> mGroupList, List<ArrayList<CategoryChildBean>> mChildList) {
+        this.mGroupList.clear();
+        this.mGroupList.addAll(mGroupList);
+        this.mChildList.clear();
+        this.mChildList.addAll(mChildList);
+        notifyDataSetChanged();
+
     }
 
     class GroupViewHolder {
