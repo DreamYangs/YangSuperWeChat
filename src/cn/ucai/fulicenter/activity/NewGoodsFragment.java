@@ -115,7 +115,9 @@ public class NewGoodsFragment extends Fragment {
                 mSwipeRefreshLayout.setRefreshing(false);
                 mGoodsAdapter.setMore(true);
                 mGoodsAdapter.setFooterString(getResources().getString(R.string.load_more));
-                Log.i("main", "在下载新品时返回的结果：" + result);
+                for (int i=0; i<result.length;i++) {
+                    Log.i("main", "在下载新品时返回的结果：" + result[i].toString());
+                }
                 if (result != null) {
                     Log.i("main", "result的长度：" + result.length);
                     ArrayList<NewGoodBean> newGoodBeanArrayList = Utils.array2List(result);

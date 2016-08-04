@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/divid_explist_group"
+    >
+    <ImageView
+        android:id="@+id/iv_category_group_thumb"
+        android:layout_centerVertical="true"
+        android:src="@drawable/nopic"
+        android:layout_width="32dp"
+        android:layout_height="32dp" />
+    <TextView
+        android:id="@+id/tv_category_group_name"
+        android:text="大类"
+        android:layout_toRightOf="@id/iv_category_group_thumb"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="50dp"
+        android:textColor="#000"
+        android:textSize="25sp"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp" />
+
+    <ImageView
+        android:id="@+id/iv_indicator_group"
+        android:layout_marginRight="5dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/expand_on"
+        android:layout_centerVertical="true"
+        android:layout_width="32dp"
+        android:layout_height="32dp" />
+
+</RelativeLayout>

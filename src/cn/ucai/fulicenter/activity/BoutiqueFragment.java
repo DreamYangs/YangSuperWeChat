@@ -114,7 +114,9 @@ public class BoutiqueFragment extends Fragment {
                 mSwipeRefreshLayout.setRefreshing(false);
                 mBoutiqueAdapter.setMore(true);
                 mBoutiqueAdapter.setFooterString(getResources().getString(R.string.load_more));
-                Log.i("main", "在BoutiqueFragment下载精品信息时返回的结果：" + result[0]);
+                for (int i=0; i<result.length;i++) {
+                    Log.i("main", "在BoutiqueFragment下载精品信息时返回的结果：" + result[i].toString());
+                }
                 if (result != null) {
                     Log.i("main", "result的长度：" + result.length);
                     ArrayList<BoutiqueBean> boutiqueBeenArrayList = Utils.array2List(result);
