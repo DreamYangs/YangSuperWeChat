@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.activity;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -201,22 +202,31 @@ public class CategoryChildActivity extends Activity {
     class SortStatusChangedListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
+            Drawable right;
             switch (view.getId()) {
                 case R.id.btn_sort_price:
                     if (mSortPriceAsc) {
                         mSortBy = I.SORT_BY_PRICE_ASC;
+                        right = getResources().getDrawable(R.drawable.arrow_order_up);
                     } else {
                         mSortBy = I.SORT_BY_PRICE_DESC;
+                        right = getResources().getDrawable(R.drawable.arrow_order_down);
                     }
                     mSortPriceAsc = !mSortPriceAsc;
+                    right.setBounds(0,0,right.getIntrinsicWidth(),right.getIntrinsicHeight());
+                    mBtnSortPrice.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,right,null);
                     break;
                 case R.id.btn_sort_add_time:
                     if (mSortAddTimeAsc) {
                         mSortBy = I.SORT_BY_ADDTIME_ASC;
+                        right = getResources().getDrawable(R.drawable.arrow_order_up);
                     } else {
                         mSortBy = I.SORT_BY_ADDTIME_DESC;
+                        right = getResources().getDrawable(R.drawable.arrow_order_down);
                     }
                     mSortAddTimeAsc = !mSortAddTimeAsc;
+                    right.setBounds(0,0,right.getIntrinsicWidth(),right.getIntrinsicHeight());
+                    mBtnSortAddTime.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,right,null);
                     break;
             }
             mGoodsAdapter.setSortBy(mSortBy);
