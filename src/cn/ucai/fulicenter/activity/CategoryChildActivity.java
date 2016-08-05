@@ -19,10 +19,12 @@ import java.util.List;
 import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.adapter.GoodsAdapter;
+import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.NewGoodBean;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.Utils;
+import cn.ucai.fulicenter.view.CatChildFilterButton;
 import cn.ucai.fulicenter.view.DisplayUtils;
 
 public class CategoryChildActivity extends Activity {
@@ -36,6 +38,10 @@ public class CategoryChildActivity extends Activity {
     Button mBtnSortPrice,mBtnSortAddTime;
     boolean mSortPriceAsc,mSortAddTimeAsc;
     int mSortBy;
+
+    CatChildFilterButton mCatChildFilterButton;
+    String mGroupName;
+    ArrayList<CategoryChildBean> mChildList;
 
     int catId;
     int pageId = 1;
@@ -64,6 +70,7 @@ public class CategoryChildActivity extends Activity {
         SortStatusChangedListener listener = new SortStatusChangedListener();
         mBtnSortPrice.setOnClickListener(listener);
         mBtnSortAddTime.setOnClickListener(listener);
+        mCatChildFilterButton.setOnCatFilterClickListener(mGroupName,mChildList);
 
     }
 
@@ -116,7 +123,10 @@ public class CategoryChildActivity extends Activity {
     }
 
     private void initData() {
-        catId = getIntent().getIntExtra(I.NewAndBoutiqueGood.CAT_ID, 0);
+        catId = getIntent().getIntExtra(I.CategoryChild.CAT_ID, 0);
+        mGroupName = getIntent().getStringExtra(I.CategoryGroup.NAME);
+        mCatChildFilterButton.setText(mGroupName);
+        mChildList = (ArrayList<CategoryChildBean>) getIntent().getSerializableExtra("childList");
         Log.i("main", "在CategoryChildActivity里面得到的catId：" + catId);
         if (catId > 0) {
             findNewGoodsList(new OkHttpUtils2.OnCompleteListener<NewGoodBean[]>() {
@@ -166,7 +176,7 @@ public class CategoryChildActivity extends Activity {
     }
     private  void findNewGoodsList(OkHttpUtils2.OnCompleteListener<NewGoodBean[]> listener ) {
         OkHttpUtils2<NewGoodBean[]> utils = new OkHttpUtils2<NewGoodBean[]>();
-        utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
+        utils.setRequestUrl(I.REQUEST_FIND_GOODS_DETAILS)
                 .addParam(I.NewAndBoutiqueGood.CAT_ID,String.valueOf(catId))
                 .addParam(I.PAGE_ID,String.valueOf(pageId))
                 .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
@@ -196,6 +206,8 @@ public class CategoryChildActivity extends Activity {
 
         mBtnSortPrice = (Button) findViewById(R.id.btn_sort_price);
         mBtnSortAddTime = (Button) findViewById(R.id.btn_sort_add_time);
+
+        mCatChildFilterButton = (CatChildFilterButton) findViewById(R.id.btnCatChildFilter);
 
     }
 
