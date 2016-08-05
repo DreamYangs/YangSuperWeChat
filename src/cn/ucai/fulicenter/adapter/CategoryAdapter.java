@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.activity.CategoryChildActivity;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
@@ -127,7 +128,9 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onClick(View view) {
                     mContext.startActivity(new Intent(mContext, CategoryChildActivity.class)
-                            .putExtra(I.NewAndBoutiqueGood.CAT_ID,child.getId()));
+                            .putExtra(I.NewAndBoutiqueGood.CAT_ID,child.getId())
+                            .putExtra(D.CategoryChild.NAME,child.getName())
+                    );
                 }
             });
         }

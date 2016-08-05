@@ -8,18 +8,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.adapter.GoodsAdapter;
 import cn.ucai.fulicenter.bean.NewGoodBean;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.Utils;
+import cn.ucai.fulicenter.view.DisplayUtils;
 
 public class CategoryChildActivity extends Activity {
     CategoryChildActivity mContext;
@@ -28,6 +31,10 @@ public class CategoryChildActivity extends Activity {
     List<NewGoodBean> mGoodList;
     GridLayoutManager mGridLayoutManager;
     GoodsAdapter mGoodsAdapter;
+
+    Button mBtnSortPrice,mBtnSortAddTime;
+    boolean mSortPriceAsc,mSortAddTimeAsc;
+    int mSortBy;
 
     int catId;
     int pageId = 1;
@@ -42,6 +49,7 @@ public class CategoryChildActivity extends Activity {
         mContext = this;
         setContentView(R.layout.activity_category_child);
         mGoodList = new ArrayList<NewGoodBean>();
+        mSortBy = I.SORT_BY_ADDTIME_ASC;
         initView();
         initData();
         setListener();
@@ -52,6 +60,10 @@ public class CategoryChildActivity extends Activity {
     private void setListener() {
         setPullDownRefreshListener();
         setPullUpRefreshListener();
+        SortStatusChangedListener listener = new SortStatusChangedListener();
+        mBtnSortPrice.setOnClickListener(listener);
+        mBtnSortAddTime.setOnClickListener(listener);
+
     }
 
     private void setPullUpRefreshListener() {
@@ -162,8 +174,9 @@ public class CategoryChildActivity extends Activity {
     }
 
     private void initView() {
-//        String name = getIntent().getStringExtra(D.Boutique.KEY_NAME);
-//        DisplayUtils.initBackWithTitle(mContext,name);
+        String name = getIntent().getStringExtra(D.CategoryChild.NAME);
+        DisplayUtils.initBackWithTitle(mContext,name);
+//        DisplayUtils.initBack(mContext);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.srl_category_child);
         mSwipeRefreshLayout.setColorSchemeColors(
                 R.color.google_blue,
@@ -180,6 +193,34 @@ public class CategoryChildActivity extends Activity {
 
         mtvRefresh = (TextView) findViewById(R.id.tv_refresh_hint);
 
+        mBtnSortPrice = (Button) findViewById(R.id.btn_sort_price);
+        mBtnSortAddTime = (Button) findViewById(R.id.btn_sort_add_time);
+
+    }
+
+    class SortStatusChangedListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.btn_sort_price:
+                    if (mSortPriceAsc) {
+                        mSortBy = I.SORT_BY_PRICE_ASC;
+                    } else {
+                        mSortBy = I.SORT_BY_PRICE_DESC;
+                    }
+                    mSortPriceAsc = !mSortPriceAsc;
+                    break;
+                case R.id.btn_sort_add_time:
+                    if (mSortAddTimeAsc) {
+                        mSortBy = I.SORT_BY_ADDTIME_ASC;
+                    } else {
+                        mSortBy = I.SORT_BY_ADDTIME_DESC;
+                    }
+                    mSortAddTimeAsc = !mSortAddTimeAsc;
+                    break;
+            }
+            mGoodsAdapter.setSortBy(mSortBy);
+        }
     }
 
 }

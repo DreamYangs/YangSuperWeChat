@@ -6,6 +6,34 @@
     android:layout_height="match_parent"
     >
     <include layout="@layout/common_head_title" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:background="@color/orange"
+        >
+        <Button
+            android:id="@+id/btn_sort_price"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="价格"
+            android:background="@null"
+            android:paddingRight="5dp"
+            android:drawableRight="@drawable/arrow_order_down"
+            />
+        <Button
+            android:id="@+id/btn_sort_add_time"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="上架时间"
+            android:background="@null"
+            android:paddingRight="5dp"
+            android:drawableRight="@drawable/arrow_order_down"
+            />
+
+    </LinearLayout>
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/srl_category_child"
         android:layout_width="match_parent"
