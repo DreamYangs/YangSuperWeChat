@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -12,8 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.activity.CategoryChildActivity;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.CategoryGroupBean;
+import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.ImageUtils;
 
 /**
@@ -57,7 +60,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
     @Override
     public CategoryChildBean getChild(int groupPosition, int childPosition) {
         if (mChildList.get(groupPosition) != null
-               /* && mChildList.get(childPosition )!= null*/) {
+                && mChildList.get(groupPosition).get(childPosition )!= null) {
             return mChildList.get(groupPosition).get(childPosition);
 
         }
@@ -116,10 +119,17 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         } else {
             holder = (ChildViewHolder) convertView.getTag();
         }
-        CategoryChildBean child = getChild(groupPosition, childPosition);
+        final CategoryChildBean child = getChild(groupPosition, childPosition);
         if (child != null) {
-            ImageUtils.setChildCategoryImag(mContext,holder.ivCategoryChildImage,child.getImageUrl());
+            ImageUtils.setChildCategoryImage(mContext,holder.ivCategoryChildImage,child.getImageUrl());
             holder.tvCategoryChildName.setText(child.getName());
+            holder.rlCategoryChild.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mContext.startActivity(new Intent(mContext, CategoryChildActivity.class)
+                            .putExtra(I.NewAndBoutiqueGood.CAT_ID,child.getId()));
+                }
+            });
         }
         return convertView;
     }
