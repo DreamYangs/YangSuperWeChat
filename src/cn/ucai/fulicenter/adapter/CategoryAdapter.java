@@ -2,6 +2,7 @@ package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -129,7 +130,7 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
                 public void onClick(View view) {
                     mContext.startActivity(new Intent(mContext, CategoryChildActivity.class)
                             .putExtra(I.CategoryChild.CAT_ID,child.getId())
-                            .putExtra(D.CategoryChild.NAME,child.getName())
+                            .putExtra("childName",child.getName())
                             .putExtra(I.CategoryGroup.NAME,mGroupList.get(groupPosition).getName())
                             .putExtra("childList",mChildList.get(groupPosition))
                     );

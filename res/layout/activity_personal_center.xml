@@ -208,16 +208,6 @@
             android:text="我的订单"
             android:textColor="#000"
             android:textSize="20sp"/>
-        <TextView
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/iv_my_order_in"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="查看全部已购买宝贝"
-            android:textColor="#000"
-            android:textSize="15sp"
-            android:layout_marginRight="10dp"
-            />
         <ImageView
             android:layout_marginRight="20dp"
             android:layout_centerVertical="true"
@@ -226,6 +216,16 @@
             android:layout_height="20dp"
             android:src="@drawable/wallet_base_indicator_arrow"
             android:layout_alignParentRight="true"
+            />
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="查看全部已购买宝贝"
+            android:textColor="#000"
+            android:textSize="15sp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/iv_my_order_in"
             />
     </RelativeLayout>
     <LinearLayout

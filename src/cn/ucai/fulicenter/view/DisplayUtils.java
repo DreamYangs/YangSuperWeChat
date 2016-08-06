@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.view;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 

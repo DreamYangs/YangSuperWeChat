@@ -64,11 +64,11 @@ public class RegisterActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 		initView();
-		setListener();
+//		setListener();
 
 	}
 
-	private void setListener() {
+	/*private void setListener() {
 		findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -88,7 +88,7 @@ public class RegisterActivity extends BaseActivity {
 						R.id.layout_register, userNameEditText.getText().toString().trim(), I.AVATAR_TYPE_USER_PATH);
 			}
 		});
-	}
+	}*/
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

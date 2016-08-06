@@ -41,6 +41,7 @@ public class CategoryChildActivity extends Activity {
 
     CatChildFilterButton mCatChildFilterButton;
     String mGroupName;
+    String mChildName;
     ArrayList<CategoryChildBean> mChildList;
 
     int catId;
@@ -140,7 +141,7 @@ public class CategoryChildActivity extends Activity {
                         Log.i("main", "在CategoryChildActivity下载商品时返回的结果：" + result[i].toString());
                     }
                     if (result != null) {
-                        Log.i("main", "result的长度：" + result.length);
+                        Log.i("main", "在CategoryChildActivity里面result的长度：" + result.length);
                         ArrayList<NewGoodBean> newGoodBeanArrayList = Utils.array2List(result);
                         if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
                             mGoodsAdapter.initItem(newGoodBeanArrayList);
@@ -185,8 +186,8 @@ public class CategoryChildActivity extends Activity {
     }
 
     private void initView() {
-        String name = getIntent().getStringExtra(D.CategoryChild.NAME);
-        DisplayUtils.initBackWithTitle(mContext,name);
+        mChildName = getIntent().getStringExtra("childName");
+        DisplayUtils.initBackWithTitle(mContext,mChildName);
 //        DisplayUtils.initBack(mContext);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.srl_category_child);
         mSwipeRefreshLayout.setColorSchemeColors(

@@ -43,6 +43,7 @@
                     android:layout_height="wrap_content"
                     android:text="商品详情"
                     android:textSize="18sp"
+                    android:textColor="@color/white"
                     android:layout_gravity="center_vertical"
                     />
 

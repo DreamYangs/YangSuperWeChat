@@ -137,7 +137,7 @@ public class CatChildFilterButton extends Button {
                 holder=(ViewChildHolder) layout.getTag();
             }
             final CategoryChildBean child =getItem(position);
-            String name=child.getName();
+            final String name=child.getName();
             holder.tvChildName.setText(name);
             String imgUrl=child.getImageUrl();
             String url= I.REQUEST_DOWNLOAD_CATEGORY_CHILD_IMAGE_URL+imgUrl;
@@ -153,6 +153,7 @@ public class CatChildFilterButton extends Button {
                     Intent intent=new Intent(mContext, CategoryChildActivity.class);
                     intent.putExtra(I.CategoryChild.CAT_ID, child.getId());
                     intent.putExtra("childList", Children);
+                    intent.putExtra("childName", name);
                     intent.putExtra(I.CategoryGroup.NAME, mbtnTop.getText().toString());
                     mContext.startActivity(intent);
                     ((CategoryChildActivity)mContext).finish();
