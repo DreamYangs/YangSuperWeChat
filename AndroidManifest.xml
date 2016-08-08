@@ -86,6 +86,13 @@
             android:theme="@style/horizontal_slide">
 
         </activity>
+        <!-- Collect Activity -->
+        <activity
+            android:name=".activity.CollectActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide">
+
+        </activity>
         <activity
             android:name=".activity.SettingsActivity"
             android:screenOrientation="portrait"

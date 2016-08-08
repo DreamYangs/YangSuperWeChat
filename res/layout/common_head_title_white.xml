@@ -32,7 +32,8 @@
             android:text="用户登录"
             android:textColor="#000"
             android:textSize="18sp"
-            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="120dp"
             />
 
     </RelativeLayout>

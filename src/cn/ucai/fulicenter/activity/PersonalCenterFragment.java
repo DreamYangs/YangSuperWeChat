@@ -63,6 +63,7 @@ public class PersonalCenterFragment extends Fragment {
         MyOnClickListener listener = new MyOnClickListener();
         mSettings.setOnClickListener(listener);
         mUserInfo.setOnClickListener(listener);
+        mCollectThings.setOnClickListener(listener);
         updateCollectCountListener();
 
     }
@@ -76,6 +77,9 @@ public class PersonalCenterFragment extends Fragment {
                     case R.id.tv_personal_center_top_settings:
                     case R.id.rl_personal_center_user_info:
                         startActivity(new Intent(mContext, SettingsActivity.class));
+                        break;
+                    case R.id.layout_personal_center_collect_things:
+                        startActivity(new Intent(mContext,CollectActivity.class));
                         break;
                 }
             } else {
