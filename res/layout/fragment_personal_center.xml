@@ -14,7 +14,7 @@
         android:background="@color/personal_center_top_bg"
         >
         <ImageView
-            android:id="@+id/iv_personal_center_top_image"
+            android:id="@+id/iv_personal_center_top_session_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/tb_icon_more_msg_white_56"
@@ -28,7 +28,7 @@
             android:text="设置"
             android:textSize="20sp"
             android:layout_marginRight="20dp"
-            android:layout_toLeftOf="@id/iv_personal_center_top_image"
+            android:layout_toLeftOf="@id/iv_personal_center_top_session_image"
             android:layout_centerVertical="true"
             android:textColor="@color/white"
             />
@@ -46,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/personal_center_top_bg"
                 >
-                  <RelativeLayout
+                <RelativeLayout
                     android:id="@+id/rl_personal_center_user_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -73,13 +73,14 @@
                         android:layout_marginLeft="10dp"
                         android:layout_centerVertical="true"
                         />
-                      <ImageView
-                          android:layout_centerVertical="true"
-                          android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:src="@drawable/scan"
-                          android:layout_toRightOf="@id/tv_personal_center_user_name"
-                          android:layout_marginLeft="20dp"/>
+                    <ImageView
+                        android:id="@+id/iv_personal_center_user_qr_code"
+                        android:layout_centerVertical="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/scan"
+                        android:layout_toRightOf="@id/tv_personal_center_user_name"
+                        android:layout_marginLeft="20dp"/>
                 </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/rl_personal_center_user_collects"
@@ -129,6 +130,7 @@
                             android:background="@color/white"
                             />
                         <LinearLayout
+                            android:id="@+id/layout_personal_center_collect_stores"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -161,6 +163,7 @@
                             android:background="@color/white"
                             />
                         <LinearLayout
+                            android:id="@+id/layout_personal_center_my_footprint"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -178,7 +181,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
-                                android:text="收藏的店铺"
+                                android:text="我的足迹"
                                 android:layout_marginTop="5dp"
                                 android:textColor="@color/white"
                                 />
@@ -191,16 +194,17 @@
                 </RelativeLayout>
 
             </RelativeLayout>
-            
+
         </LinearLayout>
     </ScrollView>
     <RelativeLayout
-        android:id="@+id/rl_personal_center_my_order"
+        android:id="@+id/rl_personal_center_my_orderAndThings"
         android:layout_marginTop="10dp"
         android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="40dp">
         <TextView
+            android:id="@+id/tv_personal_center_my_order"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -209,15 +213,16 @@
             android:textColor="#000"
             android:textSize="20sp"/>
         <ImageView
+            android:id="@+id/iv_check_myThings_in"
             android:layout_marginRight="20dp"
             android:layout_centerVertical="true"
-            android:id="@+id/iv_my_order_in"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
             android:src="@drawable/wallet_base_indicator_arrow"
             android:layout_alignParentRight="true"
             />
         <TextView
+            android:id="@+id/tv_personal_center_check_myThings"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -225,7 +230,7 @@
             android:textColor="#000"
             android:textSize="15sp"
             android:layout_marginRight="10dp"
-            android:layout_toLeftOf="@id/iv_my_order_in"
+            android:layout_toLeftOf="@id/iv_check_myThings_in"
             />
     </RelativeLayout>
     <LinearLayout

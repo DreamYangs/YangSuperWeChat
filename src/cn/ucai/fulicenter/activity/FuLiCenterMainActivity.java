@@ -19,6 +19,7 @@ public class FuLiCenterMainActivity extends BaseActivity {
     NewGoodsFragment mNewGoodsFragment;
     BoutiqueFragment mBoutiqueFragment;
     CategoryFragment mCategoryFragment;
+    PersonalCenterFragment mPersonalCenterFragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +32,8 @@ public class FuLiCenterMainActivity extends BaseActivity {
                 .add(R.id.fragment_container, mNewGoodsFragment)
                 .add(R.id.fragment_container, mBoutiqueFragment)
                 .add(R.id.fragment_container, mCategoryFragment)
-                .hide(mBoutiqueFragment).hide(mCategoryFragment)
+                .add(R.id.fragment_container,mPersonalCenterFragment)
+                .hide(mBoutiqueFragment).hide(mCategoryFragment).hide(mPersonalCenterFragment)
                 .show(mNewGoodsFragment)
                 .commit();
     }
@@ -40,10 +42,12 @@ public class FuLiCenterMainActivity extends BaseActivity {
         mNewGoodsFragment = new NewGoodsFragment();
         mBoutiqueFragment = new BoutiqueFragment();
         mCategoryFragment = new CategoryFragment();
+        mPersonalCenterFragment = new PersonalCenterFragment();
         mFragment = new Fragment[5];
         mFragment[0] = mNewGoodsFragment;
         mFragment[1] = mBoutiqueFragment;
         mFragment[2] = mCategoryFragment;
+        mFragment[4] = mPersonalCenterFragment;
     }
 
     private void initView() {
