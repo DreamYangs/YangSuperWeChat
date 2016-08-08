@@ -51,6 +51,7 @@ import cn.ucai.fulicenter.bean.UserAvatar;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.db.UserDao;
 import cn.ucai.fulicenter.domain.User;
+import cn.ucai.fulicenter.task.DownloadCollectCountTask;
 import cn.ucai.fulicenter.task.DownloadContactListTask;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.I;
@@ -202,7 +203,6 @@ public class LoginActivity extends BaseActivity {
                             UserAvatar user = (UserAvatar) result.getRetData();
 							Log.i("main", "在登录界面登录MySQL得到的UserAvatar数据" + user.toString());
 							if (user != null) {
-
 								FuLiCenterApplication.getInstance().setUserNick(user.getMUserNick());
 								//设置昵称到全局变量
 								FuLiCenterApplication.currentUserNick = user.getMUserNick();
@@ -276,7 +276,8 @@ public class LoginActivity extends BaseActivity {
 
 
         new DownloadContactListTask(LoginActivity.this, currentUsername).execute();
-
+		Log.i("main", "在登录界面里的currentUsername：" + currentUsername);
+		new DownloadCollectCountTask(LoginActivity.this, currentUsername).execute();
 		try {
 			// ** 第一次登录或者之前logout后再登录，加载所有本地群和回话
 			// ** manually load all local groups and
@@ -309,7 +310,6 @@ public class LoginActivity extends BaseActivity {
 		Intent intent = new Intent(LoginActivity.this,
 				FuLiCenterMainActivity.class);
 		startActivity(intent);
-
 		finish();
 	}
 

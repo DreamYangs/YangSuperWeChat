@@ -80,15 +80,10 @@ public class UserUtils {
 
 	public static String getUserAvatarPath(String userName) {
 		StringBuilder path = new StringBuilder(I.SERVER_URL);
-		path.append(I.QUESTION)
-				.append(I.KEY_REQUEST)
-				.append(I.EQUAL)
-				.append(I.REQUEST_DOWNLOAD_AVATAR)
+		path.append(I.QUESTION).append(I.KEY_REQUEST)
+				.append(I.EQUAL).append(I.REQUEST_DOWNLOAD_AVATAR)
 				.append(I.AND)
-		.append(I.NAME_OR_HXID)
-				.append(I.EQUAL).append(userName)
-				.append(I.AND)
-		.append(I.AVATAR_TYPE).append(I.EQUAL).append(I.AVATAR_TYPE_USER_PATH);
+		.append(I.AVATAR_TYPE).append(I.EQUAL).append(userName);
 
 		return path.toString();
 
@@ -112,7 +107,7 @@ public class UserUtils {
 	 */
 	public static void setAppCurrentUserAvatar(Context context, ImageView imageView) {
 		String userName = FuLiCenterApplication.getInstance().getUserName();
-		Log.i("main", "在setAPPCurrentUserAvatar中通过SuperWeChatApplication.getInstance().getUserName();得到的userName：" + userName);
+		Log.i("main", "在setAPPCurrentUserAvatar中通过FuLiCenterApplication.getInstance().getUserName();得到的userName：" + userName);
 		setAppUserAvatar(context,userName,imageView);
 	}
     /**

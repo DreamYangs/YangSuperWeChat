@@ -145,7 +145,6 @@ public class FuLiCenterApplication extends Application {
 		this.userMap = userMap;
 	}
 
-
     private String userNick;
     public String getUserNick() {
         return userNick;
@@ -154,13 +153,9 @@ public class FuLiCenterApplication extends Application {
         this.userNick = userNick;
     }
 
-	 //设置群组信息的全局变量
-
-
 	//设置群组成员的全局变量
 	private Map<String, HashMap<String, MemberUserAvatar>> membersMap
 			= new HashMap<String, HashMap<String, MemberUserAvatar>>();
-
 	public Map<String, HashMap<String, MemberUserAvatar>> getMembersMap() {
 		return membersMap;
 	}
@@ -168,7 +163,12 @@ public class FuLiCenterApplication extends Application {
 		this.membersMap = membersMap;
 	}
 
-
-
-	//设置全局的当前群组Map集合
+	//全局变量的当前用户的收藏商品的数量。
+	private int collectCount;
+	public int getCollectCount() {
+		return collectCount;
+	}
+	public void setCollectCount(int collectCount) {
+		this.collectCount = collectCount;
+	}
 }

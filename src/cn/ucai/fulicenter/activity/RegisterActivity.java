@@ -108,6 +108,7 @@ public class RegisterActivity extends BaseActivity {
 		confirmPwdEditText = (EditText) findViewById(R.id.confirm_password);
 		mAvatarImageView = (ImageView) findViewById(R.id.iv_head);
 		mAvatarRelativeLayout = (RelativeLayout) findViewById(R.id.headRelativeLayout);
+		DisplayUtils.initBackWithTitle(RegisterActivity.this,"账户登录");
 	}
 
 	/**

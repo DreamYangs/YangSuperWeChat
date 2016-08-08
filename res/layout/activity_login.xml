@@ -15,12 +15,10 @@
 
 
         <RelativeLayout
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
             android:id="@+id/rl_username"
             android:layout_width="match_parent"
             android:layout_height="54dp"
-            android:layout_marginLeft="28dp"
-            android:layout_marginRight="28dp"
             android:background="#fff" >
 
             <ImageView
@@ -50,9 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="54dp"
             android:layout_below="@id/rl_username"
-            android:layout_marginLeft="28dp"
-            android:layout_marginRight="28dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:background="#fff" >
 
             <ImageView
@@ -90,8 +86,8 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
-                android:layout_marginRight="10dip"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:background="@drawable/tb_btn_login_orange_normal"
                 android:gravity="center"
                 android:onClick="login"
@@ -110,6 +106,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:text="免费注册"
+            android:onClick="register"
             android:textSize="18sp"
             android:textColor="#000"
             android:paddingLeft="8dp"

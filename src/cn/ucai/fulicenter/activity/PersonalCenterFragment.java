@@ -1,7 +1,10 @@
 package cn.ucai.fulicenter.activity;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,8 +16,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import cn.ucai.fulicenter.DemoHXSDKHelper;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.bean.UserAvatar;
 import cn.ucai.fulicenter.utils.I;
+import cn.ucai.fulicenter.utils.UserUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +29,7 @@ public class PersonalCenterFragment extends Fragment {
     FuLiCenterMainActivity mContext;
     TextView mSettings;
     LinearLayout mCollectThings,mCollectStores,mMyFootprint;
+    TextView mCollectThingsCount;
     ImageView mSessionImageView;
     ImageView mUserAvatar;
     TextView mUserName;
@@ -40,13 +47,23 @@ public class PersonalCenterFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_personal_center, container, false);
         initView(view);
         setListener();
+        initData();
         return view;
+    }
+
+    private void initData() {
+        if (DemoHXSDKHelper.getInstance().isLogined()) {
+            UserAvatar user = FuLiCenterApplication.getInstance().getUser();
+            UserUtils.setAppUserNick(user.getMUserName(),mUserName,0);
+            UserUtils.setAppCurrentUserAvatar(mContext,mUserAvatar);
+        }
     }
 
     private void setListener() {
         MyOnClickListener listener = new MyOnClickListener();
         mSettings.setOnClickListener(listener);
         mUserInfo.setOnClickListener(listener);
+        updateCollectCountListener();
 
     }
 
@@ -72,6 +89,7 @@ public class PersonalCenterFragment extends Fragment {
         mSettings = (TextView) view.findViewById(R.id.tv_personal_center_top_settings);
         mCollectThings = (LinearLayout) view.findViewById(R.id.layout_personal_center_collect_things);
         mCollectStores = (LinearLayout) view.findViewById(R.id.layout_personal_center_collect_stores);
+        mCollectThingsCount = (TextView) view.findViewById(R.id.tv_personal_center_collect_things_count);
         mMyFootprint = (LinearLayout) view.findViewById(R.id.layout_personal_center_my_footprint);
         mSessionImageView = (ImageView) view.findViewById(R.id.iv_personal_center_top_session_image);
         mUserAvatar = (ImageView) view.findViewById(R.id.iv_personal_center_user_avatar);
@@ -82,4 +100,26 @@ public class PersonalCenterFragment extends Fragment {
 
     }
 
+    class UpdateCollectCount extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int count = FuLiCenterApplication.getInstance().getCollectCount();
+            mCollectThingsCount.setText(String.valueOf(count));
+        }
+    }
+
+    UpdateCollectCount mReceiver;
+    private void updateCollectCountListener() {
+        mReceiver = new UpdateCollectCount();
+        IntentFilter filter = new IntentFilter("update_collect");
+        mContext.registerReceiver(mReceiver,filter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mReceiver != null) {
+            mContext.unregisterReceiver(mReceiver);
+        }
+    }
 }
