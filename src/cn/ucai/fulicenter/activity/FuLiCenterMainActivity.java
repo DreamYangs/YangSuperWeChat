@@ -32,8 +32,9 @@ public class FuLiCenterMainActivity extends BaseActivity {
                 .add(R.id.fragment_container, mNewGoodsFragment)
                 .add(R.id.fragment_container, mBoutiqueFragment)
                 .add(R.id.fragment_container, mCategoryFragment)
-                .add(R.id.fragment_container,mPersonalCenterFragment)
-                .hide(mBoutiqueFragment).hide(mCategoryFragment).hide(mPersonalCenterFragment)
+//                .add(R.id.fragment_container,mPersonalCenterFragment)
+                .hide(mBoutiqueFragment).hide(mCategoryFragment)
+//                .hide(mPersonalCenterFragment)
                 .show(mNewGoodsFragment)
                 .commit();
     }
