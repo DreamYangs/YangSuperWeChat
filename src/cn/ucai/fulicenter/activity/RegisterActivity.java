@@ -33,6 +33,7 @@ import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.listener.OnSetAvatarListener;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.Utils;
+import cn.ucai.fulicenter.view.DisplayUtils;
 
 import com.easemob.exceptions.EaseMobException;
 
@@ -64,17 +65,17 @@ public class RegisterActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_register);
 		initView();
-//		setListener();
+		setListener();
 
 	}
 
-	/*private void setListener() {
-		findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
+	private void setListener() {
+		/*findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				finish();
 			}
-		});
+		});*/
 		findViewById(R.id.btn_register).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -88,7 +89,7 @@ public class RegisterActivity extends BaseActivity {
 						R.id.layout_register, userNameEditText.getText().toString().trim(), I.AVATAR_TYPE_USER_PATH);
 			}
 		});
-	}*/
+	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
