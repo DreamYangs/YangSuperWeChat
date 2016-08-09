@@ -6,14 +6,11 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import cn.ucai.fulicenter.D;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.GoodDetailsBean;
-import cn.ucai.fulicenter.bean.Result;
-import cn.ucai.fulicenter.bean.UserAvatar;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.Utils;
@@ -34,8 +31,8 @@ public class DownloadCartListTask {
     public void execute() {
         final OkHttpUtils2<CartBean[]> utils = new OkHttpUtils2<CartBean[]>();
         utils.setRequestUrl(I.REQUEST_FIND_CARTS)
-                .addParam(I.Contact.USER_NAME,userName)
-                .addParam(I.PAGE_ID,String.valueOf(I.PAGE_ID))
+                .addParam(I.Cart.USER_NAME,userName)
+                .addParam(I.PAGE_ID,String.valueOf(I.PAGE_ID_DEFAULT))
                 .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
                 .targetClass(CartBean[].class)
                 .execute(new OkHttpUtils2.OnCompleteListener<CartBean[]>() {

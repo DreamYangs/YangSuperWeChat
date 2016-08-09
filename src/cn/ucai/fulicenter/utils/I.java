@@ -247,7 +247,7 @@ public interface I {
 	String UTF_8 									= 		"utf-8";
 	String PAGE_ID 								= 		"page_id";						//分页的起始下标
 	String PAGE_SIZE 								= 		"page_size";					//分页的每页数量
-	int PAGE_ID_DEFAULT 							= 		0;								//分页的起始下标默认值
+	int PAGE_ID_DEFAULT 							= 		1;								//分页的起始下标默认值
 	int PAGE_SIZE_DEFAULT 						= 		10;								//分页的每页数量默认值
 	int DEFAULT_DISTANCE                         =      100;                             // 查找附近的人时，默认距离为100KM
 	int ID_DEFAULT									=		0;								//ID默认值

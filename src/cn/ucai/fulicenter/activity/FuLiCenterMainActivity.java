@@ -1,6 +1,9 @@
 package cn.ucai.fulicenter.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +13,7 @@ import android.widget.TextView;
 
 import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.utils.Utils;
 
 public class FuLiCenterMainActivity extends BaseActivity {
     RadioButton rbNewGood,rbBoutique,rbCategory,rbCart,rbPersonalCenter;
@@ -41,6 +45,7 @@ public class FuLiCenterMainActivity extends BaseActivity {
                 .show(mNewGoodsFragment)
                 .commit();
     }
+
 
     private void initFragment() {
         mNewGoodsFragment = new NewGoodsFragment();
@@ -140,10 +145,40 @@ public class FuLiCenterMainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        setUpdateCartNumListener();
         if (!DemoHXSDKHelper.getInstance().isLogined() && index == 4) {
             index = 0;
         }
             setFragment();
             setRadioButtonStatus(currentIndex);
+    }
+
+    class UpdateCartNumReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+           int count = Utils.sumCartCount();
+            if (count == 0 || !DemoHXSDKHelper.getInstance().isLogined()) {
+                tvCartHint.setText(String.valueOf(count));
+                tvCartHint.setVisibility(View.GONE);
+            } else {
+                tvCartHint.setText(String.valueOf(count));
+                tvCartHint.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+    UpdateCartNumReceiver mUpdateCartNumReceiver;
+
+    private void setUpdateCartNumListener() {
+        mUpdateCartNumReceiver = new UpdateCartNumReceiver();
+        IntentFilter filter = new IntentFilter("update_cart_list");
+        registerReceiver(mUpdateCartNumReceiver,filter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mUpdateCartNumReceiver != null) {
+            unregisterReceiver(mUpdateCartNumReceiver);
+        }
     }
 }

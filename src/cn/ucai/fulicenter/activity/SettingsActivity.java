@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,7 +17,6 @@ import com.easemob.EMCallBack;
 import com.easemob.chat.EMChatManager;
 import com.easemob.chat.EMChatOptions;
 
-import cn.ucai.fulicenter.Constant;
 import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.DemoHXSDKModel;
 import cn.ucai.fulicenter.FuLiCenterApplication;
@@ -342,6 +339,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                         FuLiCenterApplication.getInstance().setUser(null);
                         FuLiCenterApplication.getInstance().getUserList().clear();
                         FuLiCenterApplication.getInstance().getUserMap().clear();
+                        FuLiCenterApplication.getInstance().getCartBeanList().clear();
                         pd.dismiss();
                         // 重新显示登陆页面
                         finish();
