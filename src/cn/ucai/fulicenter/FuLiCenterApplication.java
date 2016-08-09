@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.MemberUserAvatar;
 import cn.ucai.fulicenter.bean.UserAvatar;
 
@@ -170,5 +171,14 @@ public class FuLiCenterApplication extends Application {
 	}
 	public void setCollectCount(int collectCount) {
 		this.collectCount = collectCount;
+	}
+
+	//全局变量cartBean
+	private List<CartBean> cartBeanList = new ArrayList<CartBean>();
+	public List<CartBean> getCartBeanList() {
+		return cartBeanList;
+	}
+	public void setCartBeanList(List<CartBean> cartBeanList) {
+		this.cartBeanList = cartBeanList;
 	}
 }
