@@ -123,9 +123,11 @@ public class BoutiqueChildActivity extends BaseActivity {
                     mSwipeRefreshLayout.setRefreshing(false);
                     mGoodsAdapter.setMore(true);
                     mGoodsAdapter.setFooterString(getResources().getString(R.string.load_more));
-                    Log.i("main", "在BoutiqueChildActivity下载商品时返回的结果：" + result[0].toString());
+                    for (int i =0; i<result.length;i++) {
+                        Log.i("main", "在BoutiqueChildActivity下载商品时返回的结果：" + result[0].toString());
+                    }
                     if (result != null) {
-                        Log.i("main", "result的长度：" + result.length);
+                        Log.i("main", "在BoutiqueChildActivity里面result的长度：" + result.length);
                         ArrayList<NewGoodBean> newGoodBeanArrayList = Utils.array2List(result);
                         if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
                             mGoodsAdapter.initItem(newGoodBeanArrayList);
@@ -145,14 +147,14 @@ public class BoutiqueChildActivity extends BaseActivity {
                 @Override
                 public void onError(String error) {
                     Log.i("main", "在BoutiqueChildActivity下载商息时返回的错误信息：" + error);
-                    Toast.makeText(BoutiqueChildActivity.this, "获取商品信息失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(BoutiqueChildActivity.this, "在BoutiqueChildActivity里面获取商品信息失败", Toast.LENGTH_SHORT).show();
                     mtvRefresh.setVisibility(View.GONE);
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
             });
         } else {
             finish();
-            Toast.makeText(BoutiqueChildActivity.this, "获取商品信息失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(BoutiqueChildActivity.this, "在BoutiqueChildActivity里面获取商品信息失败", Toast.LENGTH_SHORT).show();
         }
 
 

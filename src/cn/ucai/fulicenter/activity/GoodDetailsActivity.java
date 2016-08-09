@@ -1,7 +1,9 @@
 package cn.ucai.fulicenter.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -17,6 +19,7 @@ import cn.ucai.fulicenter.bean.AlbumBean;
 import cn.ucai.fulicenter.bean.GoodDetailsBean;
 import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
+import cn.ucai.fulicenter.task.DownloadCollectCountTask;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.view.DisplayUtils;
 import cn.ucai.fulicenter.view.FlowIndicator;
@@ -35,12 +38,20 @@ public class GoodDetailsActivity extends BaseActivity {
     LinearLayout mBackLinearLayout;
     int mGoodId;
     GoodDetailsBean mGoodDetails;
+
+    boolean isCollect;
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
         setContentView(R.layout.activity_good_details);
         initView();
         initData();
+        setListener();
+    }
+
+    private void setListener() {
+        MyOnClickListener listener = new MyOnClickListener();
+        mivCollect.setOnClickListener(listener);
     }
 
 
@@ -149,9 +160,11 @@ public class GoodDetailsActivity extends BaseActivity {
                         @Override
                         public void onSuccess(MessageBean result) {
                             if (result != null && result.isSuccess()) {
-                                mivCollect.setImageResource(R.drawable.bg_collect_out);
+                                isCollect = true;
+                                updateCollectStatus();
                             } else {
-                                mivCollect.setImageResource(R.drawable.bg_collect_in);
+                                isCollect = false;
+                                updateCollectStatus();
                             }
                         }
 
@@ -162,4 +175,88 @@ public class GoodDetailsActivity extends BaseActivity {
                     });
         }
     }
+
+    class MyOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.iv_good_collect:
+                    goodCollect();
+                    break;
+            }
+        }
+    }
+    //取消或者添加收藏。
+    private void goodCollect() {
+        if (DemoHXSDKHelper.getInstance().isLogined()) {
+            if (isCollect) {
+                //取消收藏
+                OkHttpUtils2<MessageBean> utils = new OkHttpUtils2<MessageBean>();
+                utils.setRequestUrl(I.REQUEST_DELETE_COLLECT)
+                        .addParam(I.Collect.USER_NAME, FuLiCenterApplication.getInstance().getUserName())
+                        .addParam(I.Collect.GOODS_ID,String.valueOf(mGoodId))
+                        .targetClass(MessageBean.class)
+                        .execute(new OkHttpUtils2.OnCompleteListener<MessageBean>() {
+                            @Override
+                            public void onSuccess(MessageBean result) {
+                                if (result != null && result.isSuccess()) {
+                                    isCollect = false;
+                                    new DownloadCollectCountTask(GoodDetailsActivity.this,
+                                            FuLiCenterApplication.getInstance().getUserName()).execute();
+                                }
+                                updateCollectStatus();
+                                Toast.makeText(GoodDetailsActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        });
+            } else {
+                //添加收藏
+                OkHttpUtils2<MessageBean> utils = new OkHttpUtils2<MessageBean>();
+                utils.setRequestUrl(I.REQUEST_ADD_COLLECT)
+                        .addParam(I.Collect.USER_NAME, FuLiCenterApplication.getInstance().getUserName())
+                        .addParam(I.Collect.GOODS_ID,String.valueOf(mGoodId))
+                        .addParam(I.Collect.GOODS_NAME,mGoodDetails.getGoodsName())
+                        .addParam(I.Collect.GOODS_ENGLISH_NAME,mGoodDetails.getGoodsEnglishName())
+                        .addParam(I.Collect.GOODS_THUMB,mGoodDetails.getGoodsThumb())
+                        .addParam(I.Collect.GOODS_IMG,mGoodDetails.getGoodsImg())
+                        .addParam(I.Collect.ADD_TIME,String.valueOf(mGoodDetails.getAddTime()))
+                        .targetClass(MessageBean.class)
+                        .execute(new OkHttpUtils2.OnCompleteListener<MessageBean>() {
+                            @Override
+                            public void onSuccess(MessageBean result) {
+                                if (result != null && result.isSuccess()) {
+                                    isCollect = true;
+                                    new DownloadCollectCountTask(GoodDetailsActivity.this,
+                                            FuLiCenterApplication.getInstance().getUserName()).execute();
+                                } else {
+                                    isCollect = false;
+                                }
+                                updateCollectStatus();
+                                Toast.makeText(GoodDetailsActivity.this, result.getMsg(), Toast.LENGTH_SHORT).show();
+                            }
+
+                            @Override
+                            public void onError(String error) {
+
+                            }
+                        });
+
+            }
+        } else {
+            startActivity(new Intent(this,LoginActivity.class));
+        }
+    }
+
+    private void updateCollectStatus() {
+        if (isCollect) {
+            mivCollect.setImageResource(R.drawable.bg_collect_out);
+        } else {
+            mivCollect.setImageResource(R.drawable.bg_collect_in);
+        }
+    }
+
 }
