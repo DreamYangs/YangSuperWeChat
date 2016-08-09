@@ -118,7 +118,7 @@ public class BoutiqueFragment extends Fragment {
                     Log.i("main", "在BoutiqueFragment下载精品信息时返回的结果：" + result[i].toString());
                 }
                 if (result != null) {
-                    Log.i("main", "result的长度：" + result.length);
+                    Log.i("main", "在BoutiqueFragment中result的长度：" + result.length);
                     ArrayList<BoutiqueBean> boutiqueBeenArrayList = Utils.array2List(result);
                     if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
                         mBoutiqueAdapter.initItem(boutiqueBeenArrayList);

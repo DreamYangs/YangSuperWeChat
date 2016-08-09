@@ -116,10 +116,10 @@ public class NewGoodsFragment extends Fragment {
                 mGoodsAdapter.setMore(true);
                 mGoodsAdapter.setFooterString(getResources().getString(R.string.load_more));
                 for (int i=0; i<result.length;i++) {
-                    Log.i("main", "在下载新品时返回的结果：" + result[i].toString());
+                    Log.i("main", "在NewGoodsFragment里下载新品时返回的结果：" + result[i].toString());
                 }
                 if (result != null) {
-                    Log.i("main", "result的长度：" + result.length);
+                    Log.i("main", "在NewGoodsFragment里result的长度：" + result.length);
                     ArrayList<NewGoodBean> newGoodBeanArrayList = Utils.array2List(result);
                     if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
                         mGoodsAdapter.initItem(newGoodBeanArrayList);
@@ -138,7 +138,7 @@ public class NewGoodsFragment extends Fragment {
 
             @Override
             public void onError(String error) {
-                Log.i("main", "在在下载新品消息时返回的错误信息：" + error);
+                Log.i("main", "在NewGoodsFragment里下载新品消息时返回的错误信息：" + error);
                 mtvRefresh.setVisibility(View.GONE);
                 mSwipeRefreshLayout.setRefreshing(false);
             }

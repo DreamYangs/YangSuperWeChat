@@ -10,9 +10,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import cn.ucai.fulicenter.D;
+import cn.ucai.fulicenter.DemoHXSDKHelper;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.AlbumBean;
 import cn.ucai.fulicenter.bean.GoodDetailsBean;
+import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.view.DisplayUtils;
@@ -60,12 +63,12 @@ public class GoodDetailsActivity extends BaseActivity {
                 public void onError(String error) {
                     Log.i("main", "在GoodDetailsActivity里面获取商品详情失败信息：" + error);
                     finish();
-                    Toast.makeText(GoodDetailsActivity.this, "获取商品详情失败", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(GoodDetailsActivity.this, "在GoodDetailsActivity里获取商品详情失败", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
             finish();
-            Toast.makeText(GoodDetailsActivity.this, "获取商品详情失败", Toast.LENGTH_SHORT).show();
+            Toast.makeText(GoodDetailsActivity.this, "在GoodDetailsActivity里获取商品详情失败", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -126,5 +129,37 @@ public class GoodDetailsActivity extends BaseActivity {
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         mBackLinearLayout = (LinearLayout) findViewById(R.id.backClickArea);
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initCollectStatus();
+    }
+
+    private void initCollectStatus() {
+        if (DemoHXSDKHelper.getInstance().isLogined()) {
+            String userName = FuLiCenterApplication.getInstance().getUserName();
+            OkHttpUtils2<MessageBean> utils = new OkHttpUtils2<MessageBean>();
+            utils.setRequestUrl(I.REQUEST_IS_COLLECT)
+                    .addParam(I.Collect.USER_NAME,userName)
+                    .addParam(I.Collect.GOODS_ID,String.valueOf(mGoodId))
+                    .targetClass(MessageBean.class)
+                    .execute(new OkHttpUtils2.OnCompleteListener<MessageBean>() {
+                        @Override
+                        public void onSuccess(MessageBean result) {
+                            if (result != null && result.isSuccess()) {
+                                mivCollect.setImageResource(R.drawable.bg_collect_out);
+                            } else {
+                                mivCollect.setImageResource(R.drawable.bg_collect_in);
+                            }
+                        }
+
+                        @Override
+                        public void onError(String error) {
+
+                        }
+                    });
+        }
     }
 }

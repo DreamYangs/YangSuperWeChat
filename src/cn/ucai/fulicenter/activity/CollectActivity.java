@@ -122,9 +122,11 @@ public class CollectActivity extends BaseActivity {
                     mSwipeRefreshLayout.setRefreshing(false);
                     mCollectAdapter.setMore(true);
                     mCollectAdapter.setFooterString(getResources().getString(R.string.load_more));
-                    Log.i("main", "在CollectActivity下载商品时返回的结果：" + result[0].toString());
+                    for (int i=0; i<result.length;i++) {
+                        Log.i("main", "在CollectActivity下载商品时返回的结果：" + result[i].toString());
+                    }
                     if (result != null) {
-                        Log.i("main", "result的长度：" + result.length);
+                        Log.i("main", "在CollectActivity中result的长度：" + result.length);
                         ArrayList<CollectBean> collectList = Utils.array2List(result);
                         if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN) {
                             mCollectAdapter.initItem(collectList);
