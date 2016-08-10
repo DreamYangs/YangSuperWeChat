@@ -65,4 +65,9 @@ public class ImageUtils {
 		String url = I.REQUEST_DOWNLOAD_CATEGORY_CHILD_IMAGE_URL + imageUrl;
 		Picasso.with(context).load(url).placeholder(R.drawable.nopic).into(imageView);
 	}
+
+	public static void setGoodsImage(Context context, ImageView imageView, String imageUrl) {
+		String url =I.DOWNLOAD_ALBUM_IMG_URL+imageUrl;
+		Picasso.with(context).load(url).placeholder(R.drawable.nopic).into(imageView);
+	}
 }
