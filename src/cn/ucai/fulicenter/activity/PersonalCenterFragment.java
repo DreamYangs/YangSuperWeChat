@@ -54,8 +54,10 @@ public class PersonalCenterFragment extends Fragment {
     private void initData() {
         if (DemoHXSDKHelper.getInstance().isLogined()) {
             UserAvatar user = FuLiCenterApplication.getInstance().getUser();
-            UserUtils.setAppUserNick(user.getMUserName(),mUserName,0);
-            UserUtils.setAppCurrentUserAvatar(mContext,mUserAvatar);
+            if (user != null) {
+                UserUtils.setAppUserNick(user.getMUserName(),mUserName,0);
+                UserUtils.setAppCurrentUserAvatar(mContext,mUserAvatar);
+            }
         }
     }
 

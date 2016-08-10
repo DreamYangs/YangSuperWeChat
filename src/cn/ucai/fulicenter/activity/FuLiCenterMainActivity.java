@@ -40,9 +40,11 @@ public class FuLiCenterMainActivity extends BaseActivity {
                 .add(R.id.fragment_container, mNewGoodsFragment)
                 .add(R.id.fragment_container, mBoutiqueFragment)
                 .add(R.id.fragment_container, mCategoryFragment)
-//                .add(R.id.fragment_container,mPersonalCenterFragment)
+                .add(R.id.fragment_container,mPersonalCenterFragment)
+                .add(R.id.fragment_container,mCartFragment)
                 .hide(mBoutiqueFragment).hide(mCategoryFragment)
-//                .hide(mPersonalCenterFragment)
+                .hide(mPersonalCenterFragment)
+                .hide(mCartFragment)
                 .show(mNewGoodsFragment)
                 .commit();
     }
@@ -84,28 +86,31 @@ public class FuLiCenterMainActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.layout_new_good:
                 index = 0;
+                setFragment();
                 break;
             case R.id.layout_boutique:
                 index = 1;
+                setFragment();
                 break;
             case R.id.layout_category:
                 index = 2;
+                setFragment();
                 break;
             case R.id.layout_cart:
                 index = 3;
+                setFragment();
                 break;
             case R.id.layout_personal_center:
                 if (DemoHXSDKHelper.getInstance().isLogined()) {
                     index = 4;
-
+                    setFragment();
                 } else {
                     gotoLogin();
                 }
                 break;
-
         }
-
         setFragment();
+
     }
 
     private void setFragment() {
