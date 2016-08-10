@@ -1,7 +1,10 @@
 package cn.ucai.fulicenter.activity;
 
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,6 +25,7 @@ import cn.ucai.fulicenter.adapter.BoutiqueAdapter;
 import cn.ucai.fulicenter.adapter.CartAdapter;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.bean.CartBean;
+import cn.ucai.fulicenter.bean.GoodDetailsBean;
 import cn.ucai.fulicenter.utils.I;
 import cn.ucai.fulicenter.utils.Utils;
 
@@ -50,9 +54,15 @@ public class CartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         mCartList = new ArrayList<CartBean>();
         initView(view);
-        initData();
         setListener();
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateCartBeanListener();
+        sumPrice();
     }
 
     private void initData() {
@@ -71,6 +81,7 @@ public class CartFragment extends Fragment {
             if (mCartList.size() < I.PAGE_SIZE_DEFAULT) {
                 mCartAdapter.setMore(false);
             }
+            sumPrice();
         } else {
             mCartAdapter.setMore(false);
         }
@@ -94,7 +105,6 @@ public class CartFragment extends Fragment {
                         && lastItemPosition == mCartAdapter.getItemCount() - 1) {
                     if (mCartAdapter.isMore()) {
                         action = I.ACTION_PULL_UP;
-                        pageId ++;
                         initData();
                     }
                 }
@@ -119,7 +129,6 @@ public class CartFragment extends Fragment {
             @Override
             public void onRefresh() {
                 action = I.ACTION_PULL_DOWN;
-//                pageId = 1;
                 mtvRefresh.setVisibility(View.VISIBLE);
                 mSwipeRefreshLayout.setEnabled(true);
                 mSwipeRefreshLayout.setRefreshing(true);
@@ -151,4 +160,50 @@ public class CartFragment extends Fragment {
         mtvBuy = (TextView) view.findViewById(R.id.tv_cart_buy);
     }
 
+    class UpdateCartBeanListReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            initData();
+        }
+    }
+    UpdateCartBeanListReceiver  mReceiver;
+
+    private void updateCartBeanListener() {
+        mReceiver = new UpdateCartBeanListReceiver();
+        IntentFilter filter = new IntentFilter("update_cart_list");
+        mContext.registerReceiver(mReceiver, filter);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mReceiver != null) {
+            mContext.unregisterReceiver(mReceiver);
+        }
+    }
+
+    private void sumPrice() {
+        if (mCartList != null && mCartList.size() > 0) {
+            int sumPrice = 0;
+            int rankPrice = 0;
+            for (CartBean cart : mCartList) {
+                GoodDetailsBean goods = cart.getGoods();
+                if (goods != null && cart.isChecked()) {
+                    sumPrice += convertPrice(goods.getCurrencyPrice())*cart.getCount();
+                    rankPrice += convertPrice(goods.getRankPrice());
+                }
+            }
+            mtvSumPrice.setText("合计：￥"+sumPrice);
+            mtvSavePrice.setText("节省：￥"+(sumPrice-rankPrice));
+
+        } else {
+            mtvSumPrice.setText("合计：￥00:00");
+            mtvSavePrice.setText("节省：￥00：00");
+        }
+    }
+    private int convertPrice(String price) {
+        price = price.substring(1);
+        return Integer.valueOf(price);
+    }
 }

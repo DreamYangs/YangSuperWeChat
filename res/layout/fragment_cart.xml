@@ -43,7 +43,6 @@
             android:gravity="center"
             android:layout_alignParentRight="true"
             />
-
     </RelativeLayout>
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/srl_cart"
@@ -61,11 +60,7 @@
                 android:id="@+id/recycle_cart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
             </android.support.v7.widget.RecyclerView>
-
         </LinearLayout>
-
     </android.support.v4.widget.SwipeRefreshLayout>
-
 </LinearLayout>
