@@ -52,12 +52,9 @@ public class CartAdapter extends RecyclerView.Adapter {
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        RecyclerView.ViewHolder holder =null;
-        View viewItem = LayoutInflater.from(mContext).inflate(R.layout.item_cart, parent, false);
-        holder = new CartViewHolder(viewItem);
 //        LayoutInflater inflater = LayoutInflater.from(mContext);
 //        holder = new BoutiqueViewHolder(inflater.inflate(R.layout.item_new_goods, null, false));
-        return  holder;
+        return new CartViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_cart, parent, false));
     }
 
     @Override
@@ -85,7 +82,7 @@ public class CartAdapter extends RecyclerView.Adapter {
         return mCartList !=null? mCartList.size():0;
     }
 
-    public void initItem(ArrayList<CartBean> list) {
+    public void initItem(List<CartBean> list) {
         if (mCartList != null) {
             mCartList.clear();
         }
@@ -93,7 +90,7 @@ public class CartAdapter extends RecyclerView.Adapter {
         notifyDataSetChanged();
     }
 
-    public void addMoreItem(ArrayList<CartBean> list) {
+    public void addMoreItem(List<CartBean> list) {
         mCartList.addAll(list);
         notifyDataSetChanged();
     }
