@@ -14,11 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.adapter.BoutiqueAdapter;
@@ -44,6 +46,7 @@ public class CartFragment extends Fragment {
     int action = I.ACTION_DOWNLOAD;
     TextView mtvRefresh;
 
+    RelativeLayout mLayoutCartTop;
     TextView mtvSumPrice,mtvSavePrice,mtvBuy;
     public CartFragment() {
     }
@@ -54,6 +57,7 @@ public class CartFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         mCartList = new ArrayList<CartBean>();
         initView(view);
+        initData();
         setListener();
         return view;
     }
@@ -91,6 +95,14 @@ public class CartFragment extends Fragment {
     private void setListener() {
         setPullDownRefreshListener();
         setPullUpRefreshListener();
+        mLayoutCartTop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!DemoHXSDKHelper.getInstance().isLogined()) {
+                    startActivity(new Intent(mContext,LoginActivity.class));
+                }
+            }
+        });
     }
     private void setPullUpRefreshListener() {
         mRecyclerView.setOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -128,12 +140,15 @@ public class CartFragment extends Fragment {
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                action = I.ACTION_PULL_DOWN;
-                mtvRefresh.setVisibility(View.VISIBLE);
-                mSwipeRefreshLayout.setEnabled(true);
-                mSwipeRefreshLayout.setRefreshing(true);
-                initData();
-
+                if (!DemoHXSDKHelper.getInstance().isLogined()) {
+                    startActivity(new Intent(mContext, LoginActivity.class));
+                } else {
+                    action = I.ACTION_PULL_DOWN;
+                    mtvRefresh.setVisibility(View.VISIBLE);
+                    mSwipeRefreshLayout.setEnabled(true);
+                    mSwipeRefreshLayout.setRefreshing(true);
+                    initData();
+                }
             }
         });
     }
@@ -155,9 +170,11 @@ public class CartFragment extends Fragment {
 
         mtvRefresh = (TextView) view.findViewById(R.id.tv_refresh_hint);
 
+        mLayoutCartTop = (RelativeLayout) view.findViewById(R.id.layout_cart_fragment_top);
         mtvSumPrice = (TextView) view.findViewById(R.id.tv_cart_sum_price);
         mtvSavePrice = (TextView) view.findViewById(R.id.tv_cart_save_price);
         mtvBuy = (TextView) view.findViewById(R.id.tv_cart_buy);
+
     }
 
     class UpdateCartBeanListReceiver extends BroadcastReceiver {

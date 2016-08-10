@@ -67,7 +67,7 @@ public class CartAdapter extends RecyclerView.Adapter {
             mCartViewHolder.tvCartGoodCount.setText("("+cartBean.getCount()+")");
             mCartViewHolder.tvCartGoodPrice.setText(cartBean.getGoods().getCurrencyPrice());
 
-            mCartViewHolder.layout.setOnClickListener(new View.OnClickListener() {
+            mCartViewHolder.ivCartThumb.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mContext.startActivity(new Intent(mContext, GoodDetailsActivity.class)
