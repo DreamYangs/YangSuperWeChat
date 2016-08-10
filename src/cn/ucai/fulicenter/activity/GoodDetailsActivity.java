@@ -1,6 +1,9 @@
 package cn.ucai.fulicenter.activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +14,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.List;
+
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.onekeyshare.OnekeyShare;
 import cn.ucai.fulicenter.D;
@@ -18,11 +23,14 @@ import cn.ucai.fulicenter.DemoHXSDKHelper;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.AlbumBean;
+import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.GoodDetailsBean;
 import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.data.OkHttpUtils2;
 import cn.ucai.fulicenter.task.DownloadCollectCountTask;
+import cn.ucai.fulicenter.task.UpdateCartTask;
 import cn.ucai.fulicenter.utils.I;
+import cn.ucai.fulicenter.utils.Utils;
 import cn.ucai.fulicenter.view.DisplayUtils;
 import cn.ucai.fulicenter.view.FlowIndicator;
 import cn.ucai.fulicenter.view.SlideAutoLoopView;
@@ -55,6 +63,7 @@ public class GoodDetailsActivity extends BaseActivity {
         MyOnClickListener listener = new MyOnClickListener();
         mivCollect.setOnClickListener(listener);
         mivShare.setOnClickListener(listener);
+        mivCart.setOnClickListener(listener);
     }
 
 
@@ -149,6 +158,7 @@ public class GoodDetailsActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         initCollectStatus();
+        setUpdateCartNumListener();
     }
 
     private void initCollectStatus() {
@@ -189,9 +199,37 @@ public class GoodDetailsActivity extends BaseActivity {
                 case R.id.iv_good_share:
                     showShare();
                     break;
+                case R.id.iv_good_cart:
+                    addCart();
+                    break;
             }
         }
     }
+
+    private void addCart() {
+        boolean isExits = true;
+        List<CartBean> cartBeanList = FuLiCenterApplication.getInstance().getCartBeanList();
+        for (CartBean cart : cartBeanList) {
+            if (cart.getGoods().getGoodsId() == mGoodId) {
+                Log.i("main", "isExits:1" + isExits);
+                isExits = false;
+                cart.setCount(cart.getCount()+1);
+                new UpdateCartTask(GoodDetailsActivity.this,cart).execute();
+            }
+        }
+        if (isExits) {
+            Log.i("main", "isExits:2" + isExits);
+            CartBean cartBean = new CartBean();
+            cartBean.setChecked(true);
+            cartBean.setCount(1);
+            cartBean.setGoods(mGoodDetails);
+            cartBean.setGoodsId(mGoodId);
+            cartBean.setUserName(FuLiCenterApplication.getInstance().getUserName());
+            new UpdateCartTask(GoodDetailsActivity.this,cartBean ).execute();
+        }
+
+    }
+
     //取消或者添加收藏。
     private void goodCollect() {
         if (DemoHXSDKHelper.getInstance().isLogined()) {
@@ -289,8 +327,37 @@ public class GoodDetailsActivity extends BaseActivity {
         // siteUrl是分享此内容的网站地址，仅在QQ空间使用
         oks.setSiteUrl(mGoodDetails.getShareUrl());
 
-// 启动分享GUI
+        // 启动分享GUI
         oks.show(this);
+    }
+
+    class UpdateCartNumReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int count = Utils.sumCartCount();
+            if (count == 0 || !DemoHXSDKHelper.getInstance().isLogined()) {
+                mtvCartCount.setText(String.valueOf(count));
+                mtvCartCount.setVisibility(View.GONE);
+            } else {
+                mtvCartCount.setText(String.valueOf(count));
+                mtvCartCount.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    UpdateCartNumReceiver mUpdateCartNumReceiver;
+    private void setUpdateCartNumListener() {
+        mUpdateCartNumReceiver = new UpdateCartNumReceiver();
+        IntentFilter filter = new IntentFilter("update_cart_list");
+        registerReceiver(mUpdateCartNumReceiver,filter);
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mUpdateCartNumReceiver != null) {
+            unregisterReceiver(mUpdateCartNumReceiver);
+        }
     }
 
 }

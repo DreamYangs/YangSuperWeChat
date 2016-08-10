@@ -83,6 +83,8 @@ public class CartAdapter extends RecyclerView.Adapter {
                     new UpdateCartTask(mContext, cartBean).execute();
                 }
             });
+            mCartViewHolder.ivCartAdd.setOnClickListener(new ChangeCountListener(cartBean,1));
+            mCartViewHolder.ivCartDelete.setOnClickListener(new ChangeCountListener(cartBean,-1));
         }
     }
 
@@ -125,4 +127,22 @@ public class CartAdapter extends RecyclerView.Adapter {
 
         }
     }
+
+    class ChangeCountListener implements View.OnClickListener {
+        CartBean cartBean;
+        int count;
+
+        public ChangeCountListener(CartBean cartBean, int count) {
+            this.cartBean = cartBean;
+            this.count = count;
+        }
+
+        @Override
+        public void onClick(View view) {
+            this.cartBean.setCount(cartBean.getCount()+count);
+            new UpdateCartTask(mContext,cartBean).execute();
+        }
+
+    }
+
 }
