@@ -17,6 +17,8 @@ import android.app.Application;
 import android.content.Context;
 
 import com.easemob.EMCallBack;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,6 +47,7 @@ public class FuLiCenterApplication extends Application {
 		super.onCreate();
         applicationContext = this;
         instance = this;
+		refWatcher = LeakCanary.install(this);
 
         /**
          * this function will initialize the HuanXin SDK
@@ -180,5 +183,10 @@ public class FuLiCenterApplication extends Application {
 	}
 	public void setCartBeanList(List<CartBean> cartBeanList) {
 		this.cartBeanList = cartBeanList;
+	}
+
+	private RefWatcher refWatcher;
+	public static RefWatcher getRefWatcher(Context context) {
+		return instance.refWatcher;
 	}
 }

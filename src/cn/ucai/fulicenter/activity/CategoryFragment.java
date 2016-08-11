@@ -11,9 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.Toast;
 
+import com.squareup.leakcanary.RefWatcher;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.adapter.CategoryAdapter;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
@@ -123,4 +126,11 @@ public class CategoryFragment extends Fragment {
         mExpandableListView.setAdapter(mCategoryAdapter);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        OkHttpUtils2.release();
+        RefWatcher refWatcher = FuLiCenterApplication.getRefWatcher(getActivity());
+        refWatcher.watch(this);
+    }
 }

@@ -358,6 +358,7 @@ public class GoodDetailsActivity extends BaseActivity {
         if (mUpdateCartNumReceiver != null) {
             unregisterReceiver(mUpdateCartNumReceiver);
         }
+        OkHttpUtils2.release();
     }
 
 }

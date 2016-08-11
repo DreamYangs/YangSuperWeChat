@@ -246,4 +246,9 @@ public class CategoryChildActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        OkHttpUtils2.release();
+    }
 }

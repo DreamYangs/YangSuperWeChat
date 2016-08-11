@@ -32,10 +32,13 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.0.0'
     compile project(':lib:bdwallet_pay_sdk')
     compile project(':lib:pingpp_one')
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
 }
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 21
     buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "cn.ucai.fulicenter"
@@ -66,6 +69,9 @@ android {
     lintOptions {
         checkReleaseBuilds false
         abortOnError false
+    }
+    repositories {
+        maven { url 'http://repo1.maven.org/maven2' }
     }
 
 }
