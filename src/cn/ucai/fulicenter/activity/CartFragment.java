@@ -48,6 +48,8 @@ public class CartFragment extends Fragment {
 
     RelativeLayout mLayoutCartTop;
     TextView mtvSumPrice,mtvSavePrice,mtvBuy;
+
+    int sumPrice = 0;
     public CartFragment() {
     }
     @Override
@@ -95,11 +97,14 @@ public class CartFragment extends Fragment {
     private void setListener() {
         setPullDownRefreshListener();
         setPullUpRefreshListener();
-        mLayoutCartTop.setOnClickListener(new View.OnClickListener() {
+        mtvBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!DemoHXSDKHelper.getInstance().isLogined()) {
-                    startActivity(new Intent(mContext,LoginActivity.class));
+
+                if (DemoHXSDKHelper.getInstance().isLogined() && sumPrice > 0) {
+                    startActivity(new Intent(mContext, BuyActivity.class));
+                } else {
+                    startActivity(new Intent(mContext, LoginActivity.class));
                 }
             }
         });
@@ -202,7 +207,6 @@ public class CartFragment extends Fragment {
 
     private void sumPrice() {
         if (mCartList != null && mCartList.size() > 0) {
-            int sumPrice = 0;
             int rankPrice = 0;
             for (CartBean cart : mCartList) {
                 GoodDetailsBean goods = cart.getGoods();

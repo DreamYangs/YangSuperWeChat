@@ -53,9 +53,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
+            android:windowSoftInputMode="adjustPan"></activity>
 
         <!-- 开屏页 -->
         <activity
@@ -94,13 +92,18 @@
             android:name=".activity.CollectActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide">
-
         </activity>
+        <!-- Settings Activity -->
         <activity
             android:name=".activity.SettingsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide">
-
+        </activity>
+        <!-- Buy Activity -->
+        <activity
+            android:name=".activity.BuyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/horizontal_slide">
         </activity>
         <!-- 登陆 -->
         <activity
@@ -230,48 +233,36 @@
             android:name=".activity.ImageGridActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="stateAlwaysHidden">
-
-        </activity>
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
         <activity
             android:name=".activity.RecorderVideoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="stateAlwaysHidden">
-
-        </activity>
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
         <!-- upload error log -->
         <activity
             android:name=".activity.DiagnoseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="stateAlwaysHidden">
-
-        </activity>
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
 
         <!-- iOS offline push nick -->
         <activity
             android:name=".activity.OfflinePushNickActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="stateAlwaysHidden">
-
-        </activity>
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
         <!-- robots list -->
         <activity
             android:name=".activity.RobotsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="stateAlwaysHidden">
-
-        </activity>
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
         <!-- user profile -->
         <activity
             android:name=".activity.UserProfileActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/horizontal_slide">
-
-        </activity>
+            android:theme="@style/horizontal_slide"></activity>
 
         <!-- 开机自启动服务 -->
         <receiver android:name="com.easemob.chat.StartServiceReceiver">
@@ -297,9 +288,7 @@
 
         <service
             android:name="com.easemob.chat.EMGCMListenerService"
-            android:exported="false">
-
-        </service>
+            android:exported="false"></service>
 
         <receiver
             android:name=".chatuidemo.receiver.GCMPushBroadCast"
@@ -340,9 +329,7 @@
         <!-- umeng appkey，可忽略 -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="53912a3156240b01a7075ed1">
-
-        </meta-data>
+            android:value="53912a3156240b01a7075ed1"></meta-data>
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="3ecea51f560650b1ed8a4b99808f52e8" />
@@ -352,20 +339,18 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/horizontal_slide"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
-
+            android:windowSoftInputMode="adjustPan"></activity>
         <activity
             android:name="com.mob.tools.MobUIShell"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
-
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>
                 <data android:scheme="tencent100371282" />
+
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
@@ -373,16 +358,17 @@
             <!-- 调用新浪原生SDK，需要注册的回调activity -->
             <intent-filter>
                 <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <!--微信分享回调 -->
+        <!-- 微信分享回调 -->
         <activity
             android:name=".wxapi.WXEntryActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
     </application>
 

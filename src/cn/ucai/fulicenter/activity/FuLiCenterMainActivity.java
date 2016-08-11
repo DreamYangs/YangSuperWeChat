@@ -115,13 +115,13 @@ public class FuLiCenterMainActivity extends BaseActivity {
 
     private void setFragment() {
         if (index != currentIndex) {
+            setRadioButtonStatus(index);
             FragmentTransaction trx =getSupportFragmentManager().beginTransaction();
             trx.hide(mFragment[currentIndex]);
             if (!mFragment[index].isAdded()) {
                 trx.add(R.id.fragment_container, mFragment[index]);
             }
             trx.show(mFragment[index]).commit();
-            setRadioButtonStatus(index);
             currentIndex = index;
         }
     }

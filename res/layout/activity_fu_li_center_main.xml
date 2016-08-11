@@ -82,7 +82,8 @@
         <RadioButton
             android:id="@+id/layout_personal_center"
             style="@style/my_menu_item_style"
-            android:text="我" android:textColor="@color/main_bottom_text_color"
+            android:text="我"
+            android:textColor="@color/main_bottom_text_color"
             android:drawableTop="@drawable/selector_menu_item_personal_center"
             />
         </RadioGroup>
