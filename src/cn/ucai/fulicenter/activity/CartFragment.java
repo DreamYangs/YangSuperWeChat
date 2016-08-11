@@ -48,7 +48,6 @@ public class CartFragment extends Fragment {
 
     RelativeLayout mLayoutCartTop;
     TextView mtvSumPrice,mtvSavePrice,mtvBuy;
-
     int sumPrice = 0;
     public CartFragment() {
     }
@@ -207,12 +206,14 @@ public class CartFragment extends Fragment {
 
     private void sumPrice() {
         if (mCartList != null && mCartList.size() > 0) {
+            int sumPrice = 0;
             int rankPrice = 0;
             for (CartBean cart : mCartList) {
                 GoodDetailsBean goods = cart.getGoods();
                 if (goods != null && cart.isChecked()) {
                     sumPrice += convertPrice(goods.getCurrencyPrice())*cart.getCount();
                     rankPrice += convertPrice(goods.getRankPrice());
+                    this.sumPrice = sumPrice;
                 }
             }
             mtvSumPrice.setText("合计：￥"+sumPrice);
