@@ -297,7 +297,7 @@
             android:exported="false"></service>
 
         <receiver
-            android:name="./chatuidemo.receiver.GCMPushBroadCast"
+            android:name=".chatuidemo.receiver.GCMPushBroadCast"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.easemob.sdk.push" />
